@@ -40,8 +40,6 @@ const TitleContainer = styled.div`
 `
 ;
 const HeaderTitle = styled.h2`
-  font-size: var(--font-size-l);
-  font-weight: 700;
 `;
 
 const TitleIcon = styled.img`

@@ -18,7 +18,7 @@ const DropdownButton = styled.button`
   border-width: 1px;
   border-radius: 15px;
   margin: 4px;
-  padding: 0px 15px;
+  padding: 0px 10px;
 `
 
 const DownIcon = styled.img`

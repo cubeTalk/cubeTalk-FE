@@ -2,10 +2,12 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import styled from "styled-components";
 import { rowCenter } from "../../styles/shared";
+import GlobalStyle from "../../styles/GlobalStyle";
 
 const Root = () => {
   return (
     <>
+      <GlobalStyle />
       <Header />
       <BodyLayout>
         <BodyContainer>
