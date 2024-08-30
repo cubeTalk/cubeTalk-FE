@@ -1,21 +1,24 @@
 import styled from "styled-components";
 import { center, rowCenter, rowflex } from "../../styles/shared";
 import { Pad } from "./Responsive";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <HeaderLayout>
       <HeaderContainer>
-        <LogoContainer>
-          <LogoImage alt="logo" src="/Icon/logo.png" />
-          <LogoTitle>CubeTalk</LogoTitle>
-        </LogoContainer>
+        <Link to={"/"}>
+          <LogoContainer>
+            <LogoImage alt="logo" src="/Icon/logo.png" />
+            <LogoTitle>CubeTalk</LogoTitle>
+          </LogoContainer>
+        </Link>
         <LoginContainer>
           <Pad>
             <LoginTitle>로그인</LoginTitle>
           </Pad>
           <ProfileContainer>
-            <LoginImage alt="login" src="/Icon/profile.png" />
+            <img alt="login" src="/Icon/profile.png" />
           </ProfileContainer>
         </LoginContainer>
       </HeaderContainer>
@@ -29,7 +32,7 @@ const HeaderLayout = styled.div`
   ${rowCenter}
   background-color: var(--black);
   width: 100%;
-  height: 80px;
+  height: 64px;
 `;
 const HeaderContainer = styled.div`
   ${rowflex}
@@ -63,15 +66,13 @@ const ProfileContainer = styled.div`
   ${center}
   width: 40px;
   height: 40px;
-  margin-left: 8px;
+  margin-left: 16px;
   border-radius: 20px;
   background-color: var(--white);
 `
 
-const LoginImage = styled.img`
-`;
-
-const LoginTitle = styled.h1`
+const LoginTitle = styled.h2`
   color: var(--white);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-l);
+  font-weight: 700;
 `;

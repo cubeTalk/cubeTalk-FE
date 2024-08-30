@@ -6,6 +6,7 @@ import ChatPage from "./routes/pages/ChatPage";
 import HomePage from "./routes/pages/HomePage";
 import Root from "./routes/layout/Root";
 import "./index.css";
+import RoomPage from "./routes/pages/RoomPage";
 
 const router = createBrowserRouter([
   {
@@ -17,10 +18,14 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/chat/:chatRoomId",
-        element: <ChatPage />,
+        path: "/Room",
+        element: <RoomPage />,
       },
     ],
+  },
+  {
+    path: "/chat/:chatRoomId",
+    element: <ChatPage />,
   },
 ]);
 
