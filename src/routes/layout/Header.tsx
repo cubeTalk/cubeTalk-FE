@@ -67,7 +67,7 @@ const ProfileContainer = styled.div`
   margin-left: 16px;
   border-radius: 20px;
   background-color: var(--white);
-`
+`;
 
 const LoginTitle = styled.h2`
   color: var(--white);

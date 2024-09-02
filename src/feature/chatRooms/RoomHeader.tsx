@@ -9,7 +9,7 @@ interface RoomHeaderProps {
   imgSrc: string;
 }
 
-const RoomHeader = ({ text, imgSrc }:RoomHeaderProps) => {
+const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
   return (
     <HeaderContainer>
       <TitleContainer>
@@ -25,23 +25,21 @@ const RoomHeader = ({ text, imgSrc }:RoomHeaderProps) => {
       <Divider />
     </HeaderContainer>
   );
-}
+};
 
 export default RoomHeader;
 
 const HeaderContainer = styled.div`
   ${colflexCenter}
   width: 100%;
-`
+`;
 
 const TitleContainer = styled.div`
   ${rowflex}
   padding-left: 15px;
   margin-bottom: 5px;
-`
-;
-const HeaderTitle = styled.h2`
 `;
+const HeaderTitle = styled.h2``;
 
 const TitleIcon = styled.img`
   margin-right: 8px;

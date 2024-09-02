@@ -8,10 +8,9 @@ const Dropdown = () => {
       <DownIcon alt="down" src="/Icon/down.svg" />
     </DropdownButton>
   );
-}
+};
 
 export default Dropdown;
-
 
 const DropdownButton = styled.button`
   ${rowflexCenter}
@@ -21,8 +20,7 @@ const DropdownButton = styled.button`
   padding: 0px 10px;
 `;
 
-const SelectedText = styled.h3`
-`;
+const SelectedText = styled.h3``;
 
 const DownIcon = styled.img`
   width: 15px;

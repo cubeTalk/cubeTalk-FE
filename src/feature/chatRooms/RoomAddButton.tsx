@@ -20,4 +20,3 @@ const ButtonWrapper = styled.button`
 const ButtonText = styled.h3`
   margin: 0px 5px;
 `;
-

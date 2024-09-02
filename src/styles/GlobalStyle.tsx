@@ -29,6 +29,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: var(--font-size-xs);
     font-weight: 400;
   }
-`
+`;
 
 export default GlobalStyle;

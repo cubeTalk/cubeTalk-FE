@@ -17,5 +17,4 @@ export default RoomPage;
 const PageLayout = styled.div`
   ${colflex}
   width: 100%;
-  
-`
+`;
