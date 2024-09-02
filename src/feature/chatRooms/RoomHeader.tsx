@@ -22,7 +22,7 @@ const RoomHeader = ({ text, imgSrc, children }:RoomHeaderProps) => {
         <Dropdown />
         <Dropdown />
       </DorpdownContainer>
-      <Divider/>
+      <Divider />
     </HeaderContainer>
   );
 }
@@ -36,7 +36,8 @@ const HeaderContainer = styled.div`
 
 const TitleContainer = styled.div`
   ${rowflex}
-  padding-left: 25px;
+  padding-left: 15px;
+  margin-bottom: 5px;
 `
 ;
 const HeaderTitle = styled.h2`
@@ -48,6 +49,5 @@ const TitleIcon = styled.img`
 
 const DorpdownContainer = styled.div`
   ${rowflex}
-  padding-left: 10px;
   flex-wrap: wrap;
 `;

@@ -27,7 +27,6 @@ export const rowflexCenter = css`
 export const colflex = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
 `;
 export const colflexCenter = css`
   ${colflex}

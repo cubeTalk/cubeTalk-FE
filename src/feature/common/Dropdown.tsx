@@ -4,7 +4,7 @@ import { rowflexCenter } from "../../styles/shared";
 const Dropdown = () => {
   return (
     <DropdownButton>
-      <p>드롭다운</p>
+      <SelectedText>드롭다운</SelectedText>
       <DownIcon alt="down" src="/Icon/down.svg" />
     </DropdownButton>
   );
@@ -19,7 +19,10 @@ const DropdownButton = styled.button`
   border-radius: 15px;
   margin: 4px;
   padding: 0px 10px;
-`
+`;
+
+const SelectedText = styled.h3`
+`;
 
 const DownIcon = styled.img`
   width: 15px;
