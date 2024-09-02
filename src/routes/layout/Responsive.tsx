@@ -18,3 +18,9 @@ export const Pad = ({ children }: Props) => {
   });
   return <>{isPad && children}</>;
 };
+
+export const mediaQuery = {
+  mobile: "(max-width: 768px)",
+  tablet: "(min-width: 769px) and (max-width: 1120px)",
+  desktop: "(min-width: 1121px)",
+};
