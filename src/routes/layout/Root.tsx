@@ -5,7 +5,7 @@ import { rowCenter } from "../../styles/shared";
 import GlobalStyle from "../../styles/GlobalStyle";
 import Footer from "./Footer";
 
-const Root = () => {
+export const Root = () => {
   return (
     <>
       <GlobalStyle />
@@ -20,7 +20,18 @@ const Root = () => {
   );
 };
 
-export default Root;
+export const ChatRoot = () => {
+  return (
+    <>
+      <GlobalStyle />
+      <BodyLayout>
+        <BodyContainer>
+          <Outlet />
+        </BodyContainer>
+      </BodyLayout>
+    </>
+  );
+};
 
 const BodyLayout = styled.div`
   ${rowCenter}
