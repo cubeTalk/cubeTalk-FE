@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Chat from "./content/chat";
+import Chat from "./screen/chat";
 import ChatScreenHeader from "./ChatScreenHeader";
 import { colflex } from "../../styles/shared";
 
