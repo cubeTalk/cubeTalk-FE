@@ -21,7 +21,7 @@ const ChatLayout = styled.div`
   width: 100%;
   @media ${mediaQuery.mobile} {
     ${colflex}
-    gap: 10px;
+    gap: 5px;
   }
 
   @media ${mediaQuery.tablet} {

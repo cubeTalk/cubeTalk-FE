@@ -32,3 +32,10 @@ export const colflexCenter = css`
   ${colflex}
   justify-content: center;
 `;
+
+export const commonButton = css`
+  ${rowflexCenter}
+  border-radius: 8px;
+  padding: 0px 10px;
+  gap: 10px;
+`

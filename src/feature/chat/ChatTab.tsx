@@ -9,14 +9,20 @@ const ChatTab = () => {
         <img src="/chatIcon/home.png" alt="Home" />
       </TabMenuWrapper>
       <TabMenuWrapper>
-        <img src="/chatIcon/chat.png" alt="Home" />
+        <img src="/chatIcon/chat.png" alt="Chat" />
       </TabMenuWrapper>
       <TabMenuWrapper>
-        <img src="/chatIcon/teamchat.png" alt="Home" />
+        <img src="/chatIcon/teamchat.png" alt="TeamChat" />
       </TabMenuWrapper>
       <TabMenuWrapper>
-        <img src="/chatIcon/memo.png" alt="Home" />
+        <img src="/chatIcon/memo.png" alt="Memo" />
       </TabMenuWrapper>
+      <TabMenuWrapper>
+        <img src="/chatIcon/setting.png" alt="Setting" />
+      </TabMenuWrapper>
+      <OutMenuWrapper>
+        <img src="/chatIcon/chatout.png" alt="ChatOut" />
+      </OutMenuWrapper>
     </TabContainer>
   );
 };
@@ -32,7 +38,7 @@ const TabContainer = styled.div`
   @media ${mediaQuery.mobile} {
     ${rowflex}
     justify-content: space-around;
-    height: 75px;
+    height: 60px;
     gap: 20px;
     order: 1;
   }
@@ -57,4 +63,24 @@ const TabMenuWrapper = styled.button`
   padding: 2px;
   width: 60px;
   height: 60px;
+
+  @media ${mediaQuery.mobile} {
+    width: 50px;
+    height: 50px;
+  }
+`;
+
+const OutMenuWrapper = styled.button`
+  ${center}
+  background-color: var(--color-mid);
+  border-radius: 5px;
+  padding: 2px;
+  width: 60px;
+  height: 60px;
+  margin-top: auto;
+
+  @media ${mediaQuery.mobile} {
+    width: 50px;
+    height: 50px;
+  }
 `;
