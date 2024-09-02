@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import Divider from "../common/Divider";
-import { colflexCenter, rowflex, rowflexCenter } from "../../styles/shared";
-import { ReactElement } from "react";
+import { colflexCenter, rowflex } from "../../styles/shared";
 import Dropdown from "../common/Dropdown";
+import RoomAddButton from "./RoomAddButton";
 
 interface RoomHeaderProps {
   text: string;
   imgSrc: string;
-  children?: ReactElement
 }
 
-const RoomHeader = ({ text, imgSrc, children }:RoomHeaderProps) => {
+const RoomHeader = ({ text, imgSrc }:RoomHeaderProps) => {
   return (
     <HeaderContainer>
       <TitleContainer>
@@ -21,6 +20,7 @@ const RoomHeader = ({ text, imgSrc, children }:RoomHeaderProps) => {
         <Dropdown />
         <Dropdown />
         <Dropdown />
+        <RoomAddButton />
       </DorpdownContainer>
       <Divider />
     </HeaderContainer>

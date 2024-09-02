@@ -54,8 +54,6 @@ const LogoImage = styled.img`
 
 const LogoTitle = styled.h1`
   color: var(--white);
-  font-size: var(--font-size-xl);
-  font-weight: 700;
 `;
 
 const LoginContainer = styled.div`
@@ -73,6 +71,4 @@ const ProfileContainer = styled.div`
 
 const LoginTitle = styled.h2`
   color: var(--white);
-  font-size: var(--font-size-l);
-  font-weight: 700;
 `;
