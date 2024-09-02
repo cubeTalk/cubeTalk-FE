@@ -3,6 +3,7 @@ import Header from "./Header";
 import styled from "styled-components";
 import { rowCenter } from "../../styles/shared";
 import GlobalStyle from "../../styles/GlobalStyle";
+import Footer from "./Footer";
 
 const Root = () => {
   return (
@@ -14,6 +15,7 @@ const Root = () => {
           <Outlet />
         </BodyContainer>
       </BodyLayout>
+      <Footer />
     </>
   );
 };
