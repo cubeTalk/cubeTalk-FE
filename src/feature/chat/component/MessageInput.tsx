@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { rowflex } from "../../../styles/shared";
+import { rowflex, scrollBar } from "../../../styles/shared";
 import { useRef } from "react";
 import { mediaQuery } from "../../../routes/layout/Responsive";
 
@@ -16,17 +16,13 @@ const MessageInput = () => {
 
   return (
     <InputContainer>
-      <TextInput
-        ref={textareaRef}
-        rows={1}
-        onChange={handleResizeHeight}
-      />
+      <TextInput ref={textareaRef} rows={1} onChange={handleResizeHeight} />
       <SendButton>
         <img src="/chatIcon/Send.png" alt="Send" />
       </SendButton>
     </InputContainer>
   );
-}
+};
 
 export default MessageInput;
 
@@ -37,6 +33,7 @@ const InputContainer = styled.div`
 `;
 
 const TextInput = styled.textarea`
+  ${scrollBar}
   width: 100%;
   padding: 10px;
   max-height: 150px;
@@ -57,7 +54,7 @@ const SendButton = styled.button`
   }
 
   @media ${mediaQuery.desktop} {
-      &:hover {
+    &:hover {
       background-color: var(--color-mid);
     }
   }

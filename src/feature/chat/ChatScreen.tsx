@@ -19,15 +19,15 @@ export default ChatScrren;
 const ChatContainer = styled.div`
   ${colflex}
   gap: 10px; 
-  height: 100%;
   width: 100%;
   border-radius: 8px;
   padding: 10px;
+  overflow: auto;
+  height: 100%;
 `;
 
 const ContentWrapper = styled.div`
-  border-radius: 8px;
-  background-color: var(--color-light);
-  height: 100%;
-  padding: 5px;
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
 `
