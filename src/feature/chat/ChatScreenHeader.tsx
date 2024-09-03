@@ -61,14 +61,7 @@ const ChatTitle = styled.h2<{ isExpanded: boolean }>`
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 3)};
-  
-  @media ${mediaQuery.tablet} {
-    -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
-  }
-  @media ${mediaQuery.desktop} {
-    -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
-  }
+  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
 `;
 
 const ButtonContainer = styled.button`

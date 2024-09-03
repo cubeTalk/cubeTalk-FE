@@ -2,6 +2,7 @@ import styled from "styled-components";
 import MessageInput from "../component/MessageInput";
 import { colflex, scrollBar } from "../../../styles/shared";
 import { Bubble } from "../component/Bubbles";
+import { ChangeTeamBubble, EnterBubble } from "../component/RoomBubbles";
 
 const Chat = () => {
   return (
@@ -9,6 +10,8 @@ const Chat = () => {
       <h2>전체 채팅</h2>
       <BubbleContainer>
         {Array.from({length: 20}, () => <Bubble />)}
+        <EnterBubble userName="배배고고파파" isEnter={true} />
+        <ChangeTeamBubble userName="배배고고파파" team="찬성팀" />
         <Bubble isleft={false} />
       </BubbleContainer>
       <MessageInput />
