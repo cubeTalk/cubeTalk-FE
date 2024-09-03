@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { rowCenter, rowflex } from "../../styles/shared";
+import { mediaQuery } from "./Responsive";
 
 const Footer = () => {
   return (
@@ -7,15 +8,15 @@ const Footer = () => {
       <FooterContainer>
         <h3>&copy; CubeTalk. All rights reserved.</h3>
         <ProfileContainer>
-          <GitHubIcon src="/Icon/github.svg" alt="GitHub" />
+          <img src="/Icon/github.svg" alt="GitHub" />
           <RepoLink href="https://github.com/cubeTalk">
-            <BoldText>CubeTalk</BoldText>
+            <p>CubeTalk</p>
           </RepoLink>
           <RepoLink href="https://github.com/eunsik-kim">
-            <BoldText>FE 김은식</BoldText>
+            <p>FE 김은식</p>
           </RepoLink>
           <RepoLink href="https://github.com/leedabin2">
-            <BoldText>BE 이다빈</BoldText>
+            <p>BE 이다빈</p>
           </RepoLink>
         </ProfileContainer>
       </FooterContainer>
@@ -38,23 +39,24 @@ const FooterContainer = styled.div`
   width: 100%;
   padding: 25px;
   gap: 20px;
+  @media ${mediaQuery.mobile} {
+    flex-wrap: wrap;
+  }
 `;
 
 const ProfileContainer = styled.div`
   ${rowflex}
   gap: 20px;
   margin-left: auto;
+  @media ${mediaQuery.mobile} {
+    margin-left: 0;
+  }
 `;
 
 const RepoLink = styled.a`
   ${rowflex}
   gap: 5px;
-`;
-
-const BoldText = styled.p`
-  font-weight: 700;
-`;
-
-const GitHubIcon = styled.img`
-  fill: var(--icon-color);
+  p {
+    font-weight: 700;
+  }
 `;

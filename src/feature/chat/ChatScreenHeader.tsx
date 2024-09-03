@@ -9,9 +9,9 @@ const ChatScreenHeader = () => {
       <ButtonContainer>
         <RoomParticipant>
           <h3>3/6</h3>
-          <ProfileContainer>
-            <Profile alt="profile" src="/Icon/profile.png" />
-          </ProfileContainer>
+          <Profile>
+            <img alt="profile" src="/Icon/profile.png" />
+          </Profile>
         </RoomParticipant>
         <StartButton>
           <h3>시작하기</h3>
@@ -57,14 +57,13 @@ const RoomParticipant = styled.button`
   margin: 5px;
 `;
 
-const ProfileContainer = styled.div`
+const Profile = styled.div`
   ${center}
   width: 25px;
   height: 25px;
   border-radius: 15px;
   background-color: #65558F;
+  img {
+    width: 15px;
+  }
 `;
-
-const Profile = styled.img`
-  width: 15px;
-`
