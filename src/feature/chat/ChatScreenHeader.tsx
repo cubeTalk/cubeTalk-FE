@@ -1,11 +1,37 @@
 import styled from "styled-components";
-import { center, colflex, commonButton } from "../../styles/shared";
+import { center, colflex, commonButton, rowflex } from "../../styles/shared";
 import { mediaQuery } from "../../routes/layout/Responsive";
+import { useEffect, useRef, useState } from "react";
 
 const ChatScreenHeader = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const textRef = useRef<HTMLDivElement | null>(null);
+
+  // title overflow checking
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (textRef.current) {
+        const element = textRef.current;
+        const isOverflowing = element.scrollHeight > element.clientHeight;
+        setShowButton(isOverflowing);
+      }
+    };
+    checkOverflow();
+    window.addEventListener("resize", checkOverflow);
+    return () => window.removeEventListener("resize", checkOverflow);
+  }, []);
+  const toggleExpand = () => {
+    setIsExpanded(prev => !prev);
+  };
+
   return (
     <HeaderContainer>
-      <ChatTittle>토론제목입니다.토론제목입니다.토론제목입니다토론제목입니다.토론제목입니다토론제목입니다토론제목입니다토론제목입니다토론제목입니다토론제목입니다</ChatTittle>
+      <button onClick={toggleExpand} disabled={!showButton}>
+        <ChatTitle ref={textRef} isExpanded={isExpanded}>
+          토론제목입니다.토론제목입니다토론제목입니다토론제목입니다.토론제토론제목입니론제목입니다토론제목입니다.토론제목입니다토론제목입니다.토론제목입니다
+        </ChatTitle>
+      </button>
       <ButtonContainer>
         <RoomParticipant>
           <h3>3/6</h3>
@@ -28,15 +54,22 @@ const HeaderContainer = styled.div`
   flex-direction: row;
 `;
 
-const ChatTittle = styled.h2`
-  @media ${mediaQuery.mobile} {
-    font-size: var(--font-size-m)
-  }
-  @media ${mediaQuery.tablet} {
-    font-size: var(--font-size-m)
-  }
+const ChatTitle = styled.h2<{ isExpanded: boolean }>`
+  text-align: left;
   color: var(--white);
-`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 3)};
+  
+  @media ${mediaQuery.tablet} {
+    -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
+  }
+  @media ${mediaQuery.desktop} {
+    -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
+  }
+`;
 
 const ButtonContainer = styled.button`
   ${colflex}
