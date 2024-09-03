@@ -38,4 +38,19 @@ export const commonButton = css`
   border-radius: 8px;
   padding: 0px 10px;
   gap: 10px;
+`;
+
+export const scrollBar = css`
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-mid);
+  }
 `
