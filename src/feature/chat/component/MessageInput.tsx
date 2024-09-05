@@ -5,7 +5,7 @@ import { mediaQuery } from "../../../routes/layout/Responsive";
 import { useChatStore } from "../store";
 
 interface MessageInputProps {
-  scrollToBottom: () => void;
+  scrollToBottom: (checkingBottom:boolean) => void;
 }
 
 const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
@@ -19,11 +19,11 @@ const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
       if (textarea) {
         textarea.style.height = "auto";
         textarea.style.height = `${textarea.scrollHeight}px`;
-        scrollToBottom(); 
       }
     };
   
     handleResizeHeight();
+    scrollToBottom(true); 
   }, [text, scrollToBottom]);
 
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
@@ -48,6 +48,7 @@ const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
         time: new Date()
       });
       setText("");
+      scrollToBottom(false);
     }
   };
 
