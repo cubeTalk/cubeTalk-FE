@@ -20,7 +20,7 @@ export const Pad = ({ children }: Props) => {
 };
 
 export const mediaQuery = {
-  mobile: "(max-width: 768px)",
+  mobile: "(max-  width: 768px)",
   tablet: "(min-width: 769px) and (max-width: 1120px)",
   desktop: "(min-width: 1121px)",
 };

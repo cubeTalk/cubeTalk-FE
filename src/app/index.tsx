@@ -1,12 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./routes/pages/ErrorPage";
-import ChatPage from "./routes/pages/ChatPage";
-import HomePage from "./routes/pages/HomePage";
-import { Root, ChatRoot } from "./routes/layout/Root";
-import "./index.css";
-import RoomPage from "./routes/pages/RoomPage";
+import ErrorPage from "../pages/error";
+import ChatPage from "../pages/chat";
+import HomePage from "../pages/home";
+import { Root, ChatRoot } from "./roots";
+import "./styles/index.css";
+import RoomPage from "../pages/room";
 
 const router = createBrowserRouter([
   {

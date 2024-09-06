@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: "Pretendard";
-  src: url("/assets/font/PretendardVariable.ttf") format("truetype");
+  src: url("/font/PretendardVariable.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }

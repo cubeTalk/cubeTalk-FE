@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import Header from "../widgets/header";
 import styled from "styled-components";
-import { rowCenter } from "../../styles/shared";
-import GlobalStyle from "../../styles/GlobalStyle";
-import Footer from "./Footer";
+import { rowCenter } from "./styles/globalStyle";
+import { GlobalStyle } from "./styles/globalStyle";
+import Footer from "../widgets/footer";
 
 export const Root = () => {
   return (
