@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import Chat from "./content/chat";
+import Chat from "./screen/chat";
 import ChatScreenHeader from "./ChatScreenHeader";
 import { colflex } from "../../styles/shared";
 
 const ChatScrren = () => {
   return (
-    <ChatContainer className="bg-darkgray" >
+    <ChatContainer className="bg-darkgray">
       <ChatScreenHeader />
       <ContentWrapper>
         <Chat />
@@ -18,16 +18,16 @@ export default ChatScrren;
 
 const ChatContainer = styled.div`
   ${colflex}
-  gap: 10px; 
-  height: 100%;
+  gap: 10px;
   width: 100%;
   border-radius: 8px;
   padding: 10px;
+  overflow: auto;
+  height: 100%;
 `;
 
 const ContentWrapper = styled.div`
-  border-radius: 8px;
-  background-color: var(--color-light);
-  height: 100%;
-  padding: 5px;
-`
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
+`;

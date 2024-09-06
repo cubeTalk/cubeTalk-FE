@@ -12,10 +12,10 @@ interface RoomHeaderProps {
 const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
   return (
     <HeaderContainer>
-      <TitleContainer>
-        <TitleIcon src={imgSrc} alt="titleIcon" />
-        <HeaderTitle>{text}</HeaderTitle>
-      </TitleContainer>
+      <Title>
+        <img src={imgSrc} alt="titleIcon" />
+        <h2>{text}</h2>
+      </Title>
       <DorpdownContainer>
         <Dropdown />
         <Dropdown />
@@ -34,15 +34,13 @@ const HeaderContainer = styled.div`
   width: 100%;
 `;
 
-const TitleContainer = styled.div`
+const Title = styled.div`
   ${rowflex}
   padding-left: 15px;
   margin-bottom: 5px;
-`;
-const HeaderTitle = styled.h2``;
-
-const TitleIcon = styled.img`
-  margin-right: 8px;
+  img {
+    margin-right: 8px;
+  }
 `;
 
 const DorpdownContainer = styled.div`
