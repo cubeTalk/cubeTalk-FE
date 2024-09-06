@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mediaQuery } from "../../../routes/layout/Responsive";
+import { mediaQuery } from "../../../../routes/layout/Responsive";
 import VoteBubble from "./VoteBubble";
 
 interface ModeratorProps {
@@ -51,7 +51,8 @@ const ModeratorBubble: React.FC<ModeratorProps> = ({ topic, order }) => {
             오늘의 <Strong>MVP는 ... {"user0222"}</Strong>님 축하드립니다🎉
           </h3>
           <h3>
-            최종  찬성팀<Strong>{4}표</Strong> 반대팀<Strong>{2}표</Strong>로 <Strong>{"찬성팀"}</Strong>이 승리하였습니다
+            최종 찬성팀<Strong>{4}표</Strong> 반대팀<Strong>{2}표</Strong>로{" "}
+            <Strong>{"찬성팀"}</Strong>이 승리하였습니다
           </h3>
         </Moderator>
       </div>

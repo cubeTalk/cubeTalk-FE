@@ -1,20 +1,19 @@
 import styled from "styled-components";
+import { Message } from "../../type";
 
 interface BubbleProps {
+  message: Message;
   isleft?: boolean;
 }
 
-export const Bubble = ({ isleft = true }: BubbleProps) => {
+const Bubble = ({ message, isleft = true }: BubbleProps) => {
   return (
     <div>
-      <UserName isleft={isleft}>닉네임</UserName>
+      <UserName isleft={isleft}>{message.userName}</UserName>
       <BubbleWrapper isleft={isleft}>
-        <NormalBubble isleft={isleft}>
-          메세지 입니다.메세지 입니다.메세지 입니다.메세지 입니다.메세지 입니다.메세지 입니다.메세지
-          입니다.메세지 입니다.입니다.메세지 입니다.입니다.메세지 입니다.
-        </NormalBubble>
-        <BubbleTime>
-          {new Date().toLocaleTimeString([], {
+        <NormalBubble isleft={isleft}>{message.text}</NormalBubble>
+        <BubbleTime isleft={isleft}>
+          {message.time.toLocaleTimeString([], {
             hour: "numeric",
             minute: "2-digit",
           })}
@@ -23,6 +22,8 @@ export const Bubble = ({ isleft = true }: BubbleProps) => {
     </div>
   );
 };
+
+export default Bubble;
 
 const UserName = styled.h3<{ isleft: boolean }>`
   margin: 0px 0px 5px 5px;
@@ -42,10 +43,12 @@ const NormalBubble = styled.h4<{ isleft: boolean }>`
   padding: 5px 10px;
   border-radius: 5px;
   max-width: 80%;
+  white-space: pre-wrap;
   word-wrap: break-word;
   order: ${({ isleft }) => (isleft ? 0 : 1)};
 `;
 
-const BubbleTime = styled.h5`
+const BubbleTime = styled.h5<{ isleft: boolean }>`
   margin: auto 5px 0px 5px;
+  text-align: ${({ isleft }) => (isleft ? "left" : "right")};
 `;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mediaQuery } from "../../../routes/layout/Responsive";
+import { mediaQuery } from "../../../../routes/layout/Responsive";
 
 interface EnterBubbleProps {
   userName: string;
@@ -13,18 +13,22 @@ interface ChangeTeamBubbleProps {
   team: TeamType;
 }
 
-export const EnterBubble = ({ userName, isEnter } : EnterBubbleProps) => {
+export const EnterBubble = ({ userName, isEnter }: EnterBubbleProps) => {
   if (isEnter) {
     return (
       <div className="flex justify-center">
-        <RoomBubble>{userName}님이 입장하였습니다.</RoomBubble>
+        <RoomBubble>
+          <strong>{userName}</strong>님이 입장하였습니다.
+        </RoomBubble>
       </div>
     );
   }
 
   return (
     <div className="flex justify-center">
-      <RoomBubble>{userName}님이 퇴장하였습니다.</RoomBubble>
+      <RoomBubble>
+        <strong>{userName}</strong>님이 퇴장하였습니다.
+      </RoomBubble>
     </div>
   );
 };
@@ -33,9 +37,9 @@ export const ChangeTeamBubble = ({ userName, team }: ChangeTeamBubbleProps) => {
   return (
     <div className="flex justify-center">
       <RoomBubble>
-        {userName}님이 {team}으로 변경하였습니다.
+        <strong>{userName}</strong>님이 <strong>{team}</strong>으로 변경하였습니다.
       </RoomBubble>
-    </div>  
+    </div>
   );
 };
 
