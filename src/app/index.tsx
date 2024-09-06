@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "../pages/error";
 import ChatPage from "../pages/chat";
 import HomePage from "../pages/home";
-import { Root, ChatRoot } from "./roots";
+import { Root, ChatRoot } from "./router";
 import "./styles/index.css";
 import RoomPage from "../pages/room";
 
