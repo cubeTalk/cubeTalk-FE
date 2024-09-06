@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { center, colflex, commonButton, rowflex } from "../../styles/shared";
-import { mediaQuery } from "../../routes/layout/Responsive";
+import { center, colflex, commonButton } from "../../styles/shared";
 import { useEffect, useRef, useState } from "react";
 
 const ChatScreenHeader = () => {
@@ -22,7 +21,7 @@ const ChatScreenHeader = () => {
     return () => window.removeEventListener("resize", checkOverflow);
   }, []);
   const toggleExpand = () => {
-    setIsExpanded(prev => !prev);
+    setIsExpanded((prev) => !prev);
   };
 
   return (
@@ -45,7 +44,7 @@ const ChatScreenHeader = () => {
       </ButtonContainer>
     </HeaderContainer>
   );
-}
+};
 
 export default ChatScreenHeader;
 
@@ -68,7 +67,7 @@ const ButtonContainer = styled.button`
   ${colflex}
   gap: 0px;
   margin-left: auto;
-`
+`;
 
 const StartButton = styled.button`
   ${commonButton}
@@ -88,7 +87,7 @@ const Profile = styled.div`
   width: 25px;
   height: 25px;
   border-radius: 15px;
-  background-color: #65558F;
+  background-color: #65558f;
   img {
     width: 15px;
   }

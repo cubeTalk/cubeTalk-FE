@@ -53,4 +53,4 @@ export const scrollBar = css`
   &::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-mid);
   }
-`
+`;

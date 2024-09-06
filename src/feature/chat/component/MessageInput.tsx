@@ -5,13 +5,13 @@ import { mediaQuery } from "../../../routes/layout/Responsive";
 import { useChatStore } from "../store";
 
 interface MessageInputProps {
-  scrollToBottom: (checkingBottom:boolean) => void;
+  scrollToBottom: (checkingBottom: boolean) => void;
 }
 
-const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
+const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
   const [text, setText] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const chatAdd = useChatStore(state => state.action.chatAdd);
+  const chatAdd = useChatStore((state) => state.action.chatAdd);
 
   useEffect(() => {
     const handleResizeHeight = () => {
@@ -21,16 +21,16 @@ const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
         textarea.style.height = `${textarea.scrollHeight}px`;
       }
     };
-  
+
     handleResizeHeight();
-    scrollToBottom(true); 
+    scrollToBottom(true);
   }, [text, scrollToBottom]);
 
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.ctrlKey) {
-      return setText(prev => prev + "\n");
+      return setText((prev) => prev + "\n");
     }
 
     if (e.key === "Enter" && !(e.shiftKey || e.ctrlKey)) {
@@ -45,7 +45,7 @@ const MessageInput = ({ scrollToBottom }:MessageInputProps) => {
       chatAdd({
         userName: "나",
         text,
-        time: new Date()
+        time: new Date(),
       });
       setText("");
       scrollToBottom(false);
@@ -95,12 +95,13 @@ const SendButton = styled.button`
 
   img {
     width: 22px;
-    opacity: ${({ disabled }) => disabled ? 0.2 : 1};
+    opacity: ${({ disabled }) => (disabled ? 0.2 : 1)};
   }
 
   @media ${mediaQuery.desktop} {
     &:hover {
-      background-color: ${({ disabled }) => disabled ? 'var(--color-primary)' : 'var(--color-mid)'};
+      background-color: ${({ disabled }) =>
+        disabled ? "var(--color-primary)" : "var(--color-mid)"};
     }
   }
 `;

@@ -4,6 +4,6 @@ const Memo = () => {
       <h2>메모</h2>
     </>
   );
-}
+};
 
 export default Memo;
