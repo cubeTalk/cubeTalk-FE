@@ -42,9 +42,12 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
   const handleSendMessage = () => {
     if (text.trim().length !== 0) {
       chatAdd({
-        userName: "나",
-        text,
-        time: new Date(),
+        replyToMessageId: "1",
+        message: text,
+        serverTimestamp: new Date().toString(),
+        id: "1",
+        sender: "나",
+        type: "CHAT",
       });
       setText("");
       scrollToBottom(false);

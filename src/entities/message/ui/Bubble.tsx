@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Message } from "../model/type";
+import { Message } from "../../../shared/type";
 
 interface BubbleProps {
   message: Message;
@@ -9,11 +9,11 @@ interface BubbleProps {
 const Bubble = ({ message, isleft = true }: BubbleProps) => {
   return (
     <div>
-      <UserName isleft={isleft}>{message.userName}</UserName>
+      <UserName isleft={isleft}>{message.sender}</UserName>
       <BubbleWrapper isleft={isleft}>
-        <NormalBubble isleft={isleft}>{message.text}</NormalBubble>
+        <NormalBubble isleft={isleft}>{message.message}</NormalBubble>
         <BubbleTime isleft={isleft}>
-          {message.time.toLocaleTimeString([], {
+          {new Date(message.serverTimestamp).toLocaleTimeString([], {
             hour: "numeric",
             minute: "2-digit",
           })}

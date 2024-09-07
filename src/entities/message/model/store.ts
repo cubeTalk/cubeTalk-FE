@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Message } from "../../../feature/chat/type";
 import { combine } from "zustand/middleware";
+import { Message } from "../../../shared/type";
 
 const initChatStore = {
   chat: [] as Message[],

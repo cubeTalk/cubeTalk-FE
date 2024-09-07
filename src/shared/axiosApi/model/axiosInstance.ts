@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
+import { HandleError } from "../lib/errorhandler";
 
 export const instance = axios.create({
   timeout:1000,
@@ -34,15 +35,3 @@ instance.interceptors.response.use(
   }
 );
 
-const HandleError = (error: AxiosError | Error) => {
-  if (error instanceof AxiosError) {
-    const { message } = error;
-    const { method, url } = error.config as AxiosRequestConfig;
-    const { status, statusText } = error.response as AxiosResponse;
-  
-    console.error(`[AxiosError] ${method?.toUpperCase()} ${url} | Error ${status} ${statusText} | ${message}`);
-  } else {
-    console.error(`[Error] | ${error.name} ${error.toString()}`);
-  }
-
-}
