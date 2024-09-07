@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Divider from "../../shared/components/divider";
 import { colflexCenter, rowflex } from "../../shared/style/commonStyle";
 import Dropdown from "../../shared/components/dropdown";
-import RoomAddButton from "../../features/createRoom";
+import { CreateRoomButton } from "../../features/createRoom";
 
 interface RoomHeaderProps {
   text: string;
@@ -20,7 +20,7 @@ const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
         <Dropdown />
         <Dropdown />
         <Dropdown />
-        <RoomAddButton />
+        <CreateRoomButton />
       </DorpdownContainer>
       <Divider />
     </HeaderContainer>

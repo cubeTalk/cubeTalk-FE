@@ -1,17 +1,17 @@
-import { useRouteError } from "react-router-dom";
+import { useState } from "react";
+import Modal from "../../shared/components/modal";
 
 const ErrorPage = () => {
-  const error = useRouteError();
-  console.error(error);
-
+  const [modalVisible, setModalVisible] = useState(false);
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
+    <>
+    <button onClick={() => setModalVisible(true)}>모달열기</button>
+    {modalVisible && (
+      <Modal closeModal={() => setModalVisible(false)}>
+        <p>모달입니다.</p>  
+      </Modal>
+    )}
+    </>
   );
 };
 
