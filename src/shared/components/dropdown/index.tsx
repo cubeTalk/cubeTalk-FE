@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { rowflexCenter } from "../style/commonStyle";
+import { rowflexCenter } from "../../style/commonStyle";
 
 const Dropdown = () => {
   return (

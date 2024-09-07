@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { SubmitButton } from "../../../shared/components/Button";
+import { SubmitButton } from "../../../shared/components/button";
 import { center, colflex } from "../../../shared/style/commonStyle";
 
 type Team = "찬성" | "반대";
