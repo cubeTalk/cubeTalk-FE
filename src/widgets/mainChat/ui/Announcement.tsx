@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { rowflex } from "../../../shared/style/commonStyle";
 import { useState } from "react";
+import { CloseButton } from "../../../shared/components/button";
 
 const regulations = [
   "모든 참여 인원이 준비버튼을 눌러야 토론을 시작할 수 있습니다.",
@@ -14,9 +15,7 @@ const Announcement = () => {
   return (
     visible && (
       <AnnocuementBubble>
-        <CloseButton onClick={() => setVisible(false)}>
-          <img src="/Icon/close.png" alt="close" />
-        </CloseButton>
+        <CloseButton onClickHandler={() => setVisible(false)}/>
         <AnnounceHeader>
           <img src="/chatIcon/announce.png" alt="annouce" />
           <h2>시작 전 확인해주세요!</h2>
@@ -48,13 +47,4 @@ const AnnounceHeader = styled.div`
   ${rowflex}
   align-items: flex-start;
   margin-left: 10px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  img {
-    width: 20px;
-  }
 `;
