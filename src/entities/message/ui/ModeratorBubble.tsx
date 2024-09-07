@@ -75,7 +75,7 @@ const Strong = styled.strong`
   font-weight: 700;
 `;
 
-const Moderator = styled.h3`
+const Moderator = styled.div`
   text-align: center;
   width: fit-content;
   line-height: 1.6;

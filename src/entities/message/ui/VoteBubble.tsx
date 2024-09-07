@@ -20,14 +20,14 @@ const VoteBubble = () => {
     <>
       <ButtonContainer>
         <CircleButton
-          isSelected={selectedButton === "찬성"}
+          $isselected={selectedButton === "찬성"}
           onClick={() => handleButtonClick("찬성")}
           className="bg-yellow"
         >
           <h2>찬성</h2>
         </CircleButton>
         <CircleButton
-          isSelected={selectedButton === "반대"}
+          $isselected={selectedButton === "반대"}
           onClick={() => handleButtonClick("반대")}
           className="bg-sky"
         >
@@ -46,7 +46,7 @@ const VoteBubble = () => {
                   checked={selectedCheckbox === name}
                   onChange={() => handleCheckboxChange(name)}
                 />
-                <CustomCheckbox isSelected={selectedCheckbox === name} />
+                <CustomCheckbox $isselected={selectedCheckbox === name} />
               </label>
             </div>
           );
@@ -65,11 +65,11 @@ const ButtonContainer = styled.div`
   margin: 10px 0px;
 `;
 
-const CircleButton = styled.button<{ isSelected: boolean }>`
+const CircleButton = styled.button<{ $isselected: boolean }>`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: ${({ isSelected }) => (isSelected ? "2px solid green" : "2px solid transparent")};
+  border: ${({ $isselected }) => ($isselected ? "2px solid green" : "2px solid transparent")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,18 +94,18 @@ const UserContainer = styled.div`
   }
 `;
 
-const CustomCheckbox = styled.span<{ isSelected: boolean }>`
+const CustomCheckbox = styled.span<{ $isselected: boolean }>`
   ${center}
   width: 20px;
   height: 20px;
-  border: ${({ isSelected }) =>
-    isSelected ? `2px solid var(--white)` : "2px solid var(--color-mid)"};
+  border: ${({ $isselected }) =>
+    $isselected ? `2px solid var(--white)` : "2px solid var(--color-mid)"};
   transition: all 0.3s ease;
   margin-left: 10px;
   &:after {
     content: "✓";
     color: var(--white);
     font-weight: 700;
-    opacity: ${({ isSelected }) => (isSelected ? 1 : 0)};
+    opacity: ${({ $isselected }) => ($isselected ? 1 : 0)};
   }
 `;

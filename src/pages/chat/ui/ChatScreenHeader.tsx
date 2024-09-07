@@ -27,7 +27,7 @@ const ChatScreenHeader = () => {
   return (
     <HeaderContainer>
       <button onClick={toggleExpand} disabled={!showButton}>
-        <ChatTitle ref={textRef} isExpanded={isExpanded}>
+        <ChatTitle ref={textRef} $isexpanded={isExpanded}>
           토론제목입니다.토론제목입니다토론제목입니다토론제목입니다.토론제토론제목입니론제목입니다토론제목입니다.토론제목입니다토론제목입니다.토론제목입니다
         </ChatTitle>
       </button>
@@ -53,17 +53,17 @@ const HeaderContainer = styled.div`
   flex-direction: row;
 `;
 
-const ChatTitle = styled.h2<{ isExpanded: boolean }>`
+const ChatTitle = styled.h2<{ $isexpanded: boolean }>`
   text-align: left;
   color: var(--white);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? "unset" : 2)};
+  -webkit-line-clamp: ${({ $isexpanded }) => ($isexpanded ? "unset" : 2)};
 `;
 
-const ButtonContainer = styled.button`
+const ButtonContainer = styled.div`
   ${colflex}
   gap: 0px;
   margin-left: auto;
