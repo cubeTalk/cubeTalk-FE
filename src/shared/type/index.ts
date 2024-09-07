@@ -1,5 +1,5 @@
 export interface Message {
-  id: string; // 메세지 ID
+  messageId: string; // 메세지 ID
   type: "CHAT"; // 채팅 타입
   sender: string; // 보낸 유저 UUID
   message: string;  // 채팅 내용
@@ -24,3 +24,4 @@ export interface DebateRoom extends DebateRoomBase {
 }
 
 export type DebateRole = "찬성" | "반대" | "관전";
+export type ProgressMessage =  "긍정입장" | "부정질의" | "부정입장" | "긍정질의" | "긍정반박" | "부정반박" | "투표" | "결과" | "TIMER_END";
