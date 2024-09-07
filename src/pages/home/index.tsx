@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import RoomCard from "../../entities/chatRoom";
+import RoomCard from "../../entities/roomCard";
 import RoomHeader from "../../widgets/roomHeader";
 import { colflex } from "../../shared/style/commonStyle";
 

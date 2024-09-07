@@ -16,7 +16,6 @@ export type PostChatRoomRequest = DebateRoomBase;
 export type PostChatRoomResponse = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
-  channelID: string; // 메인 채팅방 ID
 };
 
 // POST 토론 참가

@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
-import ChatTab from "./ui/ChatTab";
-import ChatScrren from "./ui/ChatScreen";
+import MenuTab from "./ui/MenuTab";
+import ScreenContainer from "./ui/ScreenContainer";
 
-const ChatPage = () => {
+const DebatePage = () => {
   return (
-    <ChatLayout>
-      <ChatTab />
-      <ChatScrren />
-    </ChatLayout>
+    <PageLayout>
+      <MenuTab />
+      <ScreenContainer />
+    </PageLayout>
   );
 };
 
-export default ChatPage;
+export default DebatePage;
 
-const ChatLayout = styled.div`
+const PageLayout = styled.div`
   display: flex;
   height: calc(100vh - 20px);
   width: 100%;

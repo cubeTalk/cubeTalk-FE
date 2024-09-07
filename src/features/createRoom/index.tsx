@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { rowflex } from "../../shared/style/commonStyle";
 
-const RoomAddButton = () => {
+const CreateRoomButton = () => {
   return (
-    <ButtonWrapper>
+    <CreateRoom>
       <img src="/Icon/create.png" alt="CreateRoom" />
       <h3>토론방생성</h3>
-    </ButtonWrapper>
+    </CreateRoom>
   );
 };
 
-export default RoomAddButton;
+export default CreateRoomButton;
 
-const ButtonWrapper = styled.button`
+const CreateRoom = styled.button`
   ${rowflex}
   margin-left: auto;
   h3 {

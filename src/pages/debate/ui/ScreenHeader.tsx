@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { center, colflex, commonButton } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
 
-const ChatScreenHeader = () => {
+const ScreenHeader = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const textRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +46,7 @@ const ChatScreenHeader = () => {
   );
 };
 
-export default ChatScreenHeader;
+export default ScreenHeader;
 
 const HeaderContainer = styled.div`
   display: flex;

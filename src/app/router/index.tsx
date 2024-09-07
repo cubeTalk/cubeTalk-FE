@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import Header from "./ui/header";
+import Header from "./ui/Header";
 import styled from "styled-components";
 import { rowCenter } from "../../shared/style/commonStyle";
-import Footer from "./ui/footer";
+import Footer from "./ui/Footer";
 import { GlobalStyle } from "./ui/globalstyle";
 
 export const Root = () => {
@@ -20,7 +20,7 @@ export const Root = () => {
   );
 };
 
-export const ChatRoot = () => {
+export const DebateRoot = () => {
   return (
     <>
       <GlobalStyle />

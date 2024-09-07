@@ -2,9 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "../pages/error";
-import ChatPage from "../pages/chat";
+import DebatePage from "../pages/debate";
 import HomePage from "../pages/home";
-import { Root, ChatRoot } from "./router";
+import { Root, DebateRoot } from "./router";
 import "./styles/index.css";
 import RoomPage from "../pages/room";
 
@@ -24,11 +24,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <ChatRoot />,
+    element: <DebateRoot />,
     children: [
       {
-        path: "/chat/:chatRoomId",
-        element: <ChatPage />,
+        path: "/debate/:debateRoomId",
+        element: <DebatePage />,
       },
     ],
   },

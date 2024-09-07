@@ -9,12 +9,12 @@ interface TabMenuProps {
 const TabMenuButton = ({ link, alt }: TabMenuProps) => {
   return (
     <TabMenuWrapper>
-      <img src="/chatIcon/home.png" alt="Home" />
+      <img src={link} alt={alt} />
     </TabMenuWrapper>
   );
 };
 
-const ChatTab = () => {
+const MenuTab = () => {
   return (
     <TabContainer className="bg-darkgray">
       <TabMenuWrapper>
@@ -39,7 +39,7 @@ const ChatTab = () => {
   );
 };
 
-export default ChatTab;
+export default MenuTab;
 
 const TabContainer = styled.div`
   height: 100%;

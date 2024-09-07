@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Divider from "../../shared/components/Divider";
 import { colflexCenter, rowflex } from "../../shared/style/commonStyle";
 import Dropdown from "../../shared/components/Dropdown";
-import RoomAddButton from "../../features/roomAdd";
+import RoomAddButton from "../../features/createRoom";
 
 interface RoomHeaderProps {
   text: string;

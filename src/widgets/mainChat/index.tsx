@@ -6,10 +6,10 @@ import { ChangeTeamBubble, EnterBubble } from "../../entities/message/ui/RoomBub
 import ModeratorBubble from "../../entities/message/ui/ModeratorBubble";
 import { useEffect, useRef } from "react";
 import { useChatStore } from "../../entities/message/model/store";
-import { Message } from "../../entities/message/model/type";
 import Announcement from "./ui/Announcement";
+import { Message } from "../../shared/type";
 
-const Chat = () => {
+const MainChat = () => {
   const chatList = useChatStore((state) => state.chat);
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
 
@@ -25,11 +25,6 @@ const Chat = () => {
       return;
     }
     const bubbleContainer = bubbleContainerRef.current;
-    console.log(
-      bubbleContainer.scrollTop,
-      bubbleContainer.scrollHeight,
-      bubbleContainer.clientHeight
-    );
 
     if (!checkingBottom) {
       bubbleContainer.scrollTop = bubbleContainer.scrollHeight - bubbleContainer.clientHeight;
@@ -74,7 +69,7 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default MainChat;
 
 const ScreenLayout = styled.div`
   ${colflex}
