@@ -56,7 +56,11 @@ export const scrollBar = css`
 `;
 
 export const mediaQuery = {
-  mobile: "(max-  width: 768px)",
+  mobile: "(max-width: 768px)",
   tablet: "(min-width: 769px) and (max-width: 1120px)",
   desktop: "(min-width: 1121px)",
 };
+
+export const shadow = css`
+  box-shadow: 1px 1px 5px var(--color-mid);
+`
