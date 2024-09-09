@@ -1,27 +1,30 @@
 import styled from "styled-components";
-import { rowflexCenter, shadow } from "../../style/commonStyle";
+import { rowflexCenter, scrollBar, shadow } from "../../style/commonStyle";
 import { useEffect, useRef } from "react";
+import { StoreApi, UseBoundStore } from "zustand";
+import { DropdownState } from "./model";
 
 interface DropdownProps {
   selected: string | number;
   setSelected: (item: string | number) => void;
   list: string[] | number[];
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  label: string;
+  useStore: UseBoundStore<StoreApi<DropdownState>>
 }
 
-const Dropdown = ({ list, selected, setSelected, isOpen, setIsOpen }: DropdownProps) => {
+const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
-
+  const { isOpen, setIsOpen } = useStore((state) => state);
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownButtonRef.current && dropdownButtonRef.current.contains(event.target as Node)) {
+        setIsOpen(isOpen === label ? "" : label);
         return;
       }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsOpen("");
       }
     };
 
@@ -29,31 +32,32 @@ const Dropdown = ({ list, selected, setSelected, isOpen, setIsOpen }: DropdownPr
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [setIsOpen]);
+  }, [setIsOpen, isOpen, label]);
 
+  // 버튼으로 스크롤 이동
   useEffect(() => {
-    if (isOpen && dropdownButtonRef.current) {
+    if (isOpen === label && dropdownButtonRef.current) {
       dropdownButtonRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     }
-  }, [isOpen]);
+  }, [isOpen, label]);
 
   return (
     <DropdownContainer>
-      <DropdownButton ref={dropdownButtonRef} onClick={() => setIsOpen(!isOpen)}>
+      <DropdownButton ref={dropdownButtonRef}>
         <h4>{selected}</h4>
-        <img alt="down" src="/Icon/down.svg" className={isOpen ? "open" : ""} />
+        <img alt="down" src="/Icon/down.svg" className={isOpen === label ? "open" : ""} />
       </DropdownButton>
-      {isOpen && (
+      {isOpen === label && (
         <DropdownContent ref={dropdownRef}>
           {list.map((item) => (
             <StyledButton
               key={item}
               onClick={() => {
                 setSelected(item);
-                setIsOpen(false);
+                setIsOpen("");
               }}
               $selected={selected === item}
             >
@@ -98,6 +102,7 @@ const DropdownButton = styled.button`
 
 const DropdownContent = styled.div`
   ${shadow}
+  ${scrollBar}
   position: absolute;
   width: 100%;
   background-color: var(--white);
@@ -106,7 +111,7 @@ const DropdownContent = styled.div`
   z-index: 30;
   max-height: 96px;
   overflow-y: auto;
-  scrollbar-width: none;
+  scrollbar-width: 1px;
 `;
 
 const StyledButton = styled.button<{ $selected: boolean }>`
