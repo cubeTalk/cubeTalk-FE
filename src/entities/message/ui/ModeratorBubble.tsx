@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import VoteBubble from "./VoteBubble";
-import { mediaQuery } from "../../../shared/style/commonStyle";
+import { mediaQuery, shadow } from "../../../shared/style/commonStyle";
 
 interface ModeratorProps {
   topic?: string;
@@ -76,6 +76,7 @@ const Strong = styled.strong`
 `;
 
 const Moderator = styled.div`
+  ${shadow}
   text-align: center;
   width: fit-content;
   line-height: 1.6;
@@ -83,7 +84,6 @@ const Moderator = styled.div`
   padding: 10px 40px;
   max-width: 60%;
   margin-top: 5px;
-  box-shadow: 1px 1px 3px 1px var(--color-mid);
   @media ${mediaQuery.mobile} {
     max-width: 80%;
     padding: 10px 20px;
