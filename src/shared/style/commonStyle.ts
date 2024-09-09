@@ -31,6 +31,7 @@ export const colflex = css`
 export const colflexCenter = css`
   ${colflex}
   justify-content: center;
+  align-items: center;
 `;
 
 export const commonButton = css`
@@ -63,4 +64,4 @@ export const mediaQuery = {
 
 export const shadow = css`
   box-shadow: 1px 1px 5px var(--color-mid);
-`
+`;

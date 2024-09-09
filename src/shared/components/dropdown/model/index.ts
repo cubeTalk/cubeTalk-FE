@@ -8,6 +8,6 @@ export interface DropdownState {
 
 const openDropdownStore = combine({ isOpen: "" }, (set) => ({
   setIsOpen: (newOpen: string) => set(() => ({ isOpen: newOpen })),
-}))
+}));
 
 export const createUseOpenDropdownStore = () => create(openDropdownStore);

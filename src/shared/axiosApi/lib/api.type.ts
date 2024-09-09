@@ -1,4 +1,4 @@
-import { DebateRole, DebateRoomBase, Message } from "../../type";
+import { DebateRole, Message } from "../../type";
 
 const httpUrl = import.meta.env.VITE_HTTP;
 
@@ -6,41 +6,37 @@ const httpUrl = import.meta.env.VITE_HTTP;
 export const MessagesUrl = () => `${httpUrl}chat/messages`;
 export type GetMessagesHeaderParams = {
   id: string; // 토론방 UUID
-  before: string; // 토론 참가자 입장시각(timestamp)   
+  before: string; // 토론 참가자 입장시각(timestamp)
 };
 export type GetMessagesResponse = Message[];
 
 // 토론방 생성, 목록
 export const DebateRoomUrl = () => `${httpUrl}chat`;
-export type PostChatRoomRequest = DebateRoomBase;
-export type PostChatRoomResponse = {
-  id: string; // 토론방 ID
-  memberId: string; // 사용자 UUID
-};
 
 // POST 토론 참가
-export const JoinDebateUrl = (roomId : string) => `${httpUrl}chat/${roomId}/participants`;
+export const JoinDebateUrl = (roomId: string) => `${httpUrl}chat/${roomId}/participants`;
 export type PostJoinDebateRequest = {
-  nickName: string | null;  // 토론 참가자 닉네임
+  nickName: string | null; // 토론 참가자 닉네임
   role: DebateRole; // 토론 역할
-  ownerId?: string;  // 토론 방장 ID
+  ownerId?: string; // 토론 방장 ID
 };
 export type PostJoinDebateResponse = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
   nickName: string; // 토론 참가자 닉네임
   channelId: string; // 메인 채팅방 ID
-  subChannelId: string; // 서브 채팅방 ID 
+  subChannelId: string; // 서브 채팅방 ID
   severTimeStamp: string; // 입장시각 (TimeStamp)
 };
 
 // PATCH 팀 변경
-export const ChangeTeamUrl = (roomId : string, userId: string) => `${httpUrl}chat/${roomId}/role/${userId}`;
-export type PatchChangeTeamRequest = { 
+export const ChangeTeamUrl = (roomId: string, userId: string) =>
+  `${httpUrl}chat/${roomId}/role/${userId}`;
+export type PatchChangeTeamRequest = {
   role: DebateRole; // 토론 역할
   subChannelId: string; // 구독중인 서브 채팅방 ID
 };
-export type PatchChangeTeamResponse = { 
+export type PatchChangeTeamResponse = {
   id: string; // 토론방 ID
   channelID: string; // 메인 채팅방 ID
   newSubChannelId: string; // 새서브 채팅방 ID
@@ -48,24 +44,24 @@ export type PatchChangeTeamResponse = {
 };
 
 // POST 토론방 설정
-export const DebateRoomSettingUrl = (roomId : string) => `${httpUrl}chat/${roomId}/setting`;
+export const DebateRoomSettingUrl = (roomId: string) => `${httpUrl}chat/${roomId}/setting`;
 export type PostDebateRoomSettingRequest = {
   positiveEntry: 5; // 찬성 입론 시간
   negativeQuestioning: 5; // 반대 질의 시간
-  negativeEntry: 5; // 반대 입론 시간 
+  negativeEntry: 5; // 반대 입론 시간
   positiveQuestioning: 5; // 찬성 질의 시간
   positiveRebuttal: 5; // 찬성 반박 시간
-  negativeRebuttal: 5; // 반대 반박 시간 
+  negativeRebuttal: 5; // 반대 반박 시간
 };
 export type PostDebateRoomSettingResponse = object;
 
 // 토론 시작
-export const DebateStartUrl = (roomId : string) => `${httpUrl}chat/${roomId}/actions`;
+export const DebateStartUrl = (roomId: string) => `${httpUrl}chat/${roomId}/actions`;
 export type PostDebateStartRequest = object;
 export type PostDebateStartResponse = object;
 
 // 소켓 에러
-export const ErrorUrl = (roomId : string) => `${httpUrl}chat/${roomId}/subscription/error`;
+export const ErrorUrl = (roomId: string) => `${httpUrl}chat/${roomId}/subscription/error`;
 export type PostErrorRequest = {
   type: "참가실패" | "팀변경실패";
   memberId: string;

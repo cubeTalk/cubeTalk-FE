@@ -5,10 +5,11 @@ export const HandleError = (error: AxiosError | Error) => {
     const { message } = error;
     const { method, url } = error.config as AxiosRequestConfig;
     const { status, statusText } = error.response as AxiosResponse;
-  
-    console.error(`[AxiosError] ${method?.toUpperCase()} ${url} | Error ${status} ${statusText} | ${message}`);
+
+    console.error(
+      `[AxiosError] ${method?.toUpperCase()} ${url} | Error ${status} ${statusText} | ${message}`
+    );
   } else {
     console.error(`[Error] | ${error.name} ${error.toString()}`);
   }
-
 };

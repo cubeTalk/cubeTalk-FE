@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
-import { useEffect, useRef, useState } from "react";
+import { mediaQuery, rowflex, scrollBar, shadow } from "../../shared/style/commonStyle";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChatStore } from "../message/model/store";
+import { MultilineTextInput } from "../../shared/components/textinput";
 
 interface MessageInputProps {
   scrollToBottom: (checkingBottom: boolean) => void;
@@ -27,7 +28,7 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
 
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.ctrlKey) {
       return setText((prev) => prev + "\n");
     }
@@ -60,7 +61,9 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
         ref={textareaRef}
         rows={1}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+          setText(e.target.value)
+        }
         onKeyDown={handleKeyDown}
       />
       <SendButton onClick={handleSendMessage} disabled={!text.trim()}>
@@ -85,6 +88,7 @@ const TextInput = styled.textarea`
   max-height: 40vh;
   resize: none;
   white-space: pre-wrap;
+  outline: none;
   border-radius: 8px 0px 0px 8px;
 `;
 
@@ -94,7 +98,6 @@ const SendButton = styled.button`
   cursor: pointer;
   background-color: var(--color-primary);
   border-radius: 0px 8px 8px 0px;
-
   img {
     width: 22px;
     opacity: ${({ disabled }) => (disabled ? 0.2 : 1)};

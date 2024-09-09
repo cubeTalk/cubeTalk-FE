@@ -9,7 +9,7 @@ interface DropdownProps {
   setSelected: (item: string | number) => void;
   list: string[] | number[];
   label: string;
-  useStore: UseBoundStore<StoreApi<DropdownState>>
+  useStore: UseBoundStore<StoreApi<DropdownState>>;
 }
 
 const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProps) => {

@@ -27,7 +27,7 @@ const MainChat = () => {
     const bubbleContainer = bubbleContainerRef.current;
 
     if (!checkingBottom) {
-      bubbleContainer.scrollTop = bubbleContainer.scrollHeight - bubbleContainer.clientHeight;
+      bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
       return;
     }
     const isBottom =

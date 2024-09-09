@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import Divider from "../../shared/components/divider";
-import { colflexCenter, rowflex } from "../../shared/style/commonStyle";
-import Dropdown from "../../shared/components/dropdown";
-import { CreateRoomButton } from "../../features/createRoom";
+import { colflex, rowflex } from "../../shared/style/commonStyle";
+import Divider from "../../shared/components/Divider";
+import CreateRoomButton from "../../features/createRoom";
 
 interface RoomHeaderProps {
   text: string;
@@ -16,12 +15,13 @@ const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
         <img src={imgSrc} alt="titleIcon" />
         <h2>{text}</h2>
       </Title>
-      <DorpdownContainer>
-        <Dropdown />
-        <Dropdown />
-        <Dropdown />
-        <CreateRoomButton />
-      </DorpdownContainer>
+      <CreateRoomButton />
+      {/* <DorpdownContainer>
+        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
+        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1"/>
+        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1"/>
+      </DorpdownContainer> */}
+
       <Divider />
     </HeaderContainer>
   );
@@ -30,7 +30,7 @@ const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
 export default RoomHeader;
 
 const HeaderContainer = styled.div`
-  ${colflexCenter}
+  ${colflex}
   width: 100%;
 `;
 

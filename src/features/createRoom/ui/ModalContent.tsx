@@ -21,7 +21,7 @@ const Title = () => {
       warning={title === "" ? "내용을 채워 주세요" : ""}
     />
   );
-}
+};
 
 const Discription = () => {
   const description = useRoomStore((state) => state.description);
@@ -38,7 +38,7 @@ const Discription = () => {
       warning={description === "" ? "내용을 채워 주세요" : ""}
     />
   );
-}
+};
 
 const ChatMode = () => {
   const chatMode = useRoomStore((state) => state.chatMode);
@@ -46,13 +46,10 @@ const ChatMode = () => {
   return (
     <div className="flex-1 pl-1">
       <Label className="flex">모드</Label>
-      <Toggle
-        chatMode={chatMode}
-        setChatMode={setChatMode}
-      />
+      <Toggle chatMode={chatMode} setChatMode={setChatMode} />
     </div>
   );
-}
+};
 
 const ModalContent = () => {
   return (

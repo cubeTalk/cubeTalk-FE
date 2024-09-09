@@ -1,19 +1,18 @@
 import styled from "styled-components";
+import { shadow } from "../../shared/style/commonStyle";
 
 interface ToggleProps {
-  chatMode: string;
+  chatMode: string | number;
   setChatMode: (chamMode: string) => void;
 }
 
 const Toggle = ({ chatMode, setChatMode }: ToggleProps) => {
-
   const handleToggle = () => {
     if (chatMode === "자유") {
       setChatMode("찬반");
     } else {
       setChatMode("자유");
     }
-    
   };
 
   return (
@@ -38,7 +37,6 @@ const ToggleLabel = styled.label<{ $isChecked: boolean }>`
     transform: translateY(-50%);
     right: 8px;
     font-size: 14px;
-    color: ${({ $isChecked }) => ($isChecked ? "white" : "black")};
   }
 `;
 
@@ -54,6 +52,7 @@ const ToggleCheckbox = styled.input.attrs({ type: "checkbox" })`
 `;
 
 const ToggleSwitch = styled.span<{ $isChecked: boolean }>`
+  ${shadow}
   position: relative;
   display: block;
   width: 100%;
@@ -80,6 +79,5 @@ const ToggleSwitch = styled.span<{ $isChecked: boolean }>`
     transform: translateY(-50%);
     left: 8px;
     font-size: 14px;
-    color: ${({ $isChecked }) => ($isChecked ? "black" : "white")};
   }
 `;

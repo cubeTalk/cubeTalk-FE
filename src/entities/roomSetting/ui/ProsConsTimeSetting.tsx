@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useModalDropdownStore, useRoomSettingStore } from "../model/store";
 import Dropdown from "../../../shared/components/dropdown";
 
-export const SubTimeList = Array.from({length: 5}, (_, i) => i+1);
+export const SubTimeList = Array.from({ length: 5 }, (_, i) => i + 1);
 
 const ProsConsTimeSetting = () => {
   const roomStoreEntries = [

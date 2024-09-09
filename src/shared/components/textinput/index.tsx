@@ -83,11 +83,11 @@ const InputContainer = styled.div`
 
 const Label = styled.label`
   font-size: 1rem;
-  margin: 0.5rem;
+  margin: 0 0 0.25rem 0.5rem;
 `;
 
 const WarningMessage = styled.span`
   font-size: 0.875rem;
   color: var(--color-red);
-  margin: 0.5rem;
+  margin: 0.25rem 0 0 0.5rem;
 `;

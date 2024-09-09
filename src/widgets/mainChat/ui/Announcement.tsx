@@ -15,7 +15,7 @@ const Announcement = () => {
   return (
     visible && (
       <AnnocuementBubble>
-        <CloseButton onClickHandler={() => setVisible(false)}/>
+        <CloseButton onClickHandler={() => setVisible(false)} />
         <AnnounceHeader>
           <img src="/chatIcon/announce.png" alt="annouce" />
           <h2>시작 전 확인해주세요!</h2>
