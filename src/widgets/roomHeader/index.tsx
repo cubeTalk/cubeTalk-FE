@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colflex, rowflex } from "../../shared/style/commonStyle";
-import Divider from "../../shared/components/Divider";
-import CreateRoomButton from "../../features/createRoom";
+import CreateDebateButton from "../../features/createDebate";
+import Divider from "../../shared/components/divider";
 
 interface RoomHeaderProps {
   text: string;
@@ -15,7 +15,7 @@ const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
         <img src={imgSrc} alt="titleIcon" />
         <h2>{text}</h2>
       </Title>
-      <CreateRoomButton />
+      <CreateDebateButton />
       {/* <DorpdownContainer>
         <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
         <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1"/>

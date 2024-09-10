@@ -1,4 +1,4 @@
-import { useRoomStore } from "../../features/createRoom/model/store";
+import { useRoomStore } from "../../features/createDebate/model/store";
 import Dropdown from "../../shared/components/dropdown";
 import { useModalDropdownStore, useRoomSettingStore } from "./model/store";
 import FreeTimeSetting from "./ui/FreeTimeSetting";
