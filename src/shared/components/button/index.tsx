@@ -16,7 +16,7 @@ export const SubmitButton = ({
 }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <Submit onClick={onClickHandler} disabled={isPending} {...rest}>
-      {isPending ? <Spinner /> : <h3 className="text-white">{text}</h3>}
+      {isPending ? <Spinner /> : <h3>{text}</h3>}
     </Submit>
   );
 };
@@ -38,6 +38,10 @@ const Submit = styled.button`
   border-radius: 5px;
   font-weight: 700px;
   width: fit-content;
+  opacity: ${({ disabled })=> disabled ? 0.5 : 1};
+  h3 {
+    color: var(--white);
+  }
 `;
 
 const Close = styled.button`
@@ -54,4 +58,3 @@ const Spinner = styled.div`
   width: 25px;
   height: 25px;
 `;
-

@@ -21,7 +21,7 @@ const Announcement = () => {
           <h2>시작 전 확인해주세요!</h2>
         </AnnounceHeader>
         {regulations.map((sentence) => {
-          return <li>{sentence}</li>;
+          return <li key={sentence}>{sentence}</li>;
         })}
       </AnnocuementBubble>
     )

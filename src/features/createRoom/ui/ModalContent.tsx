@@ -94,6 +94,7 @@ const Submit = () => {
     <SubmitButton
       text="생성"
       isPending={isPending}
+      disabled={title.length === 0 || description.length === 0}
       onClickHandler={() => {
         mutate({
           title,

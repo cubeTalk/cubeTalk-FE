@@ -52,7 +52,7 @@ const VoteBubble = () => {
           );
         })}
       </UserContainer>
-      <SubmitButton text="투표하기" onclickHandler={() => {}} />
+      <SubmitButton text="투표하기" onClickHandler={() => {}} />
     </>
   );
 };

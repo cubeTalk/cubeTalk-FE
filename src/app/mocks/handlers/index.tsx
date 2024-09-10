@@ -6,8 +6,8 @@ export const handlers = [
   http.post(DebateRoomUrl(), () => {
     const data = {
       id: "1",
-      memberId: "uuid"
+      memberId: "uuid",
     };
-    return HttpResponse.json(data);
+    return HttpResponse.json(data, { status: 201 });
   }),
 ];
