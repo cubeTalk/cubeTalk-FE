@@ -20,7 +20,6 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownButtonRef.current && dropdownButtonRef.current.contains(event.target as Node)) {
-        setIsOpen(isOpen === label ? "" : label);
         return;
       }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -44,9 +43,13 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
     }
   }, [isOpen, label]);
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 없다면 중복 호출이됨
+    setIsOpen(isOpen === label ? "" : label);
+  };
   return (
     <DropdownContainer>
-      <DropdownButton ref={dropdownButtonRef}>
+      <DropdownButton ref={dropdownButtonRef} onClick={handleButtonClick}>
         <h4>{selected}</h4>
         <img alt="down" src="/Icon/down.svg" className={isOpen === label ? "open" : ""} />
       </DropdownButton>
