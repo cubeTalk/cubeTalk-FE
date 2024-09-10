@@ -17,9 +17,9 @@ const Toggle = ({ chatMode, setChatMode }: ToggleProps) => {
   };
 
   return (
-    <ToggleLabel $isChecked={chatMode === "찬반"}>
-      <ToggleCheckbox type="checkbox" checked={chatMode === "찬반"} onChange={handleToggle} />
-      <ToggleSwitch $isChecked={chatMode === "찬반"} />
+    <ToggleLabel $isChecked={chatMode === "자유"}>
+      <ToggleCheckbox type="checkbox" checked={chatMode === "자유"} onChange={handleToggle} />
+      <ToggleSwitch $isChecked={chatMode === "자유"} />
       <h4>찬반토론</h4>
     </ToggleLabel>
   );

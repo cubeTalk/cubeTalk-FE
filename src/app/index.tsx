@@ -9,6 +9,7 @@ import "./styles/index.css";
 import RoomPage from "../pages/room";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AlertDialog from "../entities/alertDialog";
+import { enableMocking } from "./mocks/browser";
 
 const router = createBrowserRouter([
   {
@@ -38,12 +39,15 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AlertDialog>
-        <RouterProvider router={router} />
-      </AlertDialog>
-    </QueryClientProvider>
-  </StrictMode>
-);
+enableMocking().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <AlertDialog>
+          <RouterProvider router={router} />
+        </AlertDialog>
+      </QueryClientProvider>
+    </StrictMode>
+  );
+})
+
