@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { scrollBar } from "../../style/commonStyle";
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, useState } from "react";
 
 interface TextInputProps {
   value: string | number;
@@ -18,6 +18,7 @@ export const InlineTextInput = ({
   warning,
   ...rest
 }: TextInputProps & InputHTMLAttributes<HTMLInputElement>) => {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <InputContainer>
       {label && <Label htmlFor={id}>{label}</Label>}
@@ -25,11 +26,12 @@ export const InlineTextInput = ({
         id={id}
         type="text"
         value={value}
+        onFocus={() => setIsFocused(true)}
         onChange={onChange}
-        $hasWarning={!!warning}
+        $hasWarning={isFocused && !!warning}
         {...rest}
       />
-      {warning && <WarningMessage>{warning}</WarningMessage>}
+      {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}
     </InputContainer>
   );
 };
@@ -47,6 +49,8 @@ const TextInput: React.ForwardRefRenderFunction<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextInputProps
 > = ({ id, label, value, onChange, warning, ...rest }, ref) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <InputContainer>
       {label && <Label htmlFor={id}>{label}</Label>}
@@ -54,11 +58,12 @@ const TextInput: React.ForwardRefRenderFunction<
         ref={ref}
         id={id}
         value={value}
+        onFocus={() => setIsFocused(true)}
         onChange={onChange}
-        $hasWarning={!!warning}
+        $hasWarning={isFocused && !!warning}
         {...rest}
       />
-      {warning && <WarningMessage>{warning}</WarningMessage>}
+      {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}
     </InputContainer>
   );
 };
