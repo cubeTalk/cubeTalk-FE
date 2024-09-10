@@ -1,1 +1,1 @@
-export { instance } from "./model/axiosInstance";
+export { instance as axios } from "./model/axiosInstance";

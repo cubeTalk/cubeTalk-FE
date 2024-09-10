@@ -6,6 +6,10 @@ import RoomSetting, { MaxParticipants } from "../../../entities/roomSetting";
 import { useRoomStore } from "../model/store";
 import { SubmitButton } from "../../../shared/components/button";
 import { colflex } from "../../../shared/style/commonStyle";
+import { useCreateRoomQuery } from "../api/query";
+import { useRoomSettingStore } from "../../../entities/roomSetting/model/store";
+import { useMemo } from "react";
+import { DebateMode } from "../../../shared/type";
 
 const Title = () => {
   const title = useRoomStore((state) => state.title);
@@ -51,6 +55,56 @@ const ChatMode = () => {
   );
 };
 
+const Submit = () => {
+  const { title, description, chatMode } = useRoomStore((state) => state);
+  const {
+    chatDuration,
+    maxParticipants,
+    negativeEntry,
+    negativeQuestioning,
+    negativeRebuttal,
+    positiveEntry,
+    positiveQuestioning,
+    positiveRebuttal,
+  } = useRoomSettingStore((state) => state);
+  const createRoom = useCreateRoomQuery();
+  const totalTime = useMemo(() => {
+    return chatMode === "찬반"
+      ? maxParticipants +
+          negativeEntry +
+          negativeQuestioning +
+          negativeRebuttal +
+          positiveEntry +
+          positiveQuestioning +
+          positiveRebuttal
+      : chatDuration;
+  }, [
+    chatMode,
+    maxParticipants,
+    negativeEntry,
+    negativeQuestioning,
+    negativeRebuttal,
+    positiveEntry,
+    positiveQuestioning,
+    positiveRebuttal,
+    chatDuration,
+  ]);
+  return (
+    <SubmitButton
+      text="생성"
+      onClickHandler={() => {
+        createRoom.mutate({
+          title,
+          description,
+          chatDuration: totalTime,
+          chatMode: chatMode as DebateMode,
+          maxParticipants: maxParticipants,
+        });
+      }}
+    />
+  );
+};
+
 const ModalContent = () => {
   return (
     <Layout>
@@ -63,7 +117,7 @@ const ModalContent = () => {
       </div>
       <RoomSetting />
       <div className="flex justify-center">
-        <SubmitButton text="생성" onClickHandler={() => {}} />
+        <Submit />
       </div>
     </Layout>
   );

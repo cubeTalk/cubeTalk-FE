@@ -1,4 +1,4 @@
-import { DebateRole, Message } from "../../type";
+import { DebateRole, Message, RoomTimeSetting, UserInfo } from "../../type";
 
 const httpUrl = import.meta.env.VITE_HTTP;
 
@@ -20,14 +20,7 @@ export type PostJoinDebateRequest = {
   role: DebateRole; // 토론 역할
   ownerId?: string; // 토론 방장 ID
 };
-export type PostJoinDebateResponse = {
-  id: string; // 토론방 ID
-  memberId: string; // 사용자 UUID
-  nickName: string; // 토론 참가자 닉네임
-  channelId: string; // 메인 채팅방 ID
-  subChannelId: string; // 서브 채팅방 ID
-  severTimeStamp: string; // 입장시각 (TimeStamp)
-};
+export type PostJoinDebateResponse = UserInfo;
 
 // PATCH 팀 변경
 export const ChangeTeamUrl = (roomId: string, userId: string) =>
@@ -45,14 +38,7 @@ export type PatchChangeTeamResponse = {
 
 // POST 토론방 설정
 export const DebateRoomSettingUrl = (roomId: string) => `${httpUrl}chat/${roomId}/setting`;
-export type PostDebateRoomSettingRequest = {
-  positiveEntry: 5; // 찬성 입론 시간
-  negativeQuestioning: 5; // 반대 질의 시간
-  negativeEntry: 5; // 반대 입론 시간
-  positiveQuestioning: 5; // 찬성 질의 시간
-  positiveRebuttal: 5; // 찬성 반박 시간
-  negativeRebuttal: 5; // 반대 반박 시간
-};
+export type PostDebateRoomSettingRequest = Partial<RoomTimeSetting>;
 export type PostDebateRoomSettingResponse = object;
 
 // 토론 시작

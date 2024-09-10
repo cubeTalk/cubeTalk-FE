@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { shadow } from "../../shared/style/commonStyle";
+import { DebateMode } from "../../shared/type";
 
 interface ToggleProps {
-  chatMode: string | number;
-  setChatMode: (chamMode: string) => void;
+  chatMode: string;
+  setChatMode: (chamMode: DebateMode) => void;
 }
 
 const Toggle = ({ chatMode, setChatMode }: ToggleProps) => {

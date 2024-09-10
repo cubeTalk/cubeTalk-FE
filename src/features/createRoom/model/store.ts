@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
+import { DebateMode } from "../../../shared/type";
 
 export const useCreateRoomModalStore = create(
   combine(
@@ -25,7 +26,7 @@ export const useRoomStore = create(
       setTitle: (newTitle: string) => set((state) => ({ ...state, title: newTitle })),
       setDescription: (newDescription: string) =>
         set((state) => ({ ...state, description: newDescription })),
-      setChatMode: (newChatMode: string) => set((state) => ({ ...state, chatMode: newChatMode })),
+      setChatMode: (newChatMode: DebateMode) => set((state) => ({ ...state, chatMode: newChatMode })),
     },
   }))
 );
