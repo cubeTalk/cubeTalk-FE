@@ -65,3 +65,17 @@ export const mediaQuery = {
 export const shadow = css`
   box-shadow: 1px 1px 5px var(--color-mid);
 `;
+
+export const spinner = css`
+  box-sizing: border-box;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--white);
+  border-radius: 100%;
+  animation: spin 1s ease-in-out infinite;
+  @keyframes spin {
+    100%
+    {
+      transform: rotate(360deg);
+    }
+  }
+`;

@@ -23,6 +23,7 @@ const Title = () => {
       onChange={onChangeTitle}
       placeholder="주제를 입력해 주세요"
       warning={title === "" ? "내용을 채워 주세요" : ""}
+      autoFocus
     />
   );
 };
@@ -67,7 +68,7 @@ const Submit = () => {
     positiveQuestioning,
     positiveRebuttal,
   } = useRoomSettingStore((state) => state);
-  const createRoom = useCreateRoomQuery();
+  const { mutate, isPending } = useCreateRoomQuery();
   const totalTime = useMemo(() => {
     return chatMode === "찬반"
       ? maxParticipants +
@@ -92,8 +93,9 @@ const Submit = () => {
   return (
     <SubmitButton
       text="생성"
+      isPending={isPending}
       onClickHandler={() => {
-        createRoom.mutate({
+        mutate({
           title,
           description,
           chatDuration: totalTime,

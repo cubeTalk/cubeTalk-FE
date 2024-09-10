@@ -1,19 +1,22 @@
 import { ButtonHTMLAttributes } from "react";
 import styled from "styled-components";
+import { spinner } from "../../style/commonStyle";
 
 interface ButtonProps {
   onClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+  isPending?: boolean;
   text?: string;
 }
 
 export const SubmitButton = ({
   onClickHandler,
+  isPending,
   text,
   ...rest
 }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <Submit onClick={onClickHandler} {...rest}>
-      <h3 className="text-white">{text}</h3>
+    <Submit onClick={onClickHandler} disabled={isPending} {...rest}>
+      {isPending ? <Spinner /> : <h3 className="text-white">{text}</h3>}
     </Submit>
   );
 };
@@ -45,3 +48,10 @@ const Close = styled.button`
     width: 20px;
   }
 `;
+
+const Spinner = styled.div`
+  ${spinner}
+  width: 25px;
+  height: 25px;
+`;
+
