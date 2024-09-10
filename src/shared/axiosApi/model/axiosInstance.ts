@@ -2,12 +2,13 @@ import axios, { AxiosError } from "axios";
 import { HandleError } from "../lib/errorhandler";
 
 export const instance = axios.create({
-  timeout: 1000,
+  timeout: 3000,
 });
 
 instance.interceptors.request.use(
   (config) => {
     // Todo: 로그인 인증
+    config.method = config.method?.toUpperCase(); 
     return config;
   },
   (error: AxiosError | Error) => {

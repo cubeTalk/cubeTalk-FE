@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { DebateMode } from "../../../shared/type";
 
-export const useCreateRoomModalStore = create(
+export const useCreateDebateModalStore = create(
   combine(
     {
       modalVisible: false,
@@ -14,14 +14,14 @@ export const useCreateRoomModalStore = create(
   )
 );
 
-const roomDefaultState = {
+const DebateDefaultState = {
   title: "",
   description: "",
   chatMode: "찬반",
 };
 
 export const useRoomStore = create(
-  combine(roomDefaultState, (set) => ({
+  combine(DebateDefaultState, (set) => ({
     actions: {
       setTitle: (newTitle: string) => set((state) => ({ ...state, title: newTitle })),
       setDescription: (newDescription: string) =>

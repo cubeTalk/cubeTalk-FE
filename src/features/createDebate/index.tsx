@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { useCreateRoomModalStore } from "./model/store";
+import { useCreateDebateModalStore } from "./model/store";
 import { rowflex } from "../../shared/style/commonStyle";
 import ModalContent from "./ui/ModalContent";
 import Modal from "../../shared/components/modal";
 
-const CreateRoomButton = () => {
-  const { modalVisible, openModal, closeModal } = useCreateRoomModalStore((state) => state);
+const CreateDebateButton = () => {
+  const { modalVisible, openModal, closeModal } = useCreateDebateModalStore((state) => state);
   return (
     <>
       <CreateRoom onClick={openModal}>
@@ -21,7 +21,7 @@ const CreateRoomButton = () => {
   );
 };
 
-export default CreateRoomButton;
+export default CreateDebateButton;
 
 const CreateRoom = styled.button`
   ${rowflex}
