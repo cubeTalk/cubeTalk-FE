@@ -1,0 +1,37 @@
+:root {
+  --color-con: #9ddcff;
+  --color-pro: #fff068;
+  --color-red: #ff9d9d;
+  --color-green: #338600;
+  --color-error: #fd3e3e;
+  --color-dark: #2a2a2a;
+  --color-mid: #676767;
+  --color-primary: #909090;
+  --color-light: #d9d9d9;
+  --black: #000;
+  --white: #fff;
+
+  --font-size-xl: 32px;
+  --font-size-l: 24px;
+  --font-size-m: 16px;
+  --font-size-s: 14px;
+  --font-size-xs: 12px;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: local("Pretendard-Regular");
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: "Pretendard";
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

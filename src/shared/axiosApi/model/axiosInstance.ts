@@ -1,0 +1,38 @@
+import axios, { AxiosError } from "axios";
+import { HandleError } from "../lib/errorhandler";
+
+export const instance = axios.create({
+  timeout: 1000,
+});
+
+instance.interceptors.request.use(
+  (config) => {
+    // Todo: 로그인 인증
+    return config;
+  },
+  (error: AxiosError | Error) => {
+    // error logging
+    if (import.meta.env.DEV) {
+      HandleError(error);
+    }
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error: AxiosError | Error) => {
+    if (error instanceof AxiosError && error.response?.status === 403) {
+      // Todo: refresh logic
+      return;
+    }
+
+    // error logging
+    if (import.meta.env.DEV) {
+      HandleError(error);
+    }
+    return Promise.reject(error);
+  }
+);
