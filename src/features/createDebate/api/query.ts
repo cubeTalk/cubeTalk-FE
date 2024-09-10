@@ -3,7 +3,7 @@ import { axios } from "../../../shared/axiosApi";
 import { DebateRoomUrl } from "../../../shared/axiosApi/lib/api.type";
 import { DebateRoomBase } from "../../../shared/type";
 import { useNavigate } from "react-router-dom";
-import { useRoomInfoStore } from "../../../entities/user";
+import { useRoomInfoStore } from "../../../entities/debateInfo";
 import { useContext } from "react";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { AxiosResponse } from "axios";
@@ -17,7 +17,7 @@ type PostDebateRoomResponse = {
 export const CreateRoomKey = "/createRoom"
 
 export const useCreateRoomQuery = () => {
-  const updateRoomInfo = useRoomInfoStore((state) => state.updateInfo);
+  const updateUserInfo = useRoomInfoStore((state) => state.updateUserInfo);
   const postCreateRoom = (data: PostDebateRoomRequest): Promise<AxiosResponse<PostDebateRoomResponse>> => 
     axios.post(DebateRoomUrl(), data);
   const { alert } = useContext(AlertContext);
@@ -26,7 +26,7 @@ export const useCreateRoomQuery = () => {
     mutationKey: [CreateRoomKey],
     mutationFn: (data: PostDebateRoomRequest) => postCreateRoom(data),
     onSuccess: (data: AxiosResponse<PostDebateRoomResponse>) => {
-      updateRoomInfo(data.data);
+      updateUserInfo(data.data);
       navigate(`/debate/${data.data.id}`);
     },
     onError: async () => {
