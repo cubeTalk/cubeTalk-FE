@@ -8,6 +8,7 @@ import { Root, DebateRoot } from "./router";
 import "./styles/index.css";
 import RoomPage from "../pages/room";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AlertDialog from "../entities/alertDialog";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,9 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AlertDialog>
+        <RouterProvider router={router} />
+      </AlertDialog>
     </QueryClientProvider>
   </StrictMode>
 );
