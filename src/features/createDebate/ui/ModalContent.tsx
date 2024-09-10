@@ -10,6 +10,7 @@ import { useCreateRoomQuery } from "../api/query";
 import { useRoomSettingStore } from "../../../entities/roomSetting/model/store";
 import { useMemo } from "react";
 import { DebateMode } from "../../../shared/type";
+import { validTitle } from "../lib";
 
 const Title = () => {
   const title = useRoomStore((state) => state.title);
@@ -22,7 +23,13 @@ const Title = () => {
       value={title}
       onChange={onChangeTitle}
       placeholder="주제를 입력해 주세요"
-      warning={title === "" ? "내용을 채워 주세요" : ""}
+      warning={
+        title.length < 3
+          ? "주제를 3글자 이상 적어주세요"
+          : title.length > 50
+            ? "주제를 50글자 이하로 적어주세요"
+            : ""
+      }
       autoFocus
     />
   );
@@ -94,7 +101,7 @@ const Submit = () => {
     <SubmitButton
       text="생성"
       isPending={isPending}
-      disabled={title.length === 0 || description.length === 0}
+      disabled={validTitle(title) || description.length === 0}
       onClickHandler={() => {
         mutate({
           title,
