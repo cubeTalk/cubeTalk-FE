@@ -9,6 +9,7 @@ export const createModalStore = () => create(
     (set) => ({
       openModal: () => set(() => ({ modalVisible: true })),
       closeModal: () => set(() => ({ modalVisible: false })),
+      clickModal: () => set((state) => ({ modalVisible: !state.modalVisible })),
     })
   )
 );

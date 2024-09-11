@@ -1,44 +1,49 @@
 import styled from "styled-components";
 import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/commonStyle";
+import { HTMLAttributes } from "react";
+import { MenuType, useMenuStore } from "../model/store";
 
-interface TabMenuProps {
+type TabMenuProps = {
   link: string;
-  alt: string;
-}
+  alt: MenuType;
+};
 
-const TabMenuButton = ({ link, alt }: TabMenuProps) => {
+const TabMenuButton = ({
+  link,
+  alt,
+  ...rest
+}: TabMenuProps & HTMLAttributes<HTMLButtonElement>) => {
+  const { menu, action} = useMenuStore((state) => state);
   return (
-    <TabMenuWrapper>
+    <TabMenuWrapper onClick={() => action.changeMenu(alt)} $isClicked={menu === alt} $isChat={alt === "Chat"} {...rest}>
       <img src={link} alt={alt} />
     </TabMenuWrapper>
   );
 };
+type MenuItem = {
+  link: string;
+  alt: MenuType;
+}
+
+const tabMenuItems: MenuItem[] = [
+  { link: "/chatIcon/home.png", alt: "Home" },
+  { link: "/chatIcon/chat.png", alt: "Chat" },
+  { link: "/chatIcon/teamchat.png", alt: "TeamChat" },
+  { link: "/chatIcon/memo.png", alt: "Memo" },
+];
 
 const MenuTab = () => {
   return (
     <TabContainer className="bg-darkgray">
-      <TabMenuWrapper>
-        <img src="/chatIcon/home.png" alt="Home" />
+      {tabMenuItems.map((item) => (
+        <TabMenuButton key={item.link} link={item.link} alt={item.alt} />
+      ))}
+      <TabMenuWrapper className="mt-auto">
+        <img src={"/chatIcon/chatout.png"} alt={"ChatOut"} />
       </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/chat.png" alt="Chat" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/teamchat.png" alt="TeamChat" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/memo.png" alt="Memo" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/setting.png" alt="Setting" />
-      </TabMenuWrapper>
-      <OutMenuWrapper>
-        <img src="/chatIcon/chatout.png" alt="ChatOut" />
-      </OutMenuWrapper>
     </TabContainer>
   );
 };
-
 export default MenuTab;
 
 const TabContainer = styled.div`
@@ -68,9 +73,9 @@ const TabContainer = styled.div`
   }
 `;
 
-const TabMenuWrapper = styled.button`
+const TabMenuWrapper = styled.button<{ $isClicked?: boolean; $isChat?:boolean }>`
   ${center}
-  background-color: var(--color-mid);
+  background-color: ${({ $isClicked }) => $isClicked ? "var(--white)" : "var(--color-mid)" };
   border-radius: 5px;
   padding: 2px;
   width: 60px;
@@ -80,19 +85,8 @@ const TabMenuWrapper = styled.button`
     width: 50px;
     height: 50px;
   }
-`;
 
-const OutMenuWrapper = styled.button`
-  ${center}
-  background-color: var(--color-mid);
-  border-radius: 5px;
-  padding: 2px;
-  width: 60px;
-  height: 60px;
-  margin-top: auto;
-
-  @media ${mediaQuery.mobile} {
-    width: 50px;
-    height: 50px;
+  @media (min-width: 1120px) {
+    background-color: ${({ $isChat }) => $isChat ? "var(--white)" : undefined};
   }
 `;

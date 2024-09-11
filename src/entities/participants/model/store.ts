@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
 import { Participant } from "../../../shared/type";
+import { createModalStore } from "../../../shared/components/modal/model/store";
 
 const initalParticipantsState = {
   list: [] as Participant[],
@@ -18,3 +19,5 @@ export const useParticipantsStore = create(
     { name: "Participants" }
   )
 );
+
+export const useParticipantsModalStore = createModalStore();

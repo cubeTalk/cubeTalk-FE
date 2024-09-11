@@ -1,0 +1,86 @@
+import styled from "styled-components";
+import { CloseButton } from "../../../shared/components/button";
+import { colflex, scrollBar } from "../../../shared/style/commonStyle";
+import { useParticipantsStore } from "../model/store";
+import { useInfoStore } from "../../debateInfo";
+import { ParticipantStatus } from "../../../shared/type";
+
+interface ModalImageProps {
+  closeModal: () => void;
+}
+
+export const ModalImage = ({ closeModal }: ModalImageProps) => {
+  const memberId = useInfoStore((state) => state.userInfo.memberId);
+  const participants = useParticipantsStore((state) => state.list);
+  return (
+    <Layout>
+      <CloseButton onClickHandler={closeModal} />
+      <h2 className="mb-2">참가자</h2>
+      <ParticipantsConatiner>
+        {participants.map((item) => {
+          if (memberId !== item.memberId) return;
+          return (
+            <div key={item.memberId} className="flex flex-row justify-between">
+              <div className="flex flex-row">
+                <UserNickName $role={item.role}>{item.nickName}</UserNickName>
+                <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">
+                  나
+                </h5>
+              </div>
+              <h5 className={statusStyle(item.status)}>{item.status}</h5>
+            </div>
+          );
+        })}
+        {participants.map((item) => {
+          if (memberId === item.memberId) return;
+          return (
+            <div key={item.memberId} className="flex flex-row justify-between flex-wrap">
+              <UserNickName $role={item.role}>{item.nickName}</UserNickName>
+              {item.role !== "관전" && <h5 className={statusStyle(item.status)}>{item.status}</h5>}
+            </div>
+          );
+        })}
+      </ParticipantsConatiner>
+    </Layout>
+  );
+};
+
+const statusStyle = (status: ParticipantStatus) =>
+  `px-1 self-center rounded-xl font-semibold flex-shrink-0 ${
+    status === "준비" ? "bg-green" : status === "대기" ? "bg-lightgray" : "bg-red"
+  } ${status === "준비" && "text-white"}`;
+
+const Layout = styled.div`
+  position: absolute;
+  background-color: var(--color-dark);
+  width: 277px;
+  padding: 10px;
+  border-radius: 8px;
+  top: 60px;
+  right: 25px;
+  z-index: 30px;
+  h2 {
+    color: var(--white);
+  }
+`;
+
+const UserNickName = styled.h4<{ $role: string }>`
+  font-weight: 600;
+  color: ${({ $role }) =>
+    $role === "찬성"
+      ? "var(--color-pro)"
+      : $role === "반대"
+        ? "var(--color-con)"
+        : "var(--color-light)"};
+`;
+
+const ParticipantsConatiner = styled.div`
+  ${colflex}
+  ${scrollBar}
+  gap: 0.75rem;
+  background-color: var(--color-mid);
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 190px;
+  overflow-y: auto;
+`;

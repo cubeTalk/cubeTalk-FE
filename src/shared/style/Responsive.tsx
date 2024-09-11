@@ -14,7 +14,14 @@ export const Mobile = ({ children }: Props) => {
 
 export const Pad = ({ children }: Props) => {
   const isPad = useMediaQuery({
-    query: "(min-width: 769px)",
+    query: "(min-width: 769px) and (max-width: 1120px)",
   });
   return <>{isPad && children}</>;
+};
+
+export const Desktop = ({ children }: Props) => {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1121px)",
+  });
+  return <>{isDesktop && children}</>;
 };

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-const serverResponse = (data) => ({
+const serverResponse = (data: unknown) => ({
   status: "200",
   message: "테스트용",
   data,
@@ -21,17 +21,17 @@ export const handlers = [
     const { id } = params;
     const data = {
       id,
-      memberId: "uuid",
-      nickName: "abc",
-      channelId: "123",
-      subChannelId: "123",
-      title: "string",
-      description: "string",
-      chatMode: "string",
+      memberId: "3c48972e-0702-4d48-aaa7-7a2e8c8863da",
+      nickName: "더미 닉네임",
+      channelId: "123456",
+      subChannelId: "123456789",
+      title: "더미 타이틀입니다.",
+      description: "더미 설명입니다.",
+      chatMode: "찬반",
       maxParticipants: 6,
       chatDuration: 22,
       ownerId: "UUID",
-      chatStatus: "string",
+      chatStatus: "CREATED",
       debateSettings: {
         positiveEntry: 5,
         negativeQuestioning: 5,
@@ -42,9 +42,10 @@ export const handlers = [
       },
       participants: [
         {
-          memberId: "UUID",
-          role: "string",
-          status: "string",
+          memberId: "3c48972e-0702-4d48-aaa7-7a2e8c8863da",
+          role: "찬성",
+          status: "방장",
+          nickName: "더미 닉네임",
         },
       ],
       severTimeStamp: "2024-09-06T12:34:56Z",
