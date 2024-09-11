@@ -3,6 +3,7 @@ import { HandleError } from "../lib/errorhandler";
 
 export const instance = axios.create({
   timeout: 3000,
+  baseURL: import.meta.env.VITE_HTTP,
 });
 
 instance.interceptors.request.use(

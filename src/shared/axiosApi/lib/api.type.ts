@@ -1,26 +1,13 @@
-import { DebateRole, Message, RoomTimeSetting, UserInfo } from "../../type";
+import { DebateRole, Message, RoomTimeSetting } from "../../type";
 
 const httpUrl = import.meta.env.VITE_HTTP;
 
-// GET 메세지 목록
-export const MessagesUrl = () => `${httpUrl}chat/messages`;
 export type GetMessagesHeaderParams = {
   id: string; // 토론방 UUID
   before: string; // 토론 참가자 입장시각(timestamp)
 };
 export type GetMessagesResponse = Message[];
 
-// 토론방 생성, 목록
-export const DebateRoomUrl = () => `${httpUrl}chat`;
-
-// POST 토론 참가
-export const JoinDebateUrl = (roomId: string) => `${httpUrl}chat/${roomId}/participants`;
-export type PostJoinDebateRequest = {
-  nickName: string | null; // 토론 참가자 닉네임
-  role: DebateRole; // 토론 역할
-  ownerId?: string; // 토론 방장 ID
-};
-export type PostJoinDebateResponse = UserInfo;
 
 // PATCH 팀 변경
 export const ChangeTeamUrl = (roomId: string, userId: string) =>
