@@ -1,44 +1,48 @@
 import styled from "styled-components";
 import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/commonStyle";
-
-interface TabMenuProps {
+import { HTMLAttributes } from "react";
+type TabMenuProps = {
   link: string;
   alt: string;
-}
+  onClick?: () => void;
+};
 
-const TabMenuButton = ({ link, alt }: TabMenuProps) => {
+const TabMenuButton = ({
+  link,
+  alt,
+  onClick,
+  ...rest
+}: TabMenuProps & HTMLAttributes<HTMLButtonElement>) => {
   return (
-    <TabMenuWrapper>
+    <TabMenuWrapper onClick={onClick} {...rest}>
       <img src={link} alt={alt} />
     </TabMenuWrapper>
   );
 };
 
 const MenuTab = () => {
+  const tabMenuItems = [
+    { link: "/chatIcon/home.png", alt: "Home" },
+    { link: "/chatIcon/chat.png", alt: "Chat" },
+    { link: "/chatIcon/teamchat.png", alt: "TeamChat" },
+    { link: "/chatIcon/memo.png", alt: "Memo" },
+    { link: "/chatIcon/setting.png", alt: "Setting" },
+  ];
+
   return (
     <TabContainer className="bg-darkgray">
-      <TabMenuWrapper>
-        <img src="/chatIcon/home.png" alt="Home" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/chat.png" alt="Chat" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/teamchat.png" alt="TeamChat" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/memo.png" alt="Memo" />
-      </TabMenuWrapper>
-      <TabMenuWrapper>
-        <img src="/chatIcon/setting.png" alt="Setting" />
-      </TabMenuWrapper>
-      <OutMenuWrapper>
-        <img src="/chatIcon/chatout.png" alt="ChatOut" />
-      </OutMenuWrapper>
+      {tabMenuItems.map((item) => (
+        <TabMenuButton
+          key={item.link}
+          link={item.link}
+          alt={item.alt}
+          onClick={() => console.log(`${item.alt} clicked!`)}
+        />
+      ))}
+      <TabMenuButton link={"/chatIcon/chatout.png"} alt={"ChatOut"} className="mt-auto" />
     </TabContainer>
   );
 };
-
 export default MenuTab;
 
 const TabContainer = styled.div`
@@ -75,21 +79,6 @@ const TabMenuWrapper = styled.button`
   padding: 2px;
   width: 60px;
   height: 60px;
-
-  @media ${mediaQuery.mobile} {
-    width: 50px;
-    height: 50px;
-  }
-`;
-
-const OutMenuWrapper = styled.button`
-  ${center}
-  background-color: var(--color-mid);
-  border-radius: 5px;
-  padding: 2px;
-  width: 60px;
-  height: 60px;
-  margin-top: auto;
 
   @media ${mediaQuery.mobile} {
     width: 50px;

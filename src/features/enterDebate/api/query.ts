@@ -47,7 +47,7 @@ export const useEnterDebateQuery = () => {
         memberId: response.memberId,
         nickName: response.nickName,
         severTimeStamp: response.severTimeStamp,
-        team: variables.role,
+        role: variables.role,
       });
       updateSubscribeInfo({
         channelId: response.channelId,

@@ -22,9 +22,10 @@ export interface DebateRoom extends DebateRoomBase {
 export interface Participant {
   nickName: string;
   memberId: string;
-  role: string;
-  status: string;
+  role: DebateRole;
+  status: ParticipantStatus;
 }
+export type ParticipantStatus = "방장" | "준비" | "대기";
 
 export type UserInfo = {
   id: string; // 토론방 ID

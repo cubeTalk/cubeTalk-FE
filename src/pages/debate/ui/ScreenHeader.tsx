@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import { center, colflex, commonButton } from "../../../shared/style/commonStyle";
+import { colflex, commonButton } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
+import { useInfoStore } from "../../../entities/debateInfo";
+import ParticipantButton from "../../../entities/participants";
 
-const ScreenHeader = () => {
+const Title = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const textRef = useRef<HTMLDivElement | null>(null);
-
-  // title overflow checking
+  const titleText = useInfoStore((state) => state.debateInfo.title);
+  // title overflow 체크 타이틀 길이가 2줄을 넘어가면 버튼으로 조절 가능하게 설정
   useEffect(() => {
     const checkOverflow = () => {
       if (textRef.current) {
@@ -20,27 +22,34 @@ const ScreenHeader = () => {
     window.addEventListener("resize", checkOverflow);
     return () => window.removeEventListener("resize", checkOverflow);
   }, []);
+
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
+  return (
+    <button onClick={toggleExpand} disabled={!showButton}>
+      <ChatTitle ref={textRef} $isexpanded={isExpanded}>
+        {titleText}
+      </ChatTitle>
+    </button>
+  );
+};
 
+const Start = () => {
+  return (
+    <StartButton>
+      <h3>시작하기</h3>
+    </StartButton>
+  );
+}
+
+const ScreenHeader = () => {
   return (
     <HeaderContainer>
-      <button onClick={toggleExpand} disabled={!showButton}>
-        <ChatTitle ref={textRef} $isexpanded={isExpanded}>
-          토론제목입니다.토론제목입니다토론제목입니다토론제목입니다.토론제토론제목입니론제목입니다토론제목입니다.토론제목입니다토론제목입니다.토론제목입니다
-        </ChatTitle>
-      </button>
+      <Title />
       <ButtonContainer>
-        <RoomParticipant>
-          <h3>3/6</h3>
-          <Profile>
-            <img alt="profile" src="/Icon/profile.png" />
-          </Profile>
-        </RoomParticipant>
-        <StartButton>
-          <h3>시작하기</h3>
-        </StartButton>
+        <ParticipantButton />
+        <Start />
       </ButtonContainer>
     </HeaderContainer>
   );
@@ -54,7 +63,6 @@ const HeaderContainer = styled.div`
 `;
 
 const ChatTitle = styled.h2<{ $isexpanded: boolean }>`
-  text-align: left;
   color: var(--white);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -76,19 +84,3 @@ const StartButton = styled.button`
   margin: 5px;
 `;
 
-const RoomParticipant = styled.button`
-  ${commonButton}
-  background-color: var(--color-light);
-  margin: 5px;
-`;
-
-const Profile = styled.div`
-  ${center}
-  width: 25px;
-  height: 25px;
-  border-radius: 15px;
-  background-color: #65558f;
-  img {
-    width: 15px;
-  }
-`;

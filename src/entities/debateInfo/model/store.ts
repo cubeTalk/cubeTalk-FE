@@ -7,7 +7,7 @@ interface UserInfo {
   nickName: string;
   severTimeStamp: string;
   isOwner: boolean;
-  team: string;
+  role: string;
 }
 
 interface SubscribeInfo {
@@ -35,7 +35,7 @@ const initalRoomInfoState: RoomInfoState = {
     nickName: "",
     severTimeStamp: "",
     isOwner: false,
-    team: "",
+    role: "",
   },
   subscribeInfo: {
     channelId: "",
