@@ -2,13 +2,48 @@ import styled from "styled-components";
 import MainChat from "../../../widgets/mainChat";
 import ScreenHeader from "./ScreenHeader";
 import { colflex } from "../../../shared/style/commonStyle";
+import { Desktop, Mobile, Pad } from "../../../shared/style/Responsive";
+import { MenuType, useMenuStore } from "../model/store";
+import TeamChat from "../../../widgets/teamChat";
+import Home from "../../../widgets/debateHome";
+import Memo from "../../../widgets/debateMemo";
+
+const Screen = ({ menu }: { menu: MenuType }) => {
+  switch (menu) {
+    case "Home":
+      return <Home />;
+    case "Memo":
+      return <Memo />;
+    case "TeamChat":
+      return <TeamChat />;
+    case "Chat":
+    default:
+      return <MainChat />;
+  }
+};
 
 const ScreenContainer = () => {
+  const menu = useMenuStore((state) => state.menu);
+
   return (
     <ScreenConatiner className="bg-darkgray">
       <ScreenHeader />
       <ScreenWarpper>
-        <MainChat />
+        <Desktop>
+          {menu !== "Chat" && (
+            <>
+              <Screen menu={menu} />
+              <div className="w-4" />
+            </>
+          )}
+          <MainChat />
+        </Desktop>
+        <Pad>
+          <Screen menu={menu} />
+        </Pad>
+        <Mobile>
+          <Screen menu={menu} />
+        </Mobile>
       </ScreenWarpper>
     </ScreenConatiner>
   );

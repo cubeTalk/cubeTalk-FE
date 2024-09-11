@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colflex, commonButton } from "../../../shared/style/commonStyle";
+import { colflex, commonButton, spinner } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
 import { useInfoStore } from "../../../entities/debateInfo";
 import ParticipantButton from "../../../entities/participants";
@@ -37,8 +37,8 @@ const Title = () => {
 
 const Start = () => {
   return (
-    <StartButton>
-      <h3>시작하기</h3>
+    <StartButton disabled={false} onClick={() => {}}>
+      {false ? <Spinner /> : <h3>시작하기</h3>}
     </StartButton>
   );
 }
@@ -84,3 +84,8 @@ const StartButton = styled.button`
   margin: 5px;
 `;
 
+const Spinner = styled.div`
+  ${spinner}
+  width: 24px;
+  height: 24px;
+`;
