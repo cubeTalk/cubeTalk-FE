@@ -1,8 +1,19 @@
 import { create } from "zustand";
-import { combine } from "zustand/middleware";
+import { combine, persist } from "zustand/middleware";
 import { createUseOpenDropdownStore } from "../../../shared/components/dropdown/model";
 
-const roomDefaultSettingState = {
+export type RoomSetting = {
+  maxParticipants: number;
+  chatDuration: number;
+  positiveEntry: number;
+  negativeQuestioning: number;
+  negativeEntry: number;
+  positiveQuestioning: number;
+  positiveRebuttal: number;
+  negativeRebuttal: number;
+};
+
+const initialRoomSettingState: RoomSetting = {
   maxParticipants: 6,
   chatDuration: 30,
   positiveEntry: 5,
@@ -14,8 +25,9 @@ const roomDefaultSettingState = {
 };
 
 export const useRoomSettingStore = create(
-  combine(roomDefaultSettingState, (set) => ({
-    actions: {
+  persist(
+    combine(initialRoomSettingState, (set) => ({
+      reset: () => set(() => (initialRoomSettingState)),
       setParticipants: (newParticipant: number) =>
         set((state) => ({ ...state, maxParticipants: newParticipant })),
       setChatDuration: (newDuration: number) =>
@@ -32,8 +44,10 @@ export const useRoomSettingStore = create(
         set((state) => ({ ...state, positiveRebuttal: newPositiveRebuttal })),
       setNegativeRebuttal: (newNegativeRebuttal: number) =>
         set((state) => ({ ...state, negativeRebuttal: newNegativeRebuttal })),
-    },
-  }))
+      resetSettings: (data: RoomSetting) => set(() => ({ ...data })),
+    })),
+    { name: "Setting" }
+  )
 );
 
 export const useModalDropdownStore = createUseOpenDropdownStore();

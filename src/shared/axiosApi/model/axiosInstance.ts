@@ -1,13 +1,21 @@
 import axios, { AxiosError } from "axios";
 import { HandleError } from "../lib/errorhandler";
 
+export type ServerResponse<T = undefined> = {
+  status: number;
+  message: string;
+  data?: T;
+};
+
 export const instance = axios.create({
-  timeout: 1000,
+  timeout: 3000,
+  baseURL: import.meta.env.VITE_HTTP,
 });
 
 instance.interceptors.request.use(
   (config) => {
     // Todo: 로그인 인증
+    config.method = config.method?.toUpperCase();
     return config;
   },
   (error: AxiosError | Error) => {
@@ -21,7 +29,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data;
   },
   (error: AxiosError | Error) => {
     if (error instanceof AxiosError && error.response?.status === 403) {

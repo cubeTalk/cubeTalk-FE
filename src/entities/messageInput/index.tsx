@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { mediaQuery, rowflex, scrollBar, shadow } from "../../shared/style/commonStyle";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChatStore } from "../message/model/store";
-import { MultilineTextInput } from "../../shared/components/textinput";
 
 interface MessageInputProps {
   scrollToBottom: (checkingBottom: boolean) => void;
@@ -46,7 +45,7 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
         replyToMessageId: "1",
         message: text,
         serverTimestamp: new Date().toString(),
-        id: "1",
+        messageId: "1",
         sender: "나",
         type: "CHAT",
       });

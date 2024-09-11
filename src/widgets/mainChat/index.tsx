@@ -1,23 +1,13 @@
 import styled from "styled-components";
 import MessageInput from "../../entities/messageInput";
-import { colflex, scrollBar } from "../../shared/style/commonStyle";
-import Bubble from "../../entities/message/ui/Bubble";
-import { ChangeTeamBubble, EnterBubble } from "../../entities/message/ui/RoomBubbles";
-import ModeratorBubble from "../../entities/message/ui/ModeratorBubble";
-import { useEffect, useRef } from "react";
+import { colflex, scrollBar } from "../../shared/style/commonStyle";;
+import { useRef } from "react";
 import { useChatStore } from "../../entities/message/model/store";
 import Announcement from "./ui/Announcement";
-import { Message } from "../../shared/type";
 
 const MainChat = () => {
   const chatList = useChatStore((state) => state.chat);
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (bubbleContainerRef.current) {
-      bubbleContainerRef.current.scrollTop = bubbleContainerRef.current?.scrollHeight;
-    }
-  }, [chatList]);
 
   // 스크롤이 바닥에 있었으면 계속 유지하도록함
   const scrollToBottom = (checkingBottom: boolean) => {
@@ -42,27 +32,6 @@ const MainChat = () => {
       <h2>전체 채팅</h2>
       <BubbleContainer ref={bubbleContainerRef}>
         <Announcement />
-        <EnterBubble userName="배배고고파파" isEnter={true} />
-        <ChangeTeamBubble userName="배배고고파파" team="찬성팀" />
-        <ModeratorBubble
-          order={0}
-          topic="이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!"
-        />
-        <ModeratorBubble
-          order={0}
-          topic="이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!"
-        />
-        <ModeratorBubble
-          order={0}
-          topic="이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!이대로 취업을 할 수 있을것인가...!"
-        />
-
-        <ModeratorBubble order={1} topic="이대로 취업을 할 수 있을것인가...!" />
-        <ModeratorBubble order={6} />
-        <ModeratorBubble order={7} />
-        {chatList.map((chat: Message, idx: number) => {
-          return <Bubble message={chat} key={idx} />;
-        })}
       </BubbleContainer>
       <MessageInput scrollToBottom={scrollToBottom} />
     </ScreenLayout>

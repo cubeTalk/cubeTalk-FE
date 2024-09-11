@@ -1,35 +1,35 @@
 import styled from "styled-components";
 import { scrollBar } from "../../style/commonStyle";
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, useState } from "react";
 
 interface TextInputProps {
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  id?: string;
   label?: string;
   warning?: string;
 }
 
 export const InlineTextInput = ({
-  id,
   label,
   value,
   onChange,
   warning,
   ...rest
 }: TextInputProps & InputHTMLAttributes<HTMLInputElement>) => {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <InputContainer>
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && <Label htmlFor={label}>{label}</Label>}
       <Inline
-        id={id}
+        id={label}
         type="text"
         value={value}
+        onFocus={() => setIsFocused(true)}
         onChange={onChange}
-        $hasWarning={!!warning}
+        $hasWarning={isFocused && !!warning}
         {...rest}
       />
-      {warning && <WarningMessage>{warning}</WarningMessage>}
+      {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}
     </InputContainer>
   );
 };
@@ -46,19 +46,22 @@ const Inline = styled.input<{ $hasWarning: boolean }>`
 const TextInput: React.ForwardRefRenderFunction<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextInputProps
-> = ({ id, label, value, onChange, warning, ...rest }, ref) => {
+> = ({ label, value, onChange, warning, ...rest }, ref) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <InputContainer>
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && <Label htmlFor={label}>{label}</Label>}
       <Multiline
         ref={ref}
-        id={id}
+        id={label}
         value={value}
+        onFocus={() => setIsFocused(true)}
         onChange={onChange}
-        $hasWarning={!!warning}
+        $hasWarning={isFocused && !!warning}
         {...rest}
       />
-      {warning && <WarningMessage>{warning}</WarningMessage>}
+      {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}
     </InputContainer>
   );
 };
