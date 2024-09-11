@@ -18,7 +18,6 @@ const Title = () => {
   const onChangeTitle = useInputChangeHandler(setTittle);
   return (
     <InlineTextInput
-      id="title"
       label="주제"
       value={title}
       onChange={onChangeTitle}
@@ -41,7 +40,6 @@ const Discription = () => {
   const onChangeDescription = useInputChangeHandler(setDescription);
   return (
     <MultilineTextInput
-      id="description"
       label="설명"
       value={description}
       onChange={onChangeDescription}
@@ -97,20 +95,21 @@ const Submit = () => {
     positiveRebuttal,
     chatDuration,
   ]);
+  const onClickHandler = () =>
+    mutate({
+      title,
+      description,
+      chatDuration: totalTime,
+      chatMode: chatMode as DebateMode,
+      maxParticipants: maxParticipants,
+    });
+
   return (
     <SubmitButton
       text="생성"
       isPending={isPending}
       disabled={validTitle(title) || description.length === 0}
-      onClickHandler={() => {
-        mutate({
-          title,
-          description,
-          chatDuration: totalTime,
-          chatMode: chatMode as DebateMode,
-          maxParticipants: maxParticipants,
-        });
-      }}
+      onClickHandler={onClickHandler}
     />
   );
 };

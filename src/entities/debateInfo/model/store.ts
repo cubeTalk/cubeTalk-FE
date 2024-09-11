@@ -1,24 +1,26 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
+import { DebateStatus } from "../../../shared/type";
 
 interface UserInfo {
   memberId: string;
   nickName: string;
   severTimeStamp: string;
+  isOwner: boolean;
+  team: string;
 }
 
 interface SubscribeInfo {
-  id: string;
   channelId: string;
   subChannelId: string;
 }
 
 interface DebateInfo {
+  id: string
   title: string;
   description: string;
   chatMode: string;
-  maxParticipants: string;
-  chatDuration: string;
+  chatStatus: DebateStatus;
 }
 
 interface RoomInfoState {
@@ -32,25 +34,26 @@ const initalRoomInfoState: RoomInfoState = {
     memberId: "",
     nickName: "",
     severTimeStamp: "",
+    isOwner: false,
+    team: "",
   },
   subscribeInfo: {
-    id: "",
     channelId: "",
     subChannelId: "",
   },
   debateInfo: {
+    id: "",
     title: "",
     description: "",
     chatMode: "",
-    maxParticipants: "",
-    chatDuration: "",
+    chatStatus: "CREATED",
   },
 };
 
-// 상태 관리 로직에서 타입을 명시
-export const useRoomInfoStore = create(
+export const useInfoStore = create(
   persist(
     combine(initalRoomInfoState, (set) => ({
+      reset: () => set(() => (initalRoomInfoState)),
       updateUserInfo: (data: Partial<UserInfo>) =>
         set((state) => ({
           userInfo: { ...state.userInfo, ...data },
@@ -66,6 +69,6 @@ export const useRoomInfoStore = create(
           debateInfo: { ...state.debateInfo, ...data },
         })),
     })),
-    { name: "RoomInfo" }
+    { name: "Info" }
   )
 );

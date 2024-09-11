@@ -1,1 +1,1 @@
-export { useRoomInfoStore } from "./model/store";
+export { useInfoStore } from "./model/store";

@@ -8,7 +8,7 @@ const maxParticipantNumbers = [2, 4, 6];
 
 export const MaxParticipants = () => {
   const maxParticipants = useRoomSettingStore((state) => state.maxParticipants);
-  const setParticipants = useRoomSettingStore((state) => state.actions.setParticipants);
+  const setParticipants = useRoomSettingStore((state) => state.setParticipants);
   return (
     <div className="flex-1 pl-1">
       <Label>사용자수</Label>

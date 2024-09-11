@@ -5,7 +5,7 @@ import { ModalPortal } from "./model/ModalPortal";
 
 export type ModalProps = {
   children?: ReactNode;
-  closeModal: () => void;
+  closeModal?: () => void;
 };
 
 const Modal = ({ children, closeModal }: ModalProps) => {

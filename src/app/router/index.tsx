@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Header from "./ui/Header";
 import styled from "styled-components";
 import { rowCenter } from "../../shared/style/commonStyle";
-import Footer from "./ui/Footer";
 import { GlobalStyle } from "./ui/globalstyle";
+import Header from "./ui/header";
+import Footer from "./ui/footer";
+import EnterDebateModal from "../../features/enterDebate";
 
 export const Root = () => {
   return (
@@ -15,6 +16,7 @@ export const Root = () => {
           <Outlet />
         </BodyContainer>
       </BodyLayout>
+      <EnterDebateModal />
       <Footer />
     </>
   );

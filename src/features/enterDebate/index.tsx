@@ -1,18 +1,20 @@
+import { useInfoStore } from "../../entities/debateInfo";
+import Modal from "../../shared/components/modal";
+import { useEnterModalStore } from "./model/store";
+import { ModalContent } from "./ui/ModalContent";
+
 const EnterDebateModal = () => {
-  const { modalVisible, openModal, closeModal } = useCreateDebateModalStore((state) => state);
+  const isOwner = useInfoStore((state) => state.userInfo.isOwner);
+  const { modalVisible, closeModal } = useEnterModalStore((state) => state);
   return (
     <>
-      <CreateRoom onClick={openModal}>
-        <img src="/Icon/create.png" alt="CreateRoom" />
-        <h3>토론방생성</h3>
-      </CreateRoom>
       {modalVisible && (
-        <Modal closeModal={closeModal}>
+        <Modal closeModal={isOwner ? undefined : closeModal}>
           <ModalContent />
         </Modal>
       )}
     </>
   );
-}
+};
 
 export default EnterDebateModal;

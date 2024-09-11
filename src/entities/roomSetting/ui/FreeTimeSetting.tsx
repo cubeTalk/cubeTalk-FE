@@ -6,7 +6,7 @@ const TotalTimeList = Array.from({ length: 23 }, (_, i) => i + 10);
 
 const FreeTimeSetting = () => {
   const chatDuration = useRoomSettingStore((state) => state.chatDuration);
-  const setChatDuration = useRoomSettingStore((state) => state.actions.setChatDuration);
+  const setChatDuration = useRoomSettingStore((state) => state.setChatDuration);
   return (
     <div className="flex items-center justify-center space-x-4 my-1">
       <Label>전체 시간</Label>

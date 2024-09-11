@@ -9,37 +9,37 @@ const ProsConsTimeSetting = () => {
     {
       label: "찬성 발언",
       state: useRoomSettingStore((state) => state.positiveEntry),
-      setState: useRoomSettingStore((state) => state.actions.setPositiveEntry),
+      setState: useRoomSettingStore((state) => state.setPositiveEntry),
       key: "positiveEntry",
     },
     {
       label: "반대 발언",
       state: useRoomSettingStore((state) => state.negativeEntry),
-      setState: useRoomSettingStore((state) => state.actions.setNegativeEntry),
+      setState: useRoomSettingStore((state) => state.setNegativeEntry),
       key: "negativeEntry",
     },
     {
       label: "찬성 질문",
       state: useRoomSettingStore((state) => state.positiveQuestioning),
-      setState: useRoomSettingStore((state) => state.actions.setPositiveQuestioning),
+      setState: useRoomSettingStore((state) => state.setPositiveQuestioning),
       key: "positiveQuestioning",
     },
     {
       label: "반대 질문",
       state: useRoomSettingStore((state) => state.negativeQuestioning),
-      setState: useRoomSettingStore((state) => state.actions.setNegativeQuestioning),
+      setState: useRoomSettingStore((state) => state.setNegativeQuestioning),
       key: "negativeQuestioning",
     },
     {
       label: "찬성 반론",
       state: useRoomSettingStore((state) => state.positiveRebuttal),
-      setState: useRoomSettingStore((state) => state.actions.setPositiveRebuttal),
+      setState: useRoomSettingStore((state) => state.setPositiveRebuttal),
       key: "positiveRebuttal",
     },
     {
       label: "반대 반론",
       state: useRoomSettingStore((state) => state.negativeRebuttal),
-      setState: useRoomSettingStore((state) => state.actions.setNegativeRebuttal),
+      setState: useRoomSettingStore((state) => state.setNegativeRebuttal),
       key: "negativeRebuttal",
     },
   ];

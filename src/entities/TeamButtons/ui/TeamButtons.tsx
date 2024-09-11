@@ -62,7 +62,7 @@ export const TeamButtons = () => {
       >
         <h3>관전</h3>
         <h3>{`( 0 / 4 )`}</h3>
-        {team === originTeam && <h3 className={chosenStyle}>선택중</h3>}
+        {originTeam === "관전" && <h3 className={chosenStyle}>선택중</h3>}
       </button>
     </>
   );
