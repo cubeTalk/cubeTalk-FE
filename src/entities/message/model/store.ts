@@ -1,15 +1,11 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { Message } from "../../../shared/type";
 
-const initChatStore = {
-  chat: [] as Message[],
-};
-
-export const useChatStore = create(
-  combine(initChatStore, (set) => ({
-    action: {
-      chatAdd: (newMessage: Message) => set((state) => ({ chat: [...state.chat, newMessage] })),
+export const useVoteDebateStore = create(
+  combine({ MVP: "", team: "" }, (set) => ({
+    actions: {
+      setMVP: (newMVP: string) => set((state) => ({ MVP: state.MVP === newMVP ? "" : newMVP })),
+      setTeam: (newTeam: string) => set((state) => ({ team: state.team === newTeam ? "" : newTeam })),
     },
   }))
 );

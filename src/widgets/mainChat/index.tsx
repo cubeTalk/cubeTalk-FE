@@ -1,58 +1,29 @@
-import styled from "styled-components";
 import MessageInput from "../../entities/messageInput";
-import { colflex, scrollBar } from "../../shared/style/commonStyle";;
 import { useRef } from "react";
-import { useChatStore } from "../../entities/message/model/store";
-import Announcement from "./ui/Announcement";
+import { MainBubbles } from "./ui/MainBubbles";
+import styled from "styled-components";
+import { colflex, scrollBar } from "../../shared/style/commonStyle";
+import { useMainInputStore } from "./model/store";
 
 const MainChat = () => {
-  const chatList = useChatStore((state) => state.chat);
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
-
-  // 스크롤이 바닥에 있었으면 계속 유지하도록함
-  const scrollToBottom = (checkingBottom: boolean) => {
-    if (!bubbleContainerRef.current) {
-      return;
-    }
-    const bubbleContainer = bubbleContainerRef.current;
-
-    if (!checkingBottom) {
-      bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
-      return;
-    }
-    const isBottom =
-      bubbleContainer.scrollTop + bubbleContainer.clientHeight - bubbleContainer.scrollHeight;
-    // -24는 textarea의 한줄 높이
-    if (-24 <= isBottom && isBottom <= 0) {
-      bubbleContainer.scrollTop = bubbleContainer.scrollHeight - bubbleContainer.clientHeight;
-    }
-  };
   return (
-    <ScreenLayout>
+    <>
       <h2>전체 채팅</h2>
       <BubbleContainer ref={bubbleContainerRef}>
-        <Announcement />
+        <MainBubbles />
       </BubbleContainer>
-      <MessageInput scrollToBottom={scrollToBottom} />
-    </ScreenLayout>
+      <MessageInput containerRef={bubbleContainerRef} messageInputStore={useMainInputStore}/>
+    </>
   );
 };
 
 export default MainChat;
 
-const ScreenLayout = styled.div`
-  ${colflex}
-  padding: 5px;
-  border-radius: 8px;
-  background-color: var(--color-light);
-  height: 100%;
-  width: 100%;
-`;
-
 const BubbleContainer = styled.div`
   ${colflex}
   ${scrollBar}
   gap: 10px;
-  padding: 5px 10px 20px 0px;
   overflow-y: auto;
 `;
+

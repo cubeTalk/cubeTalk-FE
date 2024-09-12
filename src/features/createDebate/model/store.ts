@@ -14,9 +14,9 @@ const DebateDefaultState = {
 export const useRoomStore = create(
   combine(DebateDefaultState, (set) => ({
     actions: {
-      setTitle: (newTitle: string) => set(() => ({ title: newTitle })),
-      setDescription: (newDescription: string) => set(() => ({ description: newDescription })),
-      setChatMode: (newChatMode: DebateMode) => set(() => ({ chatMode: newChatMode })),
+      setTitle: (newTitle: string) => set({ title: newTitle }),
+      setDescription: (newDescription: string) => set({ description: newDescription }),
+      setChatMode: (newChatMode: DebateMode) => set({ chatMode: newChatMode }),
     },
   }))
 );

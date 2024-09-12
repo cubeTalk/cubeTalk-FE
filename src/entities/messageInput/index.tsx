@@ -1,16 +1,39 @@
 import styled from "styled-components";
 import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { useChatStore } from "../message/model/store";
+import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
+import { StoreApi, UseBoundStore } from "zustand";
+import { InputStoreType } from "./model/store";
 
 interface MessageInputProps {
-  scrollToBottom: (checkingBottom: boolean) => void;
+  containerRef: React.RefObject<HTMLDivElement>;
+  messageInputStore: UseBoundStore<StoreApi<InputStoreType>>;
 }
 
-const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
-  const [text, setText] = useState("");
+const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const chatAdd = useChatStore((state) => state.action.chatAdd);
+  const { value, action } = messageInputStore((state) => state);
+
+  // 스크롤이 바닥에 있었으면 계속 유지하도록함
+  const scrollToBottom = useCallback(
+    (checkingBottom: boolean) => {
+      if (!containerRef.current) {
+        return;
+      }
+      const bubbleContainer = containerRef.current;
+
+      if (!checkingBottom) {
+        bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
+        return;
+      }
+      const isBottom =
+        bubbleContainer.scrollTop + bubbleContainer.clientHeight - bubbleContainer.scrollHeight;
+      // -24는 textarea의 한줄 높이
+      if (-24 <= isBottom && isBottom <= 0) {
+        bubbleContainer.scrollTop = bubbleContainer.scrollHeight - bubbleContainer.clientHeight;
+      }
+    },
+    [containerRef]
+  );
 
   useEffect(() => {
     const handleResizeHeight = () => {
@@ -23,13 +46,13 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
 
     handleResizeHeight();
     scrollToBottom(true);
-  }, [text, scrollToBottom]);
+  }, [scrollToBottom]);
 
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.ctrlKey) {
-      return setText((prev) => prev + "\n");
+      return action.addNewLine();
     }
 
     if (e.key === "Enter" && !(e.shiftKey || e.ctrlKey)) {
@@ -40,16 +63,8 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
 
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
-    if (text.trim().length !== 0) {
-      chatAdd({
-        replyToMessageId: "1",
-        message: text,
-        serverTimestamp: new Date().toString(),
-        messageId: "1",
-        sender: "나",
-        type: "CHAT",
-      });
-      setText("");
+    if (value.trim().length !== 0) {
+      action.resetValue();
       scrollToBottom(false);
     }
   };
@@ -59,13 +74,11 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
       <TextInput
         ref={textareaRef}
         rows={1}
-        value={text}
-        onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-          setText(e.target.value)
-        }
+        value={value}
+        onChange={action.onChangeValue}
         onKeyDown={handleKeyDown}
       />
-      <SendButton onClick={handleSendMessage} disabled={!text.trim()}>
+      <SendButton onClick={handleSendMessage} disabled={!value.trim()}>
         <img src="/chatIcon/Send.png" alt="Send" />
       </SendButton>
     </InputContainer>

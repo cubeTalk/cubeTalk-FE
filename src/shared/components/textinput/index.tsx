@@ -71,6 +71,7 @@ export const MultilineTextInput = forwardRef(TextInput);
 const Multiline = styled.textarea<{ $hasWarning: boolean }>`
   ${scrollBar}
   width: 100%;
+  height: 100%;
   padding: 10px;
   resize: none;
   white-space: pre-wrap;

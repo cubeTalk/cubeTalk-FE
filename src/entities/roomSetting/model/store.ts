@@ -27,7 +27,7 @@ const initialRoomSettingState: RoomSetting = {
 export const useRoomSettingStore = create(
   persist(
     combine(initialRoomSettingState, (set) => ({
-      reset: () => set(() => (initialRoomSettingState)),
+      reset: () => set(initialRoomSettingState),
       setParticipants: (newParticipant: number) =>
         set((state) => ({ ...state, maxParticipants: newParticipant })),
       setChatDuration: (newDuration: number) =>
