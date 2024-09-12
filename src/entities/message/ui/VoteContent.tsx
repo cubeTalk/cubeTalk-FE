@@ -1,29 +1,25 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { SubmitButton } from "../../../shared/components/button";
 import { center, colflex } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../participants/model/store";
 import { Participant } from "../../../shared/type";
-
-type Team = "찬성" | "반대";
+import { useVoteDebateStore } from "../model/store";
 
 const TeamButtons = () => {
-  const [selectedButton, setSelectedButton] = useState<Team | null>(null);
-  const handleButtonClick = (votingTeam: Team) => {
-    setSelectedButton(votingTeam === selectedButton ? null : votingTeam);
-  };
+  const team = useVoteDebateStore(state => state.team);
+  const setTeam = useVoteDebateStore(state => state.actions.setTeam);
   return (
     <ButtonContainer>
       <CircleButton
-        $isselected={selectedButton === "찬성"}
-        onClick={() => handleButtonClick("찬성")}
+        $isselected={team === "찬성"}
+        onClick={() => setTeam("찬성")}
         className="bg-yellow"
       >
         <h2>찬성</h2>
       </CircleButton>
       <CircleButton
-        $isselected={selectedButton === "반대"}
-        onClick={() => handleButtonClick("반대")}
+        $isselected={team === "반대"}
+        onClick={() => setTeam("반대")}
         className="bg-sky"
       >
         <h2>반대</h2>
@@ -34,10 +30,8 @@ const TeamButtons = () => {
 
 const User = ({ user }: { user: Participant }) => {
   const name = user.nickName;
-  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(null);
-  const handleCheckboxChange = (checkboxUser: string) => {
-    setSelectedCheckbox(checkboxUser === selectedCheckbox ? null : checkboxUser);
-  };
+  const MVP = useVoteDebateStore(state => state.MVP);
+  const setMVP = useVoteDebateStore(state => state.actions.setMVP);
   return (
     <div className="flex justify-between items-center" key={name}>
       <h3 className={user.role === "찬성" ? "text-yellow" : "text-sky"}>{name}</h3>
@@ -45,10 +39,10 @@ const User = ({ user }: { user: Participant }) => {
         <input
           className="hidden"
           type="checkbox"
-          checked={selectedCheckbox === name}
-          onChange={() => handleCheckboxChange(name)}
+          checked={MVP === name}
+          onChange={() => setMVP(name)}
         />
-        <CustomCheckbox $isselected={selectedCheckbox === name} />
+        <CustomCheckbox $isselected={MVP === name} />
       </label>
     </div>
   );
