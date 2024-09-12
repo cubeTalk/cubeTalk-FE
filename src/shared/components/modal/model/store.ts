@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 
-export const createModalStore = () => create(
+export const createModalStore = (initvalue: boolean) => create(
   combine(
     {
-      modalVisible: false,
+      modalVisible: initvalue,
     },
     (set) => ({
       openModal: () => set(() => ({ modalVisible: true })),

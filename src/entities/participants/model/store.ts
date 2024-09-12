@@ -20,4 +20,4 @@ export const useParticipantsStore = create(
   )
 );
 
-export const useParticipantsModalStore = createModalStore();
+export const useParticipantsModalStore = createModalStore(false);
