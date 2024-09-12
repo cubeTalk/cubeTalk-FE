@@ -65,9 +65,10 @@ const ScreenConatiner = styled.div`
 `;
 
 const ScreenWarpper = styled.div`
-  flex-grow: 1;
   display: flex;
   overflow: auto;
+  height: 100%;
+  flex: 1;
 `;
 
 const ScreenLayout = styled.div`

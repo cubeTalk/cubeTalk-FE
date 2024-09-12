@@ -44,6 +44,5 @@ const BubbleContainer = styled.div`
   ${colflex}
   ${scrollBar}
   gap: 10px;
-  padding: 5px 10px 20px 0px;
   overflow-y: auto;
 `;
