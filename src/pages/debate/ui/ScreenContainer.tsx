@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MainChat from "../../../widgets/mainChat";
 import ScreenHeader from "./ScreenHeader";
 import { colflex } from "../../../shared/style/commonStyle";
-import { Desktop, Mobile, Pad } from "../../../shared/style/Responsive";
+import { Desktop, NonDesktop } from "../../../shared/style/Responsive";
 import { MenuType, useMenuStore } from "../model/store";
 import TeamChat from "../../../widgets/teamChat";
 import Home from "../../../widgets/debateHome";
@@ -32,18 +32,21 @@ const ScreenContainer = () => {
         <Desktop>
           {menu !== "Chat" && (
             <>
-              <Screen menu={menu} />
+              <ScreenLayout>
+                <Screen menu={menu} />
+              </ScreenLayout>
               <div className="w-4" />
             </>
           )}
-          <MainChat />
+          <ScreenLayout>
+            <MainChat />
+          </ScreenLayout>
         </Desktop>
-        <Pad>
-          <Screen menu={menu} />
-        </Pad>
-        <Mobile>
-          <Screen menu={menu} />
-        </Mobile>
+        <NonDesktop>
+          <ScreenLayout>
+            <Screen menu={menu} />
+          </ScreenLayout>
+        </NonDesktop>
       </ScreenWarpper>
     </ScreenConatiner>
   );
@@ -65,4 +68,13 @@ const ScreenWarpper = styled.div`
   flex-grow: 1;
   display: flex;
   overflow: auto;
+`;
+
+const ScreenLayout = styled.div`
+  ${colflex}
+  padding: 5px;
+  border-radius: 8px;
+  background-color: var(--color-light);
+  height: 100%;
+  width: 100%;
 `;

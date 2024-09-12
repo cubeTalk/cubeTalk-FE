@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { center, rowCenter, rowflex } from "../../../shared/style/commonStyle";
-import { Pad } from "../../../shared/style/Responsive";
+import { NonMobile } from "../../../shared/style/Responsive";
 import { Link } from "react-router-dom";
 
 const Logo = () => {
@@ -17,9 +17,9 @@ const Logo = () => {
 const Login = () => {
   return (
     <LoginContainer>
-      <Pad>
+      <NonMobile>
         <LoginTitle>로그인</LoginTitle>
-      </Pad>
+      </NonMobile>
       <ProfileContainer>
         <img alt="login" src="/Icon/profile.png" />
       </ProfileContainer>

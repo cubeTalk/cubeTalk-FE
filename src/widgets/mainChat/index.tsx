@@ -28,26 +28,17 @@ const MainChat = () => {
     }
   };
   return (
-    <ScreenLayout>
+    <>
       <h2>전체 채팅</h2>
       <BubbleContainer ref={bubbleContainerRef}>
         <Announcement />
       </BubbleContainer>
       <MessageInput scrollToBottom={scrollToBottom} />
-    </ScreenLayout>
+    </>
   );
 };
 
 export default MainChat;
-
-const ScreenLayout = styled.div`
-  ${colflex}
-  padding: 5px;
-  border-radius: 8px;
-  background-color: var(--color-light);
-  height: 100%;
-  width: 100%;
-`;
 
 const BubbleContainer = styled.div`
   ${colflex}

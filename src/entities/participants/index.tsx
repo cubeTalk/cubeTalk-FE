@@ -11,7 +11,7 @@ const ParticipantButton = () => {
   return (
     <>
       <ShowParticipants onClick={clickModal}>
-        <h3>{`${participants.filter((item) => item.role !== "관전").length}/${maxParitipants}`}</h3>
+        <h3>{`${participants.length === 0 && participants.filter((item) => item.role !== "관전").length}/${maxParitipants}`}</h3>
         <Profile>
           <img alt="profile" src="/Icon/profile.png" />
         </Profile>

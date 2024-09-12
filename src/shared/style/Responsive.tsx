@@ -19,6 +19,21 @@ export const Pad = ({ children }: Props) => {
   return <>{isPad && children}</>;
 };
 
+export const NonDesktop = ({ children }: Props) => {
+  const isNonDesktop = useMediaQuery({
+    query: "(max-width: 1120px)",
+  });
+  return <>{isNonDesktop && children}</>;
+};
+
+export const NonMobile = ({ children }: Props) => {
+  const isNonMobile = useMediaQuery({
+    query: "(max-width: 1120px)",
+  });
+  return <>{isNonMobile && children}</>;
+};
+
+
 export const Desktop = ({ children }: Props) => {
   const isDesktop = useMediaQuery({
     query: "(min-width: 1121px)",
