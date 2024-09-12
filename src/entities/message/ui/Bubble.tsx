@@ -3,16 +3,16 @@ import { ChatMessage } from "../../../shared/type";
 
 interface BubbleProps {
   message: ChatMessage;
-  isleft?: boolean;
+  isLeft?: boolean;
 }
 
-const Bubble = ({ message, isleft = true }: BubbleProps) => {
+const Bubble = ({ message, isLeft = true }: BubbleProps) => {
   return (
     <div>
-      <UserName isleft={isleft}>{message.sender}</UserName>
-      <BubbleWrapper isleft={isleft}>
-        <NormalBubble isleft={isleft}>{message.message}</NormalBubble>
-        <BubbleTime isleft={isleft}>
+      <UserName $isLeft={isLeft}>{message.sender}</UserName>
+      <BubbleWrapper $isLeft={isLeft}>
+        <NormalBubble $isLeft={isLeft}>{message.message}</NormalBubble>
+        <BubbleTime $isLeft={isLeft}>
           {new Date(message.serverTimestamp).toLocaleTimeString([], {
             hour: "numeric",
             minute: "2-digit",
@@ -25,18 +25,18 @@ const Bubble = ({ message, isleft = true }: BubbleProps) => {
 
 export default Bubble;
 
-const UserName = styled.h3<{ isleft: boolean }>`
+const UserName = styled.h3<{ $isLeft: boolean }>`
   margin: 0px 0px 5px 5px;
-  text-align: ${({ isleft }) => (isleft ? "left" : "right")};
+  text-align: ${({ $isLeft }) => ($isLeft ? "left" : "right")};
 `;
 
-const BubbleWrapper = styled.div<{ isleft: boolean }>`
+const BubbleWrapper = styled.div<{ $isLeft: boolean }>`
   display: flex;
   flex-direction: row;
-  justify-content: ${({ isleft }) => (isleft ? "flex-start" : "flex-end")};
+  justify-content: ${({ $isLeft }) => ($isLeft ? "flex-start" : "flex-end")};
 `;
 
-const NormalBubble = styled.h4<{ isleft: boolean }>`
+const NormalBubble = styled.h4<{ $isLeft: boolean }>`
   width: fit-content;
   background-color: var(--color-pro);
   line-height: 1.4;
@@ -45,10 +45,10 @@ const NormalBubble = styled.h4<{ isleft: boolean }>`
   max-width: 80%;
   white-space: pre-wrap;
   word-wrap: break-word;
-  order: ${({ isleft }) => (isleft ? 0 : 1)};
+  order: ${({ $isLeft }) => ($isLeft ? 0 : 1)};
 `;
 
-const BubbleTime = styled.h5<{ isleft: boolean }>`
+const BubbleTime = styled.h5<{ $isLeft: boolean }>`
   margin: auto 5px 0px 5px;
-  text-align: ${({ isleft }) => (isleft ? "left" : "right")};
+  text-align: ${({ $isLeft }) => ($isLeft ? "left" : "right")};
 `;

@@ -1,25 +1,24 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
-import { ChatMessage, Message, Participant } from "../../../shared/type";
+import { ChatMessage, Message } from "../../../shared/type";
 
 export type MessageWithIsLeft = ChatMessage & {
   isLeft?: boolean;
 };
 
-const initMainMessageState = {
+const initSubMessageState = {
   messages: [] as Message[],
 };
 
 const isChatMessage = (message: Message): message is ChatMessage => message.type === "CHAT";
 
-export const useMainMessageStore = create(
+export const useSubMessageStore = create(
   persist(
-    combine(initMainMessageState, (set) => ({
-      MessageAdd: (newMessage: Message, participants: Participant[]) => {
+    combine(initSubMessageState, (set) => ({
+      MessageAdd: (newMessage: Message, myNickName: string) => {
         let isLeft = true;
         if (isChatMessage(newMessage)) {
-          const userTeam = participants.find((user) => user.nickName === newMessage.sender)?.role;
-          isLeft = userTeam === "찬성";
+          isLeft = newMessage.sender !== myNickName;
         }
         set((state) => ({
           messages: [...state.messages, { ...newMessage, isLeft }],

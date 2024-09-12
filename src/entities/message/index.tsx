@@ -5,16 +5,16 @@ import {
   TimerMessage,
   VoteMessage,
 } from "../../shared/type";
+import { MessageWithIsLeft } from "../../widgets/mainChat/model/store";
 import { useInfoStore } from "../debateInfo";
 import Bubble from "./ui/Bubble";
 import { ModeratorBubble, DebateOutComeBubble, DebateStartBubble, VoteBubble } from "./ui/ModeratorBubble";
 
 interface MessageRenderProps {
   message: Message;
-  isleft?: boolean;
 }
 
-const MessageRender = ({ message, isleft }: MessageRenderProps) => {
+const MessageRender = ({ message }: MessageRenderProps) => {
   const title = useInfoStore((state) => state.debateInfo.title);
   switch (message.type) {
     case "긍정입장":
@@ -45,7 +45,7 @@ const MessageRender = ({ message, isleft }: MessageRenderProps) => {
     case "CHAT":
     default:
       if (isChatMessage(message)) {
-        return <Bubble message={message} isleft={isleft} />;
+        return <Bubble message={message} isLeft={message.isLeft} />;
       }
       break;
   }
@@ -57,7 +57,7 @@ const MessageRender = ({ message, isleft }: MessageRenderProps) => {
 export default MessageRender;
 
 // type gurads
-const isChatMessage = (message: Message): message is ChatMessage => message.type === "CHAT";
+const isChatMessage = (message: Message): message is MessageWithIsLeft => message.type === "CHAT";
 const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
 const isTimerMessage = (message: Message): message is TimerMessage =>
   message.type === "긍정입장" ||
