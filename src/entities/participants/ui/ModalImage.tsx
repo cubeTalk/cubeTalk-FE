@@ -3,11 +3,32 @@ import { CloseButton } from "../../../shared/components/button";
 import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
 import { useInfoStore } from "../../debateInfo";
-import { ParticipantStatus } from "../../../shared/type";
+import { Participant, ParticipantStatus } from "../../../shared/type";
 
 interface ModalImageProps {
   closeModal: () => void;
 }
+
+const MyProfile = ({ user }: { user: Participant }) => {
+  return (
+    <div key={user.memberId} className="flex flex-row justify-between">
+      <div className="flex flex-row">
+        <UserNickName $role={user.role}>{user.nickName}</UserNickName>
+        <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">나</h5>
+      </div>
+      <h5 className={statusStyle(user.status)}>{user.status}</h5>
+    </div>
+  );
+};
+
+const UserProfile = ({ user }: { user: Participant }) => {
+  return (
+    <div key={user.memberId} className="flex flex-row justify-between flex-wrap">
+      <UserNickName $role={user.role}>{user.nickName}</UserNickName>
+      {user.role !== "관전" && <h5 className={statusStyle(user.status)}>{user.status}</h5>}
+    </div>
+  );
+};
 
 export const ModalImage = ({ closeModal }: ModalImageProps) => {
   const memberId = useInfoStore((state) => state.userInfo.memberId);
@@ -17,28 +38,13 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
       <CloseButton onClickHandler={closeModal} />
       <h2 className="mb-2">참가자</h2>
       <ParticipantsConatiner>
-        {participants.map((item) => {
-          if (memberId !== item.memberId) return;
-          return (
-            <div key={item.memberId} className="flex flex-row justify-between">
-              <div className="flex flex-row">
-                <UserNickName $role={item.role}>{item.nickName}</UserNickName>
-                <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">
-                  나
-                </h5>
-              </div>
-              <h5 className={statusStyle(item.status)}>{item.status}</h5>
-            </div>
-          );
+        {participants.map((user) => {
+          if (memberId !== user.memberId) return;
+          return <MyProfile user={user} />;
         })}
-        {participants.map((item) => {
-          if (memberId === item.memberId) return;
-          return (
-            <div key={item.memberId} className="flex flex-row justify-between flex-wrap">
-              <UserNickName $role={item.role}>{item.nickName}</UserNickName>
-              {item.role !== "관전" && <h5 className={statusStyle(item.status)}>{item.status}</h5>}
-            </div>
-          );
+        {participants.map((user) => {
+          if (memberId === user.memberId) return;
+          return <UserProfile user={user} />;
         })}
       </ParticipantsConatiner>
     </Layout>
