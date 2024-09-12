@@ -1,16 +1,33 @@
 import styled from "styled-components";
 import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { useChatStore } from "../message/model/store";
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 
 interface MessageInputProps {
-  scrollToBottom: (checkingBottom: boolean) => void;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
-const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
+const MessageInput = ({ containerRef }: MessageInputProps) => {
   const [text, setText] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const chatAdd = useChatStore((state) => state.action.chatAdd);
+
+  // 스크롤이 바닥에 있었으면 계속 유지하도록함
+  const scrollToBottom = useCallback((checkingBottom: boolean) => {
+    if (!containerRef.current) {
+      return;
+    }
+    const bubbleContainer = containerRef.current;
+
+    if (!checkingBottom) {
+      bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
+      return;
+    }
+    const isBottom =
+      bubbleContainer.scrollTop + bubbleContainer.clientHeight - bubbleContainer.scrollHeight;
+    // -24는 textarea의 한줄 높이
+    if (-24 <= isBottom && isBottom <= 0) {
+      bubbleContainer.scrollTop = bubbleContainer.scrollHeight - bubbleContainer.clientHeight;
+    }
+  }, [containerRef]);
 
   useEffect(() => {
     const handleResizeHeight = () => {
@@ -41,14 +58,6 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
     if (text.trim().length !== 0) {
-      chatAdd({
-        replyToMessageId: "1",
-        message: text,
-        serverTimestamp: new Date().toString(),
-        messageId: "1",
-        sender: "나",
-        type: "CHAT",
-      });
       setText("");
       scrollToBottom(false);
     }
@@ -60,9 +69,7 @@ const MessageInput = ({ scrollToBottom }: MessageInputProps) => {
         ref={textareaRef}
         rows={1}
         value={text}
-        onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-          setText(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
       />
       <SendButton onClick={handleSendMessage} disabled={!text.trim()}>
