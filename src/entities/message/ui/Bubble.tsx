@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Message } from "../../../shared/type";
+import { ChatMessage } from "../../../shared/type";
 
 interface BubbleProps {
-  message: Message;
+  message: ChatMessage;
   isleft?: boolean;
 }
 
