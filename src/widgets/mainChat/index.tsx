@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { MainBubbles } from "./ui/MainBubbles";
 import styled from "styled-components";
 import { colflex, scrollBar } from "../../shared/style/commonStyle";
+import { useMainInputStore } from "./model/store";
 
 const MainChat = () => {
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +13,7 @@ const MainChat = () => {
       <BubbleContainer ref={bubbleContainerRef}>
         <MainBubbles />
       </BubbleContainer>
-      <MessageInput containerRef={bubbleContainerRef}/>
+      <MessageInput containerRef={bubbleContainerRef} messageInputStore={useMainInputStore}/>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
 import { ChatMessage, Message } from "../../../shared/type";
+import { createInputStore } from "../../../entities/messageInput/model/store";
 
 export type MessageWithIsLeft = ChatMessage & {
   isLeft?: boolean;
@@ -28,3 +29,5 @@ export const useSubMessageStore = create(
     { name: "MainMessages" }
   )
 );
+
+export const useSubInputStore = createInputStore();

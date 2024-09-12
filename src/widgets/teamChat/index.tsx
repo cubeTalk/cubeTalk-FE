@@ -3,6 +3,7 @@ import { colflex, scrollBar } from "../../shared/style/commonStyle";
 import { useRef } from "react";
 import { TeamBubbles } from "./ui/TeamBubbles";
 import MessageInput from "../../entities/messageInput";
+import { useSubInputStore } from "./model/store";
 
 const TeamChat = () => {
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +13,7 @@ const TeamChat = () => {
       <BubbleContainer ref={bubbleContainerRef}>
         <TeamBubbles />
       </BubbleContainer>
-      <MessageInput containerRef={bubbleContainerRef}/>
+      <MessageInput containerRef={bubbleContainerRef} messageInputStore={useSubInputStore}/>
     </>
   );
 };
