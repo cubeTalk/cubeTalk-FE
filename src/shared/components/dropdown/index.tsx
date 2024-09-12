@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { rowflexCenter, scrollBar, shadow } from "../../style/commonStyle";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { DropdownState } from "./model";
 
@@ -15,15 +15,15 @@ interface DropdownProps {
 const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
-  const { isOpen, setIsOpen } = useStore((state) => state);
-  // 외부 클릭 감지
+  const { isOpen, actions } = useStore((state) => state);
+  // // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownButtonRef.current && dropdownButtonRef.current.contains(event.target as Node)) {
         return;
       }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen("");
+        actions.reset();
       }
     };
 
@@ -31,7 +31,7 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [setIsOpen, isOpen, label]);
+  }, [actions]);
 
   // 버튼으로 스크롤 이동
   useEffect(() => {
@@ -43,10 +43,13 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
     }
   }, [isOpen, label]);
 
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // 없다면 중복 호출이됨
-    setIsOpen(isOpen === label ? "" : label);
-  };
+  const handleButtonClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation(); // 없다면 중복 호출이됨
+      actions.onClickDropdown(label);
+    },
+    [actions, label]
+  );
   return (
     <DropdownContainer>
       <DropdownButton ref={dropdownButtonRef} onClick={handleButtonClick}>
@@ -60,7 +63,7 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
               key={item}
               onClick={() => {
                 setSelected(item);
-                setIsOpen("");
+                actions.reset();
               }}
               $selected={selected === item}
             >
@@ -109,12 +112,10 @@ const DropdownContent = styled.div`
   position: absolute;
   width: 100%;
   background-color: var(--white);
-  border-radius: 5px;
   margin: 5px 0px;
-  z-index: 30;
+  z-index: 1;
   max-height: 96px;
   overflow-y: auto;
-  scrollbar-width: 1px;
 `;
 
 const StyledButton = styled.button<{ $selected: boolean }>`
