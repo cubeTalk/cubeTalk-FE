@@ -15,9 +15,10 @@ export interface DebateRoom extends DebateRoomBase {
   ownerId: string; // 방장 ID
   chatGenerationTime: number; // 토론 생성 시각(timestamp)
   channelId: string; // 메인 채팅방 ID
-  debateSettings: RoomTimeSetting
-  participants: Participant[]
+  debateSettings: RoomTimeSetting;
+  participants: Participant[];
 }
+export type DebateRole = "찬성" | "반대" | "관전";
 
 export interface Participant {
   nickName: string;
@@ -45,18 +46,8 @@ export type RoomTimeSetting = {
   negativeRebuttal: number; // 반대 반박 시간
 };
 
-export type MessageType = "CHAT" | "VOTE";
+export type MessageType = "CHAT" | "VOTE" | "READY" | ProgressMessageType;
 
-export interface Message {
-  messageId: string; // 메세지 ID
-  type: MessageType; // 채팅 타입
-  sender: string; // 보낸 유저 UUID
-  message: string; // 채팅 내용
-  replyToMessageId: string; // 언급한 메세지 ID
-  serverTimestamp: string; // 채팅 보낸 시각(timestamp)
-}
-
-export type DebateRole = "찬성" | "반대" | "관전";
 export type ProgressMessageType =
   | "긍정입장"
   | "부정질의"
@@ -67,3 +58,53 @@ export type ProgressMessageType =
   | "투표"
   | "결과"
   | "TIMER_END";
+
+type BaseMessage = {
+  type: MessageType;
+};
+
+export interface ChatMessage extends BaseMessage {
+  type: "CHAT";
+  messageId: string; // 메세지 ID
+  sender: string; // 보낸 유저 UUID
+  message: string; // 채팅 내용
+  replyToMessageId: string; // 언급한 메세지 ID
+  serverTimestamp: string; // 채팅 보낸 시각(timestamp)
+}
+
+export interface SendChatMessage extends BaseMessage {
+  type: "CHAT";
+  messageId: string; // 메세지 ID
+  sender: string; // 보낸 유저 UUID
+  message: string; // 채팅 내용
+  replyToMessageId: string; // 언급한 메세지 ID
+}
+
+export interface TimerMessage extends BaseMessage {
+  type: ProgressMessageType;
+  remainingTime: number;
+  message: string;
+}
+
+export interface TimerEndMessage extends TimerMessage {
+  type: "TIMER_END";
+  result: {
+    support: number;
+    opposite: number;
+  };
+  MVP: string;
+}
+
+export interface VoteMessage extends BaseMessage {
+  type: "VOTE";
+  team: "찬성" | "반대";
+  mvp: string;
+}
+
+export interface ReadyMessage extends BaseMessage {
+  type: "READY";
+  memberId: string;
+  status: "READY" | "PENDING";
+}
+
+export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage;
