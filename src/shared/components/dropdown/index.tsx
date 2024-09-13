@@ -4,19 +4,26 @@ import { useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { DropdownState } from "./model";
 
-interface DropdownProps {
-  selected: string | number;
-  setSelected: (item: string | number) => void;
-  list: string[] | number[];
+interface DropdownProps<T extends string | number> {
+  selected: T;
+  setSelected: (item: T) => void;
+  list: T[];
   label: string;
   useStore: UseBoundStore<StoreApi<DropdownState>>;
 }
 
-const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProps) => {
+const Dropdown = <T extends string | number>({
+  list,
+  selected,
+  setSelected,
+  label,
+  useStore,
+}: DropdownProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const { isOpen, actions } = useStore((state) => state);
-  // // 외부 클릭 감지
+
+  // Handle click outside of the dropdown to close it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownButtonRef.current && dropdownButtonRef.current.contains(event.target as Node)) {
@@ -33,7 +40,7 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
     };
   }, [actions]);
 
-  // 버튼으로 스크롤 이동
+  // Scroll into view when dropdown is open
   useEffect(() => {
     if (isOpen === label && dropdownButtonRef.current) {
       dropdownButtonRef.current.scrollIntoView({
@@ -43,13 +50,15 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
     }
   }, [isOpen, label]);
 
+  // Handle button click to toggle dropdown
   const handleButtonClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation(); // 없다면 중복 호출이됨
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
       actions.onClickDropdown(label);
     },
     [actions, label]
   );
+
   return (
     <DropdownContainer>
       <DropdownButton ref={dropdownButtonRef} onClick={handleButtonClick}>
@@ -60,7 +69,7 @@ const Dropdown = ({ list, selected, setSelected, label, useStore }: DropdownProp
         <DropdownContent ref={dropdownRef}>
           {list.map((item) => (
             <StyledButton
-              key={item}
+              key={item as string | number}
               onClick={() => {
                 setSelected(item);
                 actions.reset();

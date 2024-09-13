@@ -61,6 +61,26 @@ const ChatMode = () => {
   );
 };
 
+const Participants = () => {
+  return (
+    <MaxParticipants
+      state={useRoomSettingStore.getState()}
+      actions={useRoomSettingStore.getState()}
+    />
+  );
+};
+
+const Setting = () => {
+  const chatMode = useRoomStore((state) => state.chatMode);
+  return (
+    <RoomSetting
+      chatMode={chatMode}
+      state={useRoomSettingStore.getState()}
+      actions={useRoomSettingStore.getState()}
+    />
+  );
+};
+
 const Submit = () => {
   const { title, description, chatMode } = useRoomStore((state) => state);
   const {
@@ -122,9 +142,9 @@ const ModalContent = () => {
       <Discription />
       <div className="flex flex-wrap">
         <ChatMode />
-        <MaxParticipants />
+        <Participants />
       </div>
-      <RoomSetting />
+      <Setting />
       <div className="flex justify-center">
         <Submit />
       </div>

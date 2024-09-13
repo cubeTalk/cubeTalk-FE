@@ -11,7 +11,7 @@ import Memo from "../../../widgets/debateMemo";
 const Screen = ({ menu }: { menu: MenuType }) => {
   return (
     <ScreenLayout>
-      <Display $menu={menu} $label={"HOME"}>
+      <Display $menu={menu} $label={"Home"}>
         <Home />
       </Display>
       <Display $menu={menu} $label={"Memo"}>

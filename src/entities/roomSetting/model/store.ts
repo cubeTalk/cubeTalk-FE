@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
 import { createUseOpenDropdownStore } from "../../../shared/components/dropdown/model";
 
-export type RoomSetting = {
+export type RoomSettingType = {
   maxParticipants: number;
   chatDuration: number;
   positiveEntry: number;
@@ -13,7 +13,20 @@ export type RoomSetting = {
   negativeRebuttal: number;
 };
 
-const initialRoomSettingState: RoomSetting = {
+export type RoomSettingActions = {
+  reset: () => void;
+  setParticipants: (newParticipant: number) => void;
+  setChatDuration: (newDuration: number) => void;
+  setPositiveEntry: (newPositiveEntry: number) => void;
+  setNegativeQuestioning: (newNegativeQuestioning: number) => void;
+  setNegativeEntry: (newNegativeEntry: number) => void;
+  setPositiveQuestioning: (newPositiveQuestioning: number) => void;
+  setPositiveRebuttal: (newPositiveRebuttal: number) => void;
+  setNegativeRebuttal: (newNegativeRebuttal: number) => void;
+  resetSettings: (data: RoomSettingType) => void;
+};
+
+const initialRoomSettingState: RoomSettingType = {
   maxParticipants: 6,
   chatDuration: 30,
   positiveEntry: 5,
@@ -44,7 +57,7 @@ export const useRoomSettingStore = create(
         set((state) => ({ ...state, positiveRebuttal: newPositiveRebuttal })),
       setNegativeRebuttal: (newNegativeRebuttal: number) =>
         set((state) => ({ ...state, negativeRebuttal: newNegativeRebuttal })),
-      resetSettings: (data: RoomSetting) => set(() => ({ ...data })),
+      resetSettings: (data: RoomSettingType) => set(() => ({ ...data })),
     })),
     { name: "Setting" }
   )
