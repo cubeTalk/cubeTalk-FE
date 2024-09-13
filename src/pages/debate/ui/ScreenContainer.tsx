@@ -9,17 +9,22 @@ import Home from "../../../widgets/debateHome";
 import Memo from "../../../widgets/debateMemo";
 
 const Screen = ({ menu }: { menu: MenuType }) => {
-  switch (menu) {
-    case "Home":
-      return <Home />;
-    case "Memo":
-      return <Memo />;
-    case "TeamChat":
-      return <TeamChat />;
-    case "Chat":
-    default:
-      return <MainChat />;
-  }
+  return (
+    <ScreenLayout>
+      <Display $menu={menu} $label={"HOME"}>
+        <Home />
+      </Display>
+      <Display $menu={menu} $label={"Memo"}>
+        <Memo />
+      </Display>
+      <Display $menu={menu} $label={"TeamChat"}>
+        <TeamChat />
+      </Display>
+      <Display $menu={menu} $label={"MainChat"}>
+        <MainChat />
+      </Display>
+    </ScreenLayout>
+  );
 };
 
 const ScreenContainer = () => {
@@ -30,11 +35,9 @@ const ScreenContainer = () => {
       <ScreenHeader />
       <ScreenWarpper>
         <Desktop>
-          {menu !== "Chat" && (
+          {menu !== "MainChat" && (
             <>
-              <ScreenLayout>
-                <Screen menu={menu} />
-              </ScreenLayout>
+              <Screen menu={menu} />
               <div className="w-4" />
             </>
           )}
@@ -43,9 +46,7 @@ const ScreenContainer = () => {
           </ScreenLayout>
         </Desktop>
         <NonDesktop>
-          <ScreenLayout>
-            <Screen menu={menu} />
-          </ScreenLayout>
+          <Screen menu={menu} />
         </NonDesktop>
       </ScreenWarpper>
     </ScreenConatiner>
@@ -78,4 +79,10 @@ const ScreenLayout = styled.div`
   background-color: var(--color-light);
   height: 100%;
   width: 100%;
+`;
+
+const Display = styled.div<{ $menu: MenuType; $label: string }>`
+  ${colflex}
+  display: ${({ $menu, $label }) => ($menu === $label ? "flex" : "none")};
+  height: 100%;
 `;

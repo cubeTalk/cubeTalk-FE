@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 
-export type MenuType = "Home" | "Chat" | "TeamChat" | "Memo";
+export type MenuType = "Home" | "MainChat" | "TeamChat" | "Memo";
 
 const initialMenuState = {
-  menu: "Chat" as MenuType,
+  menu: "MainChat" as MenuType,
 };
 
 export const useMenuStore = create(

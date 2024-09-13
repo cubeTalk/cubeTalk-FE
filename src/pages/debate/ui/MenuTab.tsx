@@ -15,7 +15,7 @@ const TabMenuButton = ({
 }: TabMenuProps & HTMLAttributes<HTMLButtonElement>) => {
   const { menu, action} = useMenuStore((state) => state);
   return (
-    <TabMenuWrapper onClick={() => action.changeMenu(alt)} $isClicked={menu === alt} $isChat={alt === "Chat"} {...rest}>
+    <TabMenuWrapper onClick={() => action.changeMenu(alt)} $isClicked={menu === alt} $isChat={alt === "MainChat"} {...rest}>
       <img src={link} alt={alt} />
     </TabMenuWrapper>
   );
@@ -27,7 +27,7 @@ type MenuItem = {
 
 const tabMenuItems: MenuItem[] = [
   { link: "/chatIcon/home.png", alt: "Home" },
-  { link: "/chatIcon/chat.png", alt: "Chat" },
+  { link: "/chatIcon/chat.png", alt: "MainChat" },
   { link: "/chatIcon/teamchat.png", alt: "TeamChat" },
   { link: "/chatIcon/memo.png", alt: "Memo" },
 ];
