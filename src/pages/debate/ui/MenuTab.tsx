@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/commonStyle";
 import { HTMLAttributes } from "react";
 import { MenuType, useMenuStore } from "../model/store";
+import { useNavigate } from "react-router-dom";
 
 type TabMenuProps = {
   link: string;
@@ -13,9 +14,14 @@ const TabMenuButton = ({
   alt,
   ...rest
 }: TabMenuProps & HTMLAttributes<HTMLButtonElement>) => {
-  const { menu, action} = useMenuStore((state) => state);
+  const { menu, action } = useMenuStore((state) => state);
   return (
-    <TabMenuWrapper onClick={() => action.changeMenu(alt)} $isClicked={menu === alt} $isChat={alt === "MainChat"} {...rest}>
+    <TabMenuWrapper
+      onClick={() => action.changeMenu(alt)}
+      $isClicked={menu === alt}
+      $isChat={alt === "MainChat"}
+      {...rest}
+    >
       <img src={link} alt={alt} />
     </TabMenuWrapper>
   );
@@ -23,7 +29,16 @@ const TabMenuButton = ({
 type MenuItem = {
   link: string;
   alt: MenuType;
-}
+};
+
+const OutMenu = () => {
+  const navigate = useNavigate();
+  return (
+    <TabMenuWrapper className="mt-auto" onClick={() => navigate("/")}>
+      <img src={"/chatIcon/chatout.png"} alt={"ChatOut"} />
+    </TabMenuWrapper>
+  );
+};
 
 const tabMenuItems: MenuItem[] = [
   { link: "/chatIcon/home.png", alt: "Home" },
@@ -38,9 +53,7 @@ const MenuTab = () => {
       {tabMenuItems.map((item) => (
         <TabMenuButton key={item.link} link={item.link} alt={item.alt} />
       ))}
-      <TabMenuWrapper className="mt-auto">
-        <img src={"/chatIcon/chatout.png"} alt={"ChatOut"} />
-      </TabMenuWrapper>
+      <OutMenu />
     </TabContainer>
   );
 };
@@ -73,9 +86,9 @@ const TabContainer = styled.div`
   }
 `;
 
-const TabMenuWrapper = styled.button<{ $isClicked?: boolean; $isChat?:boolean }>`
+const TabMenuWrapper = styled.button<{ $isClicked?: boolean; $isChat?: boolean }>`
   ${center}
-  background-color: ${({ $isClicked }) => $isClicked ? "var(--white)" : "var(--color-mid)" };
+  background-color: ${({ $isClicked }) => ($isClicked ? "var(--white)" : "var(--color-mid)")};
   border-radius: 5px;
   padding: 2px;
   width: 60px;
@@ -87,6 +100,6 @@ const TabMenuWrapper = styled.button<{ $isClicked?: boolean; $isChat?:boolean }>
   }
 
   @media (min-width: 1120px) {
-    background-color: ${({ $isChat }) => $isChat ? "var(--white)" : undefined};
+    background-color: ${({ $isChat }) => ($isChat ? "var(--white)" : undefined)};
   }
 `;

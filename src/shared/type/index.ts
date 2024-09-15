@@ -1,3 +1,16 @@
+export type RoomCardType = {
+  id : string;
+  chatMode : string;
+  title : string;
+  description : string;
+  chatDuration : string;
+  ownerNickName : string;
+  maxParticipants : number;
+  currentParticipantsCount : number;
+  createdAt :  string;
+  updatedAt : string;
+}
+
 export type DebateMode = "찬반" | "자유";
 export type DebateStatus = "CREATED" | "STARTED";
 

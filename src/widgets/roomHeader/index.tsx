@@ -1,26 +1,30 @@
 import styled from "styled-components";
 import { colflex, rowflex } from "../../shared/style/commonStyle";
-import CreateDebateButton from "../../features/createDebate";
 import Divider from "../../shared/components/divider";
+import Dropdown from "../../shared/components/dropdown";
+import { CreateDebateButton } from "../../features/createDebate";
 
 interface RoomHeaderProps {
   text: string;
   imgSrc: string;
+  isHome?: boolean;
 }
 
-const RoomHeader = ({ text, imgSrc }: RoomHeaderProps) => {
+const RoomHeader = ({ text, imgSrc, isHome = false }: RoomHeaderProps) => {
   return (
     <HeaderContainer>
       <Title>
         <img src={imgSrc} alt="titleIcon" />
         <h2>{text}</h2>
       </Title>
-      <CreateDebateButton />
-      {/* <DorpdownContainer>
-        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
-        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1"/>
-        <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1"/>
-      </DorpdownContainer> */}
+      {!isHome && <CreateDebateButton />}
+      {!isHome && (
+        <DorpdownContainer>
+          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
+          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
+          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
+        </DorpdownContainer>
+      )}
 
       <Divider />
     </HeaderContainer>

@@ -16,9 +16,9 @@ export const useUserInfoStore = create(
   persist(
     combine(initalUserInfoState, (set) => ({
       setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
-      setIds: (ids: { id: string; memberId: string }) => set((state) => ({ ...state, ...ids })),
       changeTeam: (role: string, subChannelId: string) =>
         set((state) => ({ ...state, role, subChannelId })),
+      setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
       reset: () => set(initalUserInfoState),
     })),
     { name: "UserInfo" }
@@ -45,6 +45,7 @@ export const useDebateInfoStore = create(
   subscribeWithSelector(
     combine(initalDebateInfoState, (set) => ({
       setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+      setId: (id: string) => set((state) => ({ ...state, id })),
     }))
   )
 );

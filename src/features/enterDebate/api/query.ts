@@ -22,7 +22,7 @@ export type EnterDebateResponse = UserInfo;
 export const EnterDebateKey = "/enterDebate";
 
 export const useEnterDebateQuery = () => {
-  const id = useUserInfoStore((state) => state.id);
+  const id = useDebateInfoStore((state) => state.id);
   const postEnterDebate = (
     data: EnterDebateRequest
   ): Promise<ServerResponse<EnterDebateResponse>> => axios.post(`/chat/${id}/participants`, data);

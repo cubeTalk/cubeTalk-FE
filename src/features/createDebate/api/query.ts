@@ -6,7 +6,7 @@ import { useEnterModalStore } from "../../enterDebate/model/store";
 import { useCreateDebateModalStore, useisOwnerStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { DebateRoomBaseType } from "../../../shared/type";
-import { useUserInfoStore } from "../../../entities/debateInfo";
+import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 
 export type CreateDebateRoomRequest = DebateRoomBaseType;
 export type CreateDebateRoomResponse = {
@@ -23,8 +23,8 @@ export const useCreateDebateQuery = () => {
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
-  const setIds = useUserInfoStore((state) => state.setIds);
-
+  const setId = useDebateInfoStore((state) => state.setId);
+  const setMemberId = useUserInfoStore((state) => state.setMemberId);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
   return useMutation({
@@ -33,7 +33,8 @@ export const useCreateDebateQuery = () => {
     onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
-      setIds(response);
+      setId(response.id);
+      setMemberId(response.memberId);
       setIsOwner();
       closeCreateDebateModal();
       openEnterDebateModal();
