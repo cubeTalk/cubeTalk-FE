@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { rowflex } from "../../../shared/style/commonStyle";
-import { useState } from "react";
 import { CloseButton } from "../../../shared/components/button";
+import { useAnnouncementModal } from "../model/store";
 
 const regulations = [
   "모든 참여 인원이 준비버튼을 눌러야 토론을 시작할 수 있습니다.",
@@ -11,11 +11,11 @@ const regulations = [
 ];
 
 const Announcement = () => {
-  const [visible, setVisible] = useState(true);
+  const { modalVisible, closeModal } = useAnnouncementModal((state) => state);
   return (
-    visible && (
+    modalVisible && (
       <AnnocuementBubble>
-        <CloseButton onClickHandler={() => setVisible(false)} />
+        <CloseButton onClickHandler={() => closeModal()} />
         <AnnounceHeader>
           <img src="/chatIcon/announce.png" alt="annouce" />
           <h2>시작 전 확인해주세요!</h2>

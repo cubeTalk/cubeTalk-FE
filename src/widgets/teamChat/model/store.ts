@@ -30,4 +30,4 @@ export const useSubMessageStore = create(
   )
 );
 
-export const useSubInputStore = createInputStore();
+export const useSubInputStore = createInputStore("");

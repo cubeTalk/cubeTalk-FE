@@ -2,10 +2,8 @@ import styled from "styled-components";
 import RoomCard from "../../entities/roomCard";
 import RoomHeader from "../../widgets/roomHeader";
 import { colflex } from "../../shared/style/commonStyle";
-import { useResetDebateInfo } from "./hook/useResetDebateInfo";
 
 const HomePage = () => {
-  useResetDebateInfo();
   return (
     <PageLayout>
       <RoomSection>

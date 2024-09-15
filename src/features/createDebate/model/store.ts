@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { DebateMode } from "../../../shared/type";
+import { BaseDebate, DebateMode } from "../../../shared/type";
 import { createModalStore } from "../../../shared/components/modal/model/store";
+import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 
-export const useCreateDebateModalStore = createModalStore();
+export const useCreateDebateModalStore = createModalStore(false);
 
-const DebateDefaultState = {
+const DebateDefaultState: BaseDebate = {
   title: "",
   description: "",
   chatMode: "찬반",
@@ -21,4 +22,10 @@ export const useRoomStore = create(
   }))
 );
 
-export const chatMode = ["자유", "찬반"];
+export const useisOwnerStore = create(
+  combine({ isOwner: false }, (set) => ({
+    actions: {
+      setIsOwner: () => set({ isOwner: true }),
+    },
+  }))
+);

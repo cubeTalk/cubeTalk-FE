@@ -7,7 +7,7 @@ export const HandleError = (error: AxiosError | Error) => {
 
     // 타임아웃 처리
     if (code === "ECONNABORTED") {
-      console.error(`[AxiosError] ${method?.toUpperCase()} ${url} | Timeout | ${message}`);
+      console.error(`[AxiosError] ${method?.toUpperCase()} ${url} | Timeout | ${message} | Response ${JSON.stringify(error.response?.data?.data)}`);
       return;
     }
 

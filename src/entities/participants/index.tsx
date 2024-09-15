@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { center, commonButton } from "../../shared/style/commonStyle";
 import { useParticipantsModalStore, useParticipantsStore } from "./model/store";
 import { ModalImage } from "./ui/ModalImage";
-import { useRoomSettingStore } from "../roomSetting/model/store";
+import { useRoomSettingStore } from "../debateSetting/model/store";
 
 const ParticipantButton = () => {
   const { modalVisible, closeModal, clickModal } = useParticipantsModalStore((state) => state);
@@ -11,7 +11,7 @@ const ParticipantButton = () => {
   return (
     <>
       <ShowParticipants onClick={clickModal}>
-        <h3>{`${participants.length === 0 && participants.filter((item) => item.role !== "관전").length}/${maxParitipants}`}</h3>
+        <h3>{`${participants.length !== 0 ? participants.filter((item) => item.role !== "관전").length : 0}/${maxParitipants}`}</h3>
         <Profile>
           <img alt="profile" src="/Icon/profile.png" />
         </Profile>

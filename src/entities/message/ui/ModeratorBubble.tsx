@@ -2,8 +2,10 @@ import styled from "styled-components";
 import VoteContent from "./VoteContent";
 import { mediaQuery, shadow } from "../../../shared/style/commonStyle";
 import { TimerEndMessage, TimerMessage } from "../../../shared/type";
+import { useDebateInfoStore } from "../../debateInfo";
 
-export const DebateStartBubble = ({ title }: { title: string }) => {
+export const DebateStartBubble = () => {
+  const title = useDebateInfoStore((state) => state.title);
   return (
     <div className="flex justify-center">
       <Moderator className="bg-yellow">

@@ -1,15 +1,13 @@
 import { useEffect } from "react";
-import { useInfoStore } from "../../../entities/debateInfo";
-import { useParticipantsStore } from "../../../entities/participants/model/store";
-import { useRoomSettingStore } from "../../../entities/roomSetting/model/store";
+import { useDebateMemoStore } from "../../../widgets/debateMemo/model/store";
+import { useUserInfoStore } from "../../../entities/debateInfo";
+import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
 
 export const useResetDebateInfo = () => {
-  const resetDebateInfo = useInfoStore((state) => state.reset);
-  const resetMemberInfo = useParticipantsStore((state) => state.reset);
-  const resetSettings = useRoomSettingStore((state) => state.reset);
   useEffect(() => {
-    resetDebateInfo();
-    resetMemberInfo();
-    resetSettings();
-  }, [resetDebateInfo, resetMemberInfo, resetSettings]);
+    const persistStores = [useUserInfoStore, useDebateMemoStore, useRoomSettingStore];
+    persistStores.forEach((useStore) => {
+      useStore.getState().reset();
+    });
+  }, []);
 };

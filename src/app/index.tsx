@@ -28,6 +28,7 @@ const router = createBrowserRouter([
   },
   {
     element: <DebateRoot />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/debate/:debateRoomId",

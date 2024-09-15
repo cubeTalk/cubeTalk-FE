@@ -1,39 +1,40 @@
 import { useMutation } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { DebateRoomBase } from "../../../shared/type";
 import { useContext } from "react";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useEnterModalStore } from "../../enterDebate/model/store";
-import { useInfoStore } from "../../../entities/debateInfo";
-import { useCreateDebateModalStore } from "../model/store";
+import { useCreateDebateModalStore, useisOwnerStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
+import { DebateRoomBaseType } from "../../../shared/type";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
-type PostDebateRoomRequest = DebateRoomBase;
-type PostDebateRoomResponse = {
+export type CreateDebateRoomRequest = DebateRoomBaseType;
+export type CreateDebateRoomResponse = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
 };
 
-export const CreateRoomKey = "/createRoom";
+export const CreateDebateKey = "/createDebate";
 
-export const useCreateRoomQuery = () => {
-  const updateDebateInfo = useInfoStore((state) => state.updateDebateInfo);
-  const updateUserInfo = useInfoStore((state) => state.updateUserInfo);
-  const postCreateRoom = (
-    data: PostDebateRoomRequest
-  ): Promise<ServerResponse<PostDebateRoomResponse>> => axios.post("/chat", data);
+export const useCreateDebateQuery = () => {
+  const postCreateDebate = (
+    data: CreateDebateRoomRequest
+  ): Promise<ServerResponse<CreateDebateRoomResponse>> => axios.post("/chat", data);
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
+  const setIds = useUserInfoStore((state) => state.setIds);
+
+  const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
   return useMutation({
-    mutationKey: [CreateRoomKey],
-    mutationFn: (data: PostDebateRoomRequest) => postCreateRoom(data),
-    onSuccess: (data: ServerResponse<PostDebateRoomResponse>) => {
+    mutationKey: [CreateDebateKey],
+    mutationFn: (data: CreateDebateRoomRequest) => postCreateDebate(data),
+    onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
-      updateDebateInfo({ id: response.id });
-      updateUserInfo({ memberId: response.memberId, isOwner: true });
+      setIds(response);
+      setIsOwner();
       closeCreateDebateModal();
       openEnterDebateModal();
     },

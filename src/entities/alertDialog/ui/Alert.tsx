@@ -26,7 +26,7 @@ const Alert = ({ message, ok, cancel, onClickCancel, onClickOK }: AlertProps) =>
         className="fixed inset-0 z-40 bg-black bg-opacity-40"
         onClick={(e) => e.stopPropagation()}
       />
-      <div className="z-50 fixed top-5 bg-white p-6 rounded-lg max-w-sm w-90vh min-h-50">
+      <div className="z-50 fixed top-5 bg-white p-6 rounded-lg max-w-sm w-90vh min-w-64 min-h-50">
         <h3 className="mb-4 break-words">{message}</h3>
         <div className="flex justify-end">
           {ok && (

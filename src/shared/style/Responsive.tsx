@@ -28,7 +28,7 @@ export const NonDesktop = ({ children }: Props) => {
 
 export const NonMobile = ({ children }: Props) => {
   const isNonMobile = useMediaQuery({
-    query: "(max-width: 1120px)",
+    query: "(min-width: 769px)",
   });
   return <>{isNonMobile && children}</>;
 };

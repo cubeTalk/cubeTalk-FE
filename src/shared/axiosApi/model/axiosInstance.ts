@@ -2,14 +2,15 @@ import axios, { AxiosError } from "axios";
 import { HandleError } from "../lib/errorhandler";
 
 export type ServerResponse<T = undefined> = {
-  status: number;
+  status: string;
   message: string;
   data?: T;
 };
 
 export const instance = axios.create({
-  timeout: 3000,
+  timeout: 2000,
   baseURL: import.meta.env.VITE_HTTP,
+  maxRedirects: 1,
 });
 
 instance.interceptors.request.use(

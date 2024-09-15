@@ -12,14 +12,14 @@ export interface InputStoreType {
   };
 }
 
-export const createInputStore = (): UseBoundStore<StoreApi<InputStoreType>> =>
+export const createInputStore = (initalValue: string): UseBoundStore<StoreApi<InputStoreType>> =>
   create(
-    combine({ value: "" }, (set) => ({
+    combine({ value: initalValue }, (set) => ({
       action: {
         setValue: (newValue: string) => set({ value: newValue }),
         onChangeValue: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
           set({ value: e.target.value }),
-        resetValue: () => set({ value: "" }),
+        resetValue: () => set({ value: initalValue }),
         addNewLine: () => set((state) => ({ value: state.value + "\n" })),
       },
     }))

@@ -2,15 +2,14 @@ import styled from "styled-components";
 import { InlineTextInput, MultilineTextInput } from "../../../shared/components/textinput";
 import useInputChangeHandler from "../../../shared/hook/useChangeHandler";
 import Toggle from "../../../entities/typeToggle";
-import RoomSetting, { MaxParticipants } from "../../../entities/roomSetting";
+import RoomSetting, { MaxParticipants } from "../../../entities/debateSetting";
 import { useRoomStore } from "../model/store";
 import { SubmitButton } from "../../../shared/components/button";
 import { colflex } from "../../../shared/style/commonStyle";
-import { useCreateRoomQuery } from "../api/query";
-import { useRoomSettingStore } from "../../../entities/roomSetting/model/store";
-import { useMemo } from "react";
-import { DebateMode } from "../../../shared/type";
+import { DebateMode, FreeDebate, ProsConsDebate } from "../../../shared/type";
 import { validTitle } from "../lib";
+import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
+import { useCreateDebateQuery } from "../api/query";
 
 const Title = () => {
   const title = useRoomStore((state) => state.title);
@@ -61,48 +60,37 @@ const ChatMode = () => {
   );
 };
 
+const Participants = () => {
+  return <MaxParticipants />;
+};
+
+const Setting = () => {
+  const chatMode = useRoomStore((state) => state.chatMode);
+  return <RoomSetting chatMode={chatMode} />;
+};
+
 const Submit = () => {
   const { title, description, chatMode } = useRoomStore((state) => state);
-  const {
-    chatDuration,
-    maxParticipants,
-    negativeEntry,
-    negativeQuestioning,
-    negativeRebuttal,
-    positiveEntry,
-    positiveQuestioning,
-    positiveRebuttal,
-  } = useRoomSettingStore((state) => state);
-  const { mutate, isPending } = useCreateRoomQuery();
-  const totalTime = useMemo(() => {
-    return chatMode === "찬반"
-      ? maxParticipants +
-          negativeEntry +
-          negativeQuestioning +
-          negativeRebuttal +
-          positiveEntry +
-          positiveQuestioning +
-          positiveRebuttal
-      : chatDuration;
-  }, [
-    chatMode,
-    maxParticipants,
-    negativeEntry,
-    negativeQuestioning,
-    negativeRebuttal,
-    positiveEntry,
-    positiveQuestioning,
-    positiveRebuttal,
-    chatDuration,
-  ]);
-  const onClickHandler = () =>
-    mutate({
+  const { mutate, isPending } = useCreateDebateQuery();
+  const maxParticipants = useRoomSettingStore(state => state.maxParticipants);
+  const chatDuration = useRoomSettingStore(state => state.chatDuration);
+  const debateSettings = useRoomSettingStore(state => state.debateSettings);
+  const onClickHandler = () => {
+    const submitData = chatMode === "자유" ? {
       title,
       description,
-      chatDuration: totalTime,
       chatMode: chatMode as DebateMode,
-      maxParticipants: maxParticipants,
-    });
+      maxParticipants,
+      chatDuration,
+    } as FreeDebate : {
+      title,
+      description,
+      chatMode: chatMode as DebateMode,
+      maxParticipants,
+      debateSettings,
+    } as ProsConsDebate
+    mutate(submitData);
+  }
 
   return (
     <SubmitButton
@@ -122,9 +110,9 @@ const ModalContent = () => {
       <Discription />
       <div className="flex flex-wrap">
         <ChatMode />
-        <MaxParticipants />
+        <Participants />
       </div>
-      <RoomSetting />
+      <Setting />
       <div className="flex justify-center">
         <Submit />
       </div>

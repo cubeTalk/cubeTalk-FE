@@ -2,10 +2,7 @@ import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
 import { ChatMessage, Message, Participant } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
-
-export type MessageWithIsLeft = ChatMessage & {
-  isLeft?: boolean;
-};
+import { createModalStore } from "../../../shared/components/modal/model/store";
 
 const initMainMessageState = {
   messages: [] as Message[],
@@ -31,4 +28,6 @@ export const useMainMessageStore = create(
   )
 );
 
-export const useMainInputStore = createInputStore();
+export const useMainInputStore = createInputStore("");
+
+export const useAnnouncementModal = createModalStore(true);

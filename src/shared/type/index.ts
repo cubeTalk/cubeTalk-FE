@@ -1,23 +1,76 @@
 export type DebateMode = "찬반" | "자유";
 export type DebateStatus = "CREATED" | "STARTED";
 
-export interface DebateRoomBase {
+export type BaseDebate = {
   title: string; // 제목
   description: string; // 설명
-  chatMode: DebateMode; // 채팅종류
+  chatMode: DebateMode; // 토론타입
+};
+
+export type FreeSetting = {
   maxParticipants: number; // 수용인원
   chatDuration: number; // 토론 시간(s)
-}
+};
 
-export interface DebateRoom extends DebateRoomBase {
+export type ProsConsSetting = {
+  maxParticipants: number; // 수용인원
+  debateSettings: TimeSetting;
+};
+export type TimeSetting = {
+  positiveEntry: number; // 찬성 입론 시간
+  negativeQuestioning: number; // 반대 질의 시간
+  negativeEntry: number; // 반대 입론 시간
+  positiveQuestioning: number; // 찬성 질의 시간
+  positiveRebuttal: number; // 찬성 반박 시간
+  negativeRebuttal: number; // 반대 반박 시간
+};
+
+export type FreeDebate = FreeSetting & BaseDebate;
+export type ProsConsDebate = ProsConsSetting & BaseDebate;
+export type DebateRoomBaseType = FreeDebate | ProsConsDebate;
+export type DebateSetting = FreeSetting | ProsConsSetting;
+
+export const isProsConsDebate = (debate: DebateRoomBaseType): debate is ProsConsDebate =>
+  debate.chatMode === "찬반";
+export const isFreeDebate = (debate: DebateRoomBaseType): debate is FreeDebate =>
+  debate.chatMode === "자유";
+export const hasProsConsSetting = (
+  setting: DebateSetting | DebateRoomBaseType | DebateRoomType
+): TimeSetting => {
+  if ("debateSettings" in setting) {
+    return setting.debateSettings;
+  }
+  return {
+    negativeEntry: 5,
+    negativeQuestioning: 5,
+    negativeRebuttal: 5,
+    positiveEntry: 5,
+    positiveQuestioning: 5,
+    positiveRebuttal: 5,
+  };
+};
+
+export const hasFreeSetting = (
+  setting: DebateSetting | DebateRoomBaseType | DebateRoomType
+): number => {
+  if ("chatDuration" in setting) {
+    return setting.chatDuration;
+  }
+  return 5;
+};
+
+export type DebateRoomAddition = {
   id: string; // 토론방 ID
   chatStatus: DebateStatus; // 토론방 상태
   ownerId: string; // 방장 ID
-  chatGenerationTime: number; // 토론 생성 시각(timestamp)
   channelId: string; // 메인 채팅방 ID
-  debateSettings: RoomTimeSetting;
   participants: Participant[];
-}
+  createdAt: string;
+  updatedAt: string; // 토론 생성 시각(timestamp)
+};
+
+export type DebateRoomType = DebateRoomBaseType & DebateRoomAddition;
+
 export type DebateRole = "찬성" | "반대" | "관전";
 
 export interface Participant {
@@ -32,18 +85,9 @@ export type UserInfo = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
   nickName: string; // 토론 참가자 닉네임
-  severTimeStamp: string; // 토론 입장시각 (TimeStamp)
   channelId: string; // 메인 채팅방 ID
   subChannelId: string; // 서브 채팅방 ID
-};
-
-export type RoomTimeSetting = {
-  positiveEntry: number; // 찬성 입론 시간
-  negativeQuestioning: number; // 반대 질의 시간
-  negativeEntry: number; // 반대 입론 시간
-  positiveQuestioning: number; // 찬성 질의 시간
-  positiveRebuttal: number; // 찬성 반박 시간
-  negativeRebuttal: number; // 반대 반박 시간
+  role: string;
 };
 
 export type MessageType = "CHAT" | "VOTE" | "READY" | ProgressMessageType;
@@ -108,3 +152,24 @@ export interface ReadyMessage extends BaseMessage {
 }
 
 export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage;
+
+export type MessageWithIsLeft = ChatMessage & {
+  isLeft?: boolean;
+};
+
+// type gurads
+export const isChatMessage = (message: Message): message is MessageWithIsLeft =>
+  message.type === "CHAT";
+export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
+export const isTimerMessage = (message: Message): message is TimerMessage =>
+  message.type === "긍정입장" ||
+  message.type === "부정질의" ||
+  message.type === "부정입장" ||
+  message.type === "긍정질의" ||
+  message.type === "긍정반박" ||
+  message.type === "부정반박" ||
+  message.type === "투표" ||
+  message.type === "결과" ||
+  message.type === "TIMER_END";
+export const isTimerEndMessage = (message: Message): message is TimerEndMessage =>
+  message.type === "TIMER_END";

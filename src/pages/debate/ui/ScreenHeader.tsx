@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { colflex, commonButton, spinner } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
-import { useInfoStore } from "../../../entities/debateInfo";
 import ParticipantButton from "../../../entities/participants";
+import { useDebateInfoStore } from "../../../entities/debateInfo";
 
 const Title = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const textRef = useRef<HTMLDivElement | null>(null);
-  const titleText = useInfoStore((state) => state.debateInfo.title);
+  const titleText = useDebateInfoStore((state) => state.title);
   // title overflow 체크 타이틀 길이가 2줄을 넘어가면 버튼으로 조절 가능하게 설정
   useEffect(() => {
     const checkOverflow = () => {

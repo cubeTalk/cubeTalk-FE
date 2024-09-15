@@ -46,7 +46,7 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
 
     handleResizeHeight();
     scrollToBottom(true);
-  }, [scrollToBottom]);
+  }, [scrollToBottom, value]);
 
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
@@ -57,13 +57,14 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
 
     if (e.key === "Enter" && !(e.shiftKey || e.ctrlKey)) {
       e.preventDefault();
+      action.resetValue();
       return handleSendMessage();
     }
   };
 
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
-    if (value.trim().length !== 0) {
+    if (!value.trim()) {
       action.resetValue();
       scrollToBottom(false);
     }
@@ -77,6 +78,7 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
         value={value}
         onChange={action.onChangeValue}
         onKeyDown={handleKeyDown}
+        autoFocus
       />
       <SendButton onClick={handleSendMessage} disabled={!value.trim()}>
         <img src="/chatIcon/Send.png" alt="Send" />
@@ -94,8 +96,10 @@ const InputContainer = styled.div`
 `;
 
 const TextInput = styled.textarea`
+  display: flex;
   ${scrollBar}
   width: 100%;
+  min-height: 44px;
   padding: 10px;
   max-height: 40vh;
   resize: none;
