@@ -61,30 +61,33 @@ const ChatMode = () => {
 };
 
 const Participants = () => {
-  return <MaxParticipants useStore={useRoomSettingStore} />;
+  return <MaxParticipants />;
 };
 
 const Setting = () => {
   const chatMode = useRoomStore((state) => state.chatMode);
-  return <RoomSetting chatMode={chatMode} useStore={useRoomSettingStore} />;
+  return <RoomSetting chatMode={chatMode} />;
 };
 
 const Submit = () => {
   const { title, description, chatMode } = useRoomStore((state) => state);
   const { mutate, isPending } = useCreateDebateQuery();
+  const maxParticipants = useRoomSettingStore(state => state.maxParticipants);
+  const chatDuration = useRoomSettingStore(state => state.chatDuration);
+  const debateSettings = useRoomSettingStore(state => state.debateSettings);
   const onClickHandler = () => {
     const submitData = chatMode === "자유" ? {
       title,
       description,
       chatMode: chatMode as DebateMode,
-      maxParticipants: useRoomSettingStore.getState().maxParticipants,
-      chatDuration: useRoomSettingStore.getState().getChatDuration(),
+      maxParticipants,
+      chatDuration,
     } as FreeDebate : {
       title,
       description,
       chatMode: chatMode as DebateMode,
-      maxParticipants: useRoomSettingStore.getState().maxParticipants,
-      debateSettings: useRoomSettingStore.getState().getDebateSettings(),
+      maxParticipants,
+      debateSettings,
     } as ProsConsDebate
     mutate(submitData);
   }

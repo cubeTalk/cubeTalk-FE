@@ -32,9 +32,9 @@ export const CloseButton = ({
   );
 };
 
-const Submit = styled.button`
+export const Submit = styled.button`
   background-color: var(--color-green);
-  padding: 4px 16px;
+  padding: 4px 8px;
   border-radius: 5px;
   font-weight: 700px;
   width: fit-content;

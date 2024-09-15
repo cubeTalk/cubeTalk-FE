@@ -23,7 +23,8 @@ export const useCreateDebateQuery = () => {
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
-  const setMemberId = useUserInfoStore((state) => state.setMemberId);
+  const setIds = useUserInfoStore((state) => state.setIds);
+
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
   return useMutation({
@@ -32,7 +33,7 @@ export const useCreateDebateQuery = () => {
     onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
-      setMemberId(response.memberId);
+      setIds(response);
       setIsOwner();
       closeCreateDebateModal();
       openEnterDebateModal();

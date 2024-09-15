@@ -7,9 +7,9 @@ export const generateUUID = (): string => {
 };
 
 export const generateUserID = (): string => {
-  return "user-" + Math.random().toString(10).substring(0, 9);
+  return "user" + Math.random().toString(10).substring(0, 9);
 };
 
 export const generateChannelID = (): string => {
-  return "channel-" + Math.random().toString(10).substring(0, 9);
+  return "channel" + Math.random().toString(10).substring(0, 9);
 };

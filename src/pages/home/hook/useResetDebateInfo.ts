@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useDebateMemoStore } from "../../../widgets/debateMemo/model/store";
 import { useUserInfoStore } from "../../../entities/debateInfo";
+import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
 
 export const useResetDebateInfo = () => {
   useEffect(() => {
-    const persistStores = [useUserInfoStore, useDebateMemoStore];
+    const persistStores = [useUserInfoStore, useDebateMemoStore, useRoomSettingStore];
     persistStores.forEach((useStore) => {
-      const reset = useStore.getState().reset;
-      if (typeof reset === "function") {
-        reset();
-      }
+      useStore.getState().reset();
     });
   }, []);
 };

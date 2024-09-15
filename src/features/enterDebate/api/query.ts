@@ -7,7 +7,6 @@ import { AxiosError } from "axios";
 import { axios } from "../../../shared/axiosApi";
 import { useContext } from "react";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
-import { useParticipantsStore } from "../../../entities/participants/model/store";
 import { useEnterDebateStore, useEnterModalStore } from "../model/store";
 import { useNavigate } from "react-router-dom";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
@@ -23,7 +22,7 @@ export type EnterDebateResponse = UserInfo;
 export const EnterDebateKey = "/enterDebate";
 
 export const useEnterDebateQuery = () => {
-  const id = useDebateInfoStore((state) => state.id);
+  const id = useUserInfoStore((state) => state.id);
   const postEnterDebate = (
     data: EnterDebateRequest
   ): Promise<ServerResponse<EnterDebateResponse>> => axios.post(`/chat/${id}/participants`, data);

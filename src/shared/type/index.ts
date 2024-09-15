@@ -30,10 +30,10 @@ export type ProsConsDebate = ProsConsSetting & BaseDebate;
 export type DebateRoomBaseType = FreeDebate | ProsConsDebate;
 export type DebateSetting = FreeSetting | ProsConsSetting;
 
-export const isProsConsDebate = (debate: DebateRoomBaseType): debate is FreeDebate =>
-  debate.chatMode === "자유";
-export const isFreeDebate = (debate: DebateRoomBaseType): debate is ProsConsDebate =>
+export const isProsConsDebate = (debate: DebateRoomBaseType): debate is ProsConsDebate =>
   debate.chatMode === "찬반";
+export const isFreeDebate = (debate: DebateRoomBaseType): debate is FreeDebate =>
+  debate.chatMode === "자유";
 export const hasProsConsSetting = (
   setting: DebateSetting | DebateRoomBaseType | DebateRoomType
 ): TimeSetting => {

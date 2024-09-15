@@ -7,7 +7,7 @@ import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useSettingChangeModalStore } from "../model/store";
 import { useMutation } from "@tanstack/react-query";
 
-export type ChangeSettingRequest = DebateSetting;
+export type ChangeSettingRequest = DebateSetting & { ownerId: string };
 
 export const ChangeSettingKey = "/changeSetting";
 
@@ -25,7 +25,7 @@ export const useChangeSettingQuery = () => {
       closeCreateDebateModal();
     },
     onError: async () => {
-      await alert("토론방 설정 변경에 실패했습니다. 다시 시도해주세요", "확인");
+      await alert("설정 변경에 실패했습니다. 다시 시도해주세요", "확인");
     },
   });
 };

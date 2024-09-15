@@ -6,29 +6,30 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { getDebateInfo } from "./api/query";
 import { useNavigate, useParams } from "react-router-dom";
-import { AlertContext } from "../../entities/alertDialog/model/context";
 import { useRoomSettingStore } from "../../entities/debateSetting/model/store";
 import { hasFreeSetting, hasProsConsSetting } from "../../shared/type";
-import { useDebateInfoStore } from "../../entities/debateInfo";
+import { useDebateInfoStore, useUserInfoStore } from "../../entities/debateInfo";
+import { useisOwnerStore } from "../../features/createDebate/model/store";
+import { AlertContext } from "../../entities/alertDialog/model/context";
 
 const DebatePage = () => {
   const { debateRoomId } = useParams();
-  const { alert } = useContext(AlertContext);
-  const navigate = useNavigate();
   const updateDebateInfo = useDebateInfoStore((state) => state.setInfo);
   const resetSettings = useRoomSettingStore((state) => state.resetSettings);
-
-  if (debateRoomId === undefined) {
-    alert("유효하지 않은 접근입니다.", "돌아가기", "", () => navigate("/"));
-  }
-
-  const { data, error } = useQuery({
+  const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
+  const memberId = useUserInfoStore((state) => state.memberId);
+  const navigate = useNavigate();
+  const { alert } = useContext(AlertContext);
+  const { data, isError } = useQuery({
     queryKey: ["getDebateInfo"],
     queryFn: async () => getDebateInfo(debateRoomId),
   });
-  if (error) {
-    alert("토론방 정보를 가져오는데 실패하였습니다", "확인");
+
+  if (isError) {
+    alert("토론방 정보를 가져오는데 실패하였습니다. 다시 참가해 주세요", "확인");
+    navigate("/");
   }
+
   useEffect(() => {
     if (data && data.data) {
       const debateInfo = data.data;
@@ -44,8 +45,11 @@ const DebatePage = () => {
         chatDuration: hasFreeSetting(debateInfo),
         debateSettings: hasProsConsSetting(debateInfo),
       });
+      if (debateInfo.ownerId === memberId) {
+        setIsOwner();
+      }
     }
-  }, [data, resetSettings, updateDebateInfo]);
+  }, [data, memberId, resetSettings, setIsOwner, updateDebateInfo]);
 
   return (
     <PageLayout>

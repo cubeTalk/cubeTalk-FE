@@ -1,23 +1,15 @@
-import DropdownLabel, { Label } from "./ui/DropdownLabel";
-import type { ProsConsSetting, FreeSetting } from "../../shared/type";
-import { useRoomSettingStore } from "./model/store";
+import { SettingEntry } from "../../../entities/debateSetting";
+import DropdownLabel, { Label } from "../../../entities/debateSetting/ui/DropdownLabel";
+import { useChangeSettingStore } from "../model/store";
 
 const maxParticipantNumbers = [2, 4, 6];
-
-export type SettingEntry<T> = {
-  label: string;
-  state: T;
-  setState: (value: T) => void;
-  key: string;
-  list: T[];
-};
 
 export const MaxParticipants = () => {
   const MaxParticipantsSettingEntries: SettingEntry<number>[] = [
     {
       label: "사용자수",
-      state: useRoomSettingStore((state) => state.maxParticipants),
-      setState: useRoomSettingStore((state) => state.setMaxParticipants),
+      state: useChangeSettingStore((state) => state.maxParticipants),
+      setState: useChangeSettingStore((state) => state.setMaxParticipants),
       key: "maxParticipants",
       list: maxParticipantNumbers,
     },
@@ -35,43 +27,43 @@ const ProsConsSetting = () => {
   const ProsConsSettingEntries: SettingEntry<number>[] = [
     {
       label: "찬성 발언",
-      state: useRoomSettingStore((state) => state.debateSettings.positiveEntry),
-      setState: useRoomSettingStore((state) => state.setPositiveEntry),
+      state: useChangeSettingStore((state) => state.debateSettings.positiveEntry),
+      setState: useChangeSettingStore((state) => state.setPositiveEntry),
       key: "positiveEntry",
       list: SubTimeList,
     },
     {
       label: "반대 발언",
-      state: useRoomSettingStore((state) => state.debateSettings.negativeEntry),
-      setState: useRoomSettingStore((state) => state.setNegativeEntry),
+      state: useChangeSettingStore((state) => state.debateSettings.negativeEntry),
+      setState: useChangeSettingStore((state) => state.setNegativeEntry),
       key: "negativeEntry",
       list: SubTimeList,
     },
     {
       label: "찬성 질문",
-      state: useRoomSettingStore((state) => state.debateSettings.positiveQuestioning),
-      setState: useRoomSettingStore((state) => state.setPositiveQuestioning),
+      state: useChangeSettingStore((state) => state.debateSettings.positiveQuestioning),
+      setState: useChangeSettingStore((state) => state.setPositiveQuestioning),
       key: "positiveQuestioning",
       list: SubTimeList,
     },
     {
       label: "반대 질문",
-      state: useRoomSettingStore((state) => state.debateSettings.negativeQuestioning),
-      setState: useRoomSettingStore((state) => state.setNegativeQuestioning),
+      state: useChangeSettingStore((state) => state.debateSettings.negativeQuestioning),
+      setState: useChangeSettingStore((state) => state.setNegativeQuestioning),
       key: "negativeQuestioning",
       list: SubTimeList,
     },
     {
       label: "찬성 반론",
-      state: useRoomSettingStore((state) => state.debateSettings.positiveRebuttal),
-      setState: useRoomSettingStore((state) => state.setPositiveRebuttal),
+      state: useChangeSettingStore((state) => state.debateSettings.positiveRebuttal),
+      setState: useChangeSettingStore((state) => state.setPositiveRebuttal),
       key: "positiveRebuttal",
       list: SubTimeList,
     },
     {
       label: "반대 반론",
-      state: useRoomSettingStore((state) => state.debateSettings.negativeRebuttal),
-      setState: useRoomSettingStore((state) => state.setNegativeRebuttal),
+      state: useChangeSettingStore((state) => state.debateSettings.negativeRebuttal),
+      setState: useChangeSettingStore((state) => state.setNegativeRebuttal),
       key: "negativeRebuttal",
       list: SubTimeList,
     },
@@ -91,8 +83,8 @@ const FreeSetting = () => {
   const FreeSettingEntries: SettingEntry<number>[] = [
     {
       label: "전체 시간",
-      state: useRoomSettingStore((state) => state.chatDuration),
-      setState: useRoomSettingStore((state) => state.setChatDuration),
+      state: useChangeSettingStore((state) => state.chatDuration),
+      setState: useChangeSettingStore((state) => state.setChatDuration),
       key: "chatDuration",
       list: TotalTimeList,
     },

@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { EnterDebateRequest, EnterDebateResponse } from "../../../features/enterDebate/api/query";
 import { roomList, serverResponse } from ".";
-import { hasFreeSetting, hasProsConsSetting, Participant } from "../../../shared/type";
+import { Participant } from "../../../shared/type";
 import { generateChannelID, generateUserID } from "../lib/uuid";
 
 type EnterDebateParams = {
@@ -37,6 +37,7 @@ export const mockingEnterDebateHandler = http.post<
     status: ownerId ? "방장" : "대기",
   };
 
+  room.ownerId = ownerId ? ownerId : "";
   room.participants.push(newParticipant);
 
   // Return updated room info
@@ -46,7 +47,7 @@ export const mockingEnterDebateHandler = http.post<
     nickName: newParticipant.nickName,
     channelId: room.channelId,
     subChannelId: generateChannelID(),
-    severTimeStamp: new Date().toISOString(),
+    role: body.role,
   };
 
   return HttpResponse.json(serverResponse(responseData), { status: 201 });

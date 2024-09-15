@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { combine, persist } from "zustand/middleware";
+import { combine, persist, subscribeWithSelector } from "zustand/middleware";
 import { DebateStatus, UserInfo } from "../../../shared/type";
+import { useDescriptionStore } from "../../../widgets/debateHome/model/store";
 
 const initalUserInfoState: UserInfo = {
   id: "",
@@ -15,10 +16,10 @@ export const useUserInfoStore = create(
   persist(
     combine(initalUserInfoState, (set) => ({
       setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
-      setMemberId: (newMemberId: string) => set((state) => ({ ...state, memberId: newMemberId })),
+      setIds: (ids: { id: string; memberId: string }) => set((state) => ({ ...state, ...ids })),
       changeTeam: (role: string, subChannelId: string) =>
         set((state) => ({ ...state, role, subChannelId })),
-      reset: () => initalUserInfoState,
+      reset: () => set(initalUserInfoState),
     })),
     { name: "UserInfo" }
   )
@@ -41,7 +42,16 @@ const initalDebateInfoState: DebateInfo = {
 };
 
 export const useDebateInfoStore = create(
-  combine(initalDebateInfoState, (set) => ({
-    setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
-  }))
+  subscribeWithSelector(
+    combine(initalDebateInfoState, (set) => ({
+      setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+    }))
+  )
+);
+
+useDebateInfoStore.subscribe(
+  (state) => state.description,
+  (description) => {
+    useDescriptionStore.setState(() => ({ value: description }));
+  }
 );

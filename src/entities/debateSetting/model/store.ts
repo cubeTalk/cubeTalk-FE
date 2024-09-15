@@ -1,20 +1,19 @@
-import { combine, persist } from "zustand/middleware";
+import { combine } from "zustand/middleware";
 import { createUseOpenDropdownStore } from "../../../shared/components/dropdown/model";
 import { create } from "zustand";
 import {
   DebateSetting,
   hasFreeSetting,
   hasProsConsSetting,
-  TimeSetting,
+  FreeSetting,
+  ProsConsSetting,
 } from "../../../shared/type";
 
 export const useModalDropdownStore = createUseOpenDropdownStore();
 
 export type DebateSettingActions = {
-  reset: (newState: DebateSetting) => void;
+  reset: () => void;
   getState: () => DebateSetting;
-  getChatDuration: () => number;
-  getDebateSettings: () => TimeSetting;
   setMaxParticipants: (newParticipant: number) => void;
   setChatDuration: (newDuration: number) => void;
   setPositiveEntry: (newPositiveEntry: number) => void;
@@ -26,7 +25,7 @@ export type DebateSettingActions = {
   resetSettings: (data: DebateSetting) => void;
 };
 
-export const initialRoomSettingState: DebateSetting = {
+export const initialRoomSettingState: ProsConsSetting & FreeSetting = {
   maxParticipants: 6,
   chatDuration: 30,
   debateSettings: {
@@ -49,9 +48,7 @@ export const dummySetting = {
 };
 
 export const createRoomSettingStore = (initState = initialRoomSettingState) =>
-  combine<DebateSetting, DebateSettingActions>(initState, (set, get) => ({
-    getChatDuration: () => hasFreeSetting(get()),
-    getDebateSettings: () => hasProsConsSetting(get()),
+  combine<ProsConsSetting & FreeSetting, DebateSettingActions>(initState, (set, get) => ({
     setMaxParticipants: (newParticipant: number) =>
       set((state) => ({ ...state, maxParticipants: newParticipant })),
 
@@ -101,8 +98,8 @@ export const createRoomSettingStore = (initState = initialRoomSettingState) =>
 
     resetSettings: (data: DebateSetting) => set(() => ({ ...data })),
     getState: () => get(),
-    reset: (newState: DebateSetting) => set(() => newState),
+    reset: () => set(() => initState),
   }));
 
 const roomSettingStore = createRoomSettingStore();
-export const useRoomSettingStore = create(persist(roomSettingStore, { name: "Setting" }));
+export const useRoomSettingStore = create(roomSettingStore);

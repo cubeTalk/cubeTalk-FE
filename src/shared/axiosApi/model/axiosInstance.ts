@@ -8,8 +8,9 @@ export type ServerResponse<T = undefined> = {
 };
 
 export const instance = axios.create({
-  timeout: 3000,
+  timeout: 2000,
   baseURL: import.meta.env.VITE_HTTP,
+  maxRedirects: 1,
 });
 
 instance.interceptors.request.use(

@@ -18,7 +18,7 @@ export const mockingCreateDebateHandler = http.post<
   const { title, description, maxParticipants, chatMode } = body;
 
   // Dummy data
-  const newId = `room-${roomList.length + 1}`;
+  const newId = `room${roomList.length + 1}`;
   const newMemberId = generateUserID();
   const newChannelId = generateUUID();
   const CreateTime = new Date().toISOString();
