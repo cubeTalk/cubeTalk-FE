@@ -35,29 +35,29 @@ const SettingBody = () => {
         </div>
       </div>
       {chatMode === "찬반" && (
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 flex-wrap">
           <div className={`${ProsTimeStyle}`}>
-            <span>찬성 발언</span>
+            <span>찬성발언</span>
             <span className="">{debateSettings.positiveEntry}분</span>
           </div>
           <div className={`${ConsTimeStyle}`}>
-            <span>반대 발언</span>
+            <span>반대발언</span>
             <span>{debateSettings.negativeEntry}분</span>
           </div>
           <div className={`${ProsTimeStyle}`}>
-            <span>찬성 질문</span>
+            <span>찬성질문</span>
             <span>{debateSettings.positiveQuestioning}분</span>
           </div>
           <div className={`${ConsTimeStyle}`}>
-            <span>반대 질문</span>
+            <span>반대질문</span>
             <span>{debateSettings.negativeQuestioning}분</span>
           </div>
           <div className={`${ProsTimeStyle}`}>
-            <span>찬성 반론</span>
+            <span>찬성반론</span>
             <span>{debateSettings.positiveRebuttal}분</span>
           </div>
           <div className={`${ConsTimeStyle}`}>
-            <span>반대 반론</span>
+            <span>반대반론</span>
             <span>{debateSettings.negativeRebuttal}분</span>
           </div>
         </div>
@@ -75,6 +75,6 @@ export const Setting = () => {
   );
 };
 
-const BaseStyle = "flex flex-row items-center gap-2 rounded-xl px-2 py-0.5 w-fit";
+const BaseStyle = "flex flex-row items-center gap-2 rounded-xl px-2 py-0.5 w-fit break-keep";
 const ProsTimeStyle = `${BaseStyle} bg-yellow`;
 const ConsTimeStyle = `${BaseStyle} bg-sky`;
