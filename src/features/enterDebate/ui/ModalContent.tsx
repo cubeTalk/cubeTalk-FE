@@ -7,8 +7,9 @@ import { SubmitButton } from "../../../shared/components/button";
 import { useEnterDebateQuery } from "../api/query";
 import { TeamButtons } from "../../../entities/TeamButtons";
 import { useTeamChoseStore } from "../../../entities/TeamButtons/model/store";
-import { useInfoStore } from "../../../entities/debateInfo";
 import { DebateRole } from "../../../shared/type";
+import { useisOwnerStore } from "../../createDebate/model/store";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
 const NickName = () => {
   const nickName = useEnterDebateStore((state) => state.nickName);
@@ -37,9 +38,9 @@ const Submit = () => {
   const { mutate, isPending } = useEnterDebateQuery();
   const nickName = useEnterDebateStore((state) => state.nickName);
   const team = useTeamChoseStore((state) => state.team);
-  const isOwner = useInfoStore((state) => state.userInfo.isOwner);
+  const isOwner = useisOwnerStore((state) => state.isOwner);
   const checkName = useEnterDebateStore((state) => state.checkName);
-  const memberId = useInfoStore((state) => state.userInfo.memberId);
+  const memberId = useUserInfoStore((state) => state.memberId);
 
   const isDebateRole = (team: string): team is DebateRole => {
     return team === "찬성" || team === "반대" || team === "관전";

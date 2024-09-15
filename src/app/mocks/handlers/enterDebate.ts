@@ -41,22 +41,11 @@ export const mockingEnterDebateHandler = http.post<
 
   // Return updated room info
   const responseData: EnterDebateResponse = {
-    id: room.id,
-    chatStatus: room.chatStatus,
-    participants: room.participants,
-    title: room.title,
-    description: room.description,
-    chatMode: room.chatMode,
-    maxParticipants: room.maxParticipants,
-    channelId: room.channelId,
-    chatDuration: hasFreeSetting(room),
-    debateSettings: hasProsConsSetting(room),
-    chatGenerationTime: room.chatGenerationTime,
-
+    id,
     memberId: newParticipant.memberId,
     nickName: newParticipant.nickName,
+    channelId: room.channelId,
     subChannelId: generateChannelID(),
-    ownerId: ownerId || "",
     severTimeStamp: new Date().toISOString(),
   };
 

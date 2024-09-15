@@ -1,4 +1,4 @@
-import { useInfoStore } from "../../debateInfo";
+import { useUserInfoStore } from "../../debateInfo";
 import { useTeamChoseStore } from "../model/store";
 
 // 타입 정의
@@ -32,7 +32,7 @@ const TeamButton = ({
 );
 
 export const TeamButtons = () => {
-  const originTeam = useInfoStore((state) => state.userInfo.team);
+  const originTeam = useUserInfoStore((state) => state.role);
   const { team, setTeam } = useTeamChoseStore();
   return (
     <>

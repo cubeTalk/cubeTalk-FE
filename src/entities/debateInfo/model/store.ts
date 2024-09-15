@@ -1,74 +1,47 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
-import { DebateStatus } from "../../../shared/type";
+import { DebateStatus, UserInfo } from "../../../shared/type";
 
-interface UserInfo {
-  memberId: string;
-  nickName: string;
-  severTimeStamp: string;
-  isOwner: boolean;
-  role: string;
-}
+const initalUserInfoState: UserInfo = {
+  id: "",
+  memberId: "",
+  nickName: "",
+  channelId: "",
+  subChannelId: "",
+  role: "",
+};
 
-interface SubscribeInfo {
-  channelId: string;
-  subChannelId: string;
-}
+export const useUserInfoStore = create(
+  persist(
+    combine(initalUserInfoState, (set) => ({
+      setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
+      setMemberId: (newMemberId: string) => set((state) => ({ ...state, memberId: newMemberId })),
+      changeTeam: (role: string, subChannelId: string) =>
+        set((state) => ({ ...state, role, subChannelId })),
+      reset: () => initalUserInfoState,
+    })),
+    { name: "UserInfo" }
+  )
+);
 
 interface DebateInfo {
-  id: string
+  id: string;
   title: string;
   description: string;
   chatMode: string;
   chatStatus: DebateStatus;
 }
 
-interface RoomInfoState {
-  userInfo: UserInfo;
-  subscribeInfo: SubscribeInfo;
-  debateInfo: DebateInfo;
-}
-
-const initalRoomInfoState: RoomInfoState = {
-  userInfo: {
-    memberId: "",
-    nickName: "",
-    severTimeStamp: "",
-    isOwner: false,
-    role: "",
-  },
-  subscribeInfo: {
-    channelId: "",
-    subChannelId: "",
-  },
-  debateInfo: {
-    id: "",
-    title: "",
-    description: "",
-    chatMode: "",
-    chatStatus: "CREATED",
-  },
+const initalDebateInfoState: DebateInfo = {
+  id: "",
+  title: "",
+  description: "",
+  chatMode: "",
+  chatStatus: "CREATED",
 };
 
-export const useInfoStore = create(
-  persist(
-    combine(initalRoomInfoState, (set) => ({
-      reset: () => set(() => (initalRoomInfoState)),
-      updateUserInfo: (data: Partial<UserInfo>) =>
-        set((state) => ({
-          userInfo: { ...state.userInfo, ...data },
-        })),
-
-      updateSubscribeInfo: (data: Partial<SubscribeInfo>) =>
-        set((state) => ({
-          subscribeInfo: { ...state.subscribeInfo, ...data },
-        })),
-
-      updateDebateInfo: (data: Partial<DebateInfo>) =>
-        set((state) => ({
-          debateInfo: { ...state.debateInfo, ...data },
-        })),
-    })),
-    { name: "Info" }
-  )
+export const useDebateInfoStore = create(
+  combine(initalDebateInfoState, (set) => ({
+    setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+  }))
 );

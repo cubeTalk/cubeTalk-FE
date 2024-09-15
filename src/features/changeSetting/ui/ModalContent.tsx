@@ -1,21 +1,27 @@
 import styled from "styled-components";
 import RoomSetting, { MaxParticipants } from "../../../entities/debateSetting";
-import { useInfoStore } from "../../../entities/debateInfo";
 import { useChangeSettingStore } from "../model/store";
 import { useEffect } from "react";
 import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
+import { useDebateInfoStore } from "../../../entities/debateInfo";
+import { SubmitButton } from "../../../shared/components/button";
+import { FreeSetting, ProsConsSetting } from "../../../shared/type";
+import { useChangeSettingQuery } from "../api/query";
 
 const Header = () => {
   const resetSettings = useChangeSettingStore((state) => state.resetSettings);
+  const maxParticipants = useRoomSettingStore((state) => state.maxParticipants);
+  const getChatDuration = useRoomSettingStore((state) => state.getChatDuration);
+  const getDebateSettings = useRoomSettingStore((state) => state.getDebateSettings);
   return (
     <div className="flex flex-row justify-center">
       <h2>설정 변경</h2>
       <Reset
         onClick={() =>
           resetSettings({
-            maxParticipants: useRoomSettingStore.getState().maxParticipants,
-            chatDuration: useRoomSettingStore.getState().getChatDuration(),
-            debateSettings: useRoomSettingStore.getState().getDebateSettings(),
+            maxParticipants: maxParticipants,
+            chatDuration: getChatDuration(),
+            debateSettings: getDebateSettings(),
           })
         }
       >
@@ -25,7 +31,7 @@ const Header = () => {
   );
 };
 
-const Participants = () => {
+const SetParticipants = () => {
   return (
     <MaxParticipants
       className="flex flex-row gap-3 items-center"
@@ -35,24 +41,47 @@ const Participants = () => {
 };
 
 const Setting = () => {
-  const chatMode = useInfoStore((state) => state.debateInfo.chatMode);
   return <RoomSetting chatMode={chatMode} useStore={useChangeSettingStore} />;
 };
 
+const ChangeSetting = () => {
+  const { mutate, isPending } = useChangeSettingQuery();
+  const chatMode = useDebateInfoStore((state) => state.chatMode);
+  const maxParticipants = useRoomSettingStore((state) => state.maxParticipants);
+  const getChatDuration = useRoomSettingStore((state) => state.getChatDuration);
+  const getDebateSettings = useRoomSettingStore((state) => state.getDebateSettings);
+
+  const onClickHandler = () => {
+    const submitData =
+      chatMode === "자유"
+        ? ({
+            maxParticipants,
+            chatDuration: getChatDuration(),
+          } as FreeSetting)
+        : ({
+            maxParticipants,
+            debateSettings: getDebateSettings(),
+          } as ProsConsSetting);
+    mutate(submitData);
+  };
+
+  return <SubmitButton text="변경하기" isPending={isPending} onClickHandler={onClickHandler} />;
+};
+
 export const ModalContent = () => {
-  const resetSettings = useChangeSettingStore((state) => state.resetSettings);
+  const reset = useChangeSettingStore((state) => state.reset);
+  const getState = useRoomSettingStore((state) => state.getState);
+
   useEffect(() => {
-    resetSettings({
-      maxParticipants: useRoomSettingStore.getState().maxParticipants,
-      chatDuration: useRoomSettingStore.getState().getChatDuration(),
-      debateSettings: useRoomSettingStore.getState().getDebateSettings(),
-    });
-  }, [resetSettings]);
+    reset(getState());
+  }, []);
+
   return (
     <>
       <Header />
-      <Participants />
+      <SetParticipants />
       <Setting />
+      <ChangeSetting />
     </>
   );
 };

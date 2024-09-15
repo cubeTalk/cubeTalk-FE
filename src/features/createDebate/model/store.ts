@@ -21,4 +21,10 @@ export const useRoomStore = create(
   }))
 );
 
-export const chatMode = ["자유", "찬반"];
+export const useisOwnerStore = create(
+  combine({ isOwner: false }, (set) => ({
+    actions: {
+      setIsOwner: () => set({ isOwner: true }),
+    },
+  }))
+);

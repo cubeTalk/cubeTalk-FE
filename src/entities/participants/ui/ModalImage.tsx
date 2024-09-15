@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { CloseButton } from "../../../shared/components/button";
 import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
-import { useInfoStore } from "../../debateInfo";
 import { Participant, ParticipantStatus } from "../../../shared/type";
+import { useDebateInfoStore, useUserInfoStore } from "../../debateInfo";
 
 interface ModalImageProps {
   closeModal: () => void;
@@ -31,7 +31,7 @@ const UserProfile = ({ user }: { user: Participant }) => {
 };
 
 export const ModalImage = ({ closeModal }: ModalImageProps) => {
-  const memberId = useInfoStore((state) => state.userInfo.memberId);
+  const memberId = useUserInfoStore((state) => state.memberId);
   const participants = useParticipantsStore((state) => state.list);
   return (
     <Layout>

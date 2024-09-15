@@ -6,10 +6,10 @@ import RoomSetting, { MaxParticipants } from "../../../entities/debateSetting";
 import { useRoomStore } from "../model/store";
 import { SubmitButton } from "../../../shared/components/button";
 import { colflex } from "../../../shared/style/commonStyle";
-import { useCreateRoomQuery } from "../api/query";
-import { DebateMode } from "../../../shared/type";
+import { DebateMode, FreeDebate, ProsConsDebate } from "../../../shared/type";
 import { validTitle } from "../lib";
 import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
+import { useCreateDebateQuery } from "../api/query";
 
 const Title = () => {
   const title = useRoomStore((state) => state.title);
@@ -71,16 +71,23 @@ const Setting = () => {
 
 const Submit = () => {
   const { title, description, chatMode } = useRoomStore((state) => state);
-  const { mutate, isPending } = useCreateRoomQuery();
-  const onClickHandler = () =>
-    mutate({
+  const { mutate, isPending } = useCreateDebateQuery();
+  const onClickHandler = () => {
+    const submitData = chatMode === "자유" ? {
       title,
       description,
       chatMode: chatMode as DebateMode,
       maxParticipants: useRoomSettingStore.getState().maxParticipants,
       chatDuration: useRoomSettingStore.getState().getChatDuration(),
+    } as FreeDebate : {
+      title,
+      description,
+      chatMode: chatMode as DebateMode,
+      maxParticipants: useRoomSettingStore.getState().maxParticipants,
       debateSettings: useRoomSettingStore.getState().getDebateSettings(),
-    });
+    } as ProsConsDebate
+    mutate(submitData);
+  }
 
   return (
     <SubmitButton

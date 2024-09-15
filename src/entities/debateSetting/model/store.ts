@@ -11,7 +11,8 @@ import {
 export const useModalDropdownStore = createUseOpenDropdownStore();
 
 export type DebateSettingActions = {
-  reset: () => void;
+  reset: (newState: DebateSetting) => void;
+  getState: () => DebateSetting;
   getChatDuration: () => number;
   getDebateSettings: () => TimeSetting;
   setMaxParticipants: (newParticipant: number) => void;
@@ -99,7 +100,8 @@ export const createRoomSettingStore = (initState = initialRoomSettingState) =>
       })),
 
     resetSettings: (data: DebateSetting) => set(() => ({ ...data })),
-    reset: () => set(() => initState),
+    getState: () => get(),
+    reset: (newState: DebateSetting) => set(() => newState),
   }));
 
 const roomSettingStore = createRoomSettingStore();

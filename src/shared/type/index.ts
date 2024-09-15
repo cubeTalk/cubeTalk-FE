@@ -1,5 +1,3 @@
-import { dummySetting } from "../../entities/debateSetting/model/store";
-
 export type DebateMode = "찬반" | "자유";
 export type DebateStatus = "CREATED" | "STARTED";
 
@@ -42,7 +40,14 @@ export const hasProsConsSetting = (
   if ("debateSettings" in setting) {
     return setting.debateSettings;
   }
-  return dummySetting;
+  return {
+    negativeEntry: 5,
+    negativeQuestioning: 5,
+    negativeRebuttal: 5,
+    positiveEntry: 5,
+    positiveQuestioning: 5,
+    positiveRebuttal: 5,
+  };
 };
 
 export const hasFreeSetting = (
@@ -51,17 +56,21 @@ export const hasFreeSetting = (
   if ("chatDuration" in setting) {
     return setting.chatDuration;
   }
-  return 30;
+  return 5;
 };
 
-export type DebateRoomType = DebateRoomBaseType & {
+export type DebateRoomAddition = {
   id: string; // 토론방 ID
   chatStatus: DebateStatus; // 토론방 상태
   ownerId: string; // 방장 ID
-  chatGenerationTime: string; // 토론 생성 시각(timestamp)
   channelId: string; // 메인 채팅방 ID
   participants: Participant[];
+  createdAt: string;
+  updatedAt: string; // 토론 생성 시각(timestamp)
 };
+
+export type DebateRoomType = DebateRoomBaseType & DebateRoomAddition;
+
 export type DebateRole = "찬성" | "반대" | "관전";
 
 export interface Participant {
@@ -76,9 +85,9 @@ export type UserInfo = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
   nickName: string; // 토론 참가자 닉네임
-  severTimeStamp: string; // 토론 입장시각 (TimeStamp)
   channelId: string; // 메인 채팅방 ID
   subChannelId: string; // 서브 채팅방 ID
+  role: string;
 };
 
 export type MessageType = "CHAT" | "VOTE" | "READY" | ProgressMessageType;

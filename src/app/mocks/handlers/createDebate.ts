@@ -5,7 +5,7 @@ import {
   CreateDebateRoomResponse,
 } from "../../../features/createDebate/api/query";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
-import { DebateRoomType, hasFreeSetting, hasProsConsSetting } from "../../../shared/type";
+import { DebateRoomAddition, DebateRoomType, FreeDebate, hasFreeSetting, hasProsConsSetting, ProsConsDebate } from "../../../shared/type";
 import { generateUserID, generateUUID } from "../lib/uuid";
 
 export const mockingCreateDebateHandler = http.post<
@@ -21,8 +21,21 @@ export const mockingCreateDebateHandler = http.post<
   const newId = `room-${roomList.length + 1}`;
   const newMemberId = generateUserID();
   const newChannelId = generateUUID();
-
-  const newRoom: DebateRoomType = {
+  const CreateTime = new Date().toISOString();
+  const newRoom: DebateRoomType = chatMode === "자유" ? {
+    channelId: newChannelId,
+    chatStatus: "CREATED",
+    ownerId: "",
+    id: newId,
+    title,
+    description,
+    maxParticipants,
+    chatMode,
+    chatDuration: hasFreeSetting(body),
+    participants: [],
+    updatedAt: CreateTime,
+    createdAt: CreateTime,
+  } as FreeDebate & DebateRoomAddition : {
     channelId: newChannelId,
     chatGenerationTime: new Date().toISOString(),
     chatStatus: "CREATED",
@@ -32,10 +45,11 @@ export const mockingCreateDebateHandler = http.post<
     description,
     maxParticipants,
     chatMode,
-    chatDuration: hasFreeSetting(body),
     debateSettings: hasProsConsSetting(body),
     participants: [],
-  };
+    updatedAt: CreateTime,
+    createdAt: CreateTime,
+  } as ProsConsDebate & DebateRoomAddition;
 
   roomList.push(newRoom);
   const responseData = {

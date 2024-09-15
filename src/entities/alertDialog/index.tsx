@@ -33,13 +33,15 @@ const AlertDialog = ({ children }: AlertDialogProps) => {
         ok: ok ?? "",
         cancel: cancel ?? "",
         onClickOK: onClickOK
-          ? onClickOK
+          ? () => {
+            onClickOK()
+            setState(undefined);
+          }
           : () => {
               setState(undefined);
               resolve(true);
             },
         onClickCancel: () => {
-          console.log("why");
           setState(undefined);
           resolve(false);
         },

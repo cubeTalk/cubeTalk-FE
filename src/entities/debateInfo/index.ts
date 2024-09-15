@@ -1,1 +1,1 @@
-export { useInfoStore } from "./model/store";
+export { useUserInfoStore, useDebateInfoStore } from "./model/store";

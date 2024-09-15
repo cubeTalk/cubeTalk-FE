@@ -3,10 +3,10 @@ import { axios } from "../../../shared/axiosApi";
 import { useContext } from "react";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useEnterModalStore } from "../../enterDebate/model/store";
-import { useInfoStore } from "../../../entities/debateInfo";
-import { useCreateDebateModalStore } from "../model/store";
+import { useCreateDebateModalStore, useisOwnerStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { DebateRoomBaseType } from "../../../shared/type";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
 export type CreateDebateRoomRequest = DebateRoomBaseType;
 export type CreateDebateRoomResponse = {
@@ -14,26 +14,26 @@ export type CreateDebateRoomResponse = {
   memberId: string; // 사용자 UUID
 };
 
-export const CreateRoomKey = "/createRoom";
+export const CreateDebateKey = "/createDebate";
 
-export const useCreateRoomQuery = () => {
-  const updateDebateInfo = useInfoStore((state) => state.updateDebateInfo);
-  const updateUserInfo = useInfoStore((state) => state.updateUserInfo);
-  const postCreateRoom = (
+export const useCreateDebateQuery = () => {
+  const postCreateDebate = (
     data: CreateDebateRoomRequest
   ): Promise<ServerResponse<CreateDebateRoomResponse>> => axios.post("/chat", data);
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
+  const setMemberId = useUserInfoStore((state) => state.setMemberId);
+  const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
   return useMutation({
-    mutationKey: [CreateRoomKey],
-    mutationFn: (data: CreateDebateRoomRequest) => postCreateRoom(data),
+    mutationKey: [CreateDebateKey],
+    mutationFn: (data: CreateDebateRoomRequest) => postCreateDebate(data),
     onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
-      updateDebateInfo({ id: response.id });
-      updateUserInfo({ memberId: response.memberId, isOwner: true });
+      setMemberId(response.memberId);
+      setIsOwner();
       closeCreateDebateModal();
       openEnterDebateModal();
     },
