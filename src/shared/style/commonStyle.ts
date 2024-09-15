@@ -71,10 +71,28 @@ export const spinner = css`
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-top-color: var(--white);
   border-radius: 100%;
-  animation: spin 1s ease-in-out infinite;
+  animation: spin 1s linear infinite;
   @keyframes spin {
-    100%
-    {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const blackSpinner = css`
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0.7);
+  border-top-color: var(--white);
+  border-radius: 100%;
+  animation: spin 1.2s linear infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
       transform: rotate(360deg);
     }
   }

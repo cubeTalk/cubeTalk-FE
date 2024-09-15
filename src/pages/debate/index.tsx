@@ -11,6 +11,7 @@ import { hasFreeSetting, hasProsConsSetting } from "../../shared/type";
 import { useDebateInfoStore, useUserInfoStore } from "../../entities/debateInfo";
 import { useisOwnerStore } from "../../features/createDebate/model/store";
 import { AlertContext } from "../../entities/alertDialog/model/context";
+import { useParticipantsStore } from "../../entities/participants/model/store";
 
 const DebatePage = () => {
   const { debateRoomId } = useParams();
@@ -18,11 +19,15 @@ const DebatePage = () => {
   const resetSettings = useRoomSettingStore((state) => state.resetSettings);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
   const memberId = useUserInfoStore((state) => state.memberId);
+  const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
   const navigate = useNavigate();
   const { alert } = useContext(AlertContext);
   const { data, isError } = useQuery({
     queryKey: ["getDebateInfo"],
     queryFn: async () => getDebateInfo(debateRoomId),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 60000,
   });
 
   useEffect(() => {
@@ -47,11 +52,12 @@ const DebatePage = () => {
         chatDuration: hasFreeSetting(debateInfo),
         debateSettings: hasProsConsSetting(debateInfo),
       });
+      resetParticipants(debateInfo.participants);
       if (debateInfo.ownerId === memberId) {
         setIsOwner();
       }
     }
-  }, [data, memberId, resetSettings, setIsOwner, updateDebateInfo]);
+  }, [data, memberId, resetParticipants, resetSettings, setIsOwner, updateDebateInfo]);
 
   return (
     <PageLayout>

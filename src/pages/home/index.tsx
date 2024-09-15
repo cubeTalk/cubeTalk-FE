@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import RoomCard from "../../entities/roomCard";
 import RoomHeader from "../../widgets/roomHeader";
-import { colflex, spinner } from "../../shared/style/commonStyle";
+import { colflex, blackSpinner } from "../../shared/style/commonStyle";
 import { useQuery } from "@tanstack/react-query";
 import { getCreatedDebateQuery, getStartedDebateQuery } from "./api/query";
 import { useContext, useEffect } from "react";
@@ -38,7 +38,9 @@ const StartedRooms = () => {
       <RoomHeader text="진행중인 토론목록" imgSrc="/Icon/playing.png" isHome={true} />
       <CardList>
         {isPending ? (
-          <CardSpinner />
+          <div className="flex justify-center items-center min-h-60">
+            <CardSpinner />
+          </div>
         ) : data?.data?.length === 0 ? (
           <NoDebateRooms text={"진행중인"} />
         ) : (
@@ -80,7 +82,9 @@ const CreatedRooms = () => {
       <RoomHeader text="참가 가능 토론목록" imgSrc="/Icon/playing.png" isHome={true} />
       <CardList>
         {isPending ? (
-          <CardSpinner />
+          <div className="flex justify-center items-center">
+            <CardSpinner />
+          </div>
         ) : data?.data?.length === 0 ? (
           <NoDebateRooms text={"참가 가능한"} />
         ) : (
@@ -128,7 +132,7 @@ const RoomSection = styled.div`
 const CardList = styled.div``;
 
 const CardSpinner = styled.div`
-  ${spinner}
-  width: 40px;
-  height: 40px;
+  ${blackSpinner}
+  width: 60px;
+  height: 60px;
 `;
