@@ -25,10 +25,12 @@ const DebatePage = () => {
     queryFn: async () => getDebateInfo(debateRoomId),
   });
 
-  if (isError) {
-    alert("토론방 정보를 가져오는데 실패하였습니다. 다시 참가해 주세요", "확인");
-    navigate("/");
-  }
+  useEffect(() => {
+    if (isError) {
+      alert("토론방 정보를 가져오는데 실패하였습니다. 다시 참가해 주세요", "확인");
+      navigate("/");
+    }
+  }, [isError, alert, navigate]);
 
   useEffect(() => {
     if (data && data.data) {

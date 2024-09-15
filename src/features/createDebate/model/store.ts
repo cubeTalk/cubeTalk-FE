@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { BaseDebate, DebateMode } from "../../../shared/type";
 import { createModalStore } from "../../../shared/components/modal/model/store";
-import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 
 export const useCreateDebateModalStore = createModalStore(false);
 

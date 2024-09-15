@@ -6,6 +6,7 @@ import Header from "./ui/header";
 import Footer from "./ui/footer";
 import EnterDebateModal from "../../features/enterDebate";
 import { useResetDebateInfo } from "../../pages/home/hook/useResetDebateInfo";
+import { CreateDebateModal } from "../../features/createDebate";
 
 export const Root = () => {
   useResetDebateInfo();
@@ -18,6 +19,7 @@ export const Root = () => {
           <Outlet />
         </BodyContainer>
       </BodyLayout>
+      <CreateDebateModal />
       <EnterDebateModal />
       <Footer />
     </>
