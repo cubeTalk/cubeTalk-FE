@@ -1,11 +1,10 @@
 import {
-  ChatMessage,
+  isChatMessage,
+  isTimerEndMessage,
+  isTimerMessage,
+  isVoteMessage,
   Message,
-  TimerEndMessage,
-  TimerMessage,
-  VoteMessage,
 } from "../../shared/type";
-import { MessageWithIsLeft } from "../../widgets/mainChat/model/store";
 import { useInfoStore } from "../debateInfo";
 import Bubble from "./ui/Bubble";
 import { ModeratorBubble, DebateOutComeBubble, DebateStartBubble, VoteBubble } from "./ui/ModeratorBubble";
@@ -55,19 +54,3 @@ const MessageRender = ({ message }: MessageRenderProps) => {
 };
 
 export default MessageRender;
-
-// type gurads
-const isChatMessage = (message: Message): message is MessageWithIsLeft => message.type === "CHAT";
-const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
-const isTimerMessage = (message: Message): message is TimerMessage =>
-  message.type === "긍정입장" ||
-  message.type === "부정질의" ||
-  message.type === "부정입장" ||
-  message.type === "긍정질의" ||
-  message.type === "긍정반박" ||
-  message.type === "부정반박" ||
-  message.type === "투표" ||
-  message.type === "결과" ||
-  message.type === "TIMER_END";
-const isTimerEndMessage = (message: Message): message is TimerEndMessage =>
-  message.type === "TIMER_END";

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useInfoStore } from "../../../entities/debateInfo";
 import { useParticipantsStore } from "../../../entities/participants/model/store";
-import { useRoomSettingStore } from "../../../entities/roomSetting/model/store";
+import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
 import { useDebateMemoStore } from "../../../widgets/debateMemo/model/store";
 
 export const useResetDebateInfo = () => {

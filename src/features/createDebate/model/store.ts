@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { DebateMode } from "../../../shared/type";
+import { BaseDebate, DebateMode } from "../../../shared/type";
 import { createModalStore } from "../../../shared/components/modal/model/store";
 
 export const useCreateDebateModalStore = createModalStore(false);
 
-const DebateDefaultState = {
+const DebateDefaultState: BaseDebate = {
   title: "",
   description: "",
   chatMode: "찬반",

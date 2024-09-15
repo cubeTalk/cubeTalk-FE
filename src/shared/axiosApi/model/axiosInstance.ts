@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { HandleError } from "../lib/errorhandler";
 
 export type ServerResponse<T = undefined> = {
-  status: number;
+  status: string;
   message: string;
   data?: T;
 };

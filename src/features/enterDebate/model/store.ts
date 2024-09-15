@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { createModalStore } from "../../../shared/components/modal/model/store";
 import { combine } from "zustand/middleware";
-
 export const useEnterModalStore = createModalStore(false);
 
 const enterDebateState = {

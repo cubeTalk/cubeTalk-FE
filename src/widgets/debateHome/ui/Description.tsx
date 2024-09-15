@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { scrollBar } from "../../../shared/style/commonStyle";
+import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useDescriptionStore } from "../model/store";
 
 const DescriptionHeader = () => {
@@ -28,8 +28,8 @@ export const Description = () => {
 
 const Multiline = styled.textarea`
   ${scrollBar}
-  width: 100%;
   height: 100%;
+  width: 100%;
   resize: none;
   white-space: pre-wrap;
   outline: none;
@@ -46,6 +46,7 @@ const Reset = styled.button`
 `;
 
 const Container = styled.div`
+  ${colflex}
   width: 100%;
-  flex-grow: 1;
+  height: 100%;
 `;

@@ -4,10 +4,6 @@ import { ChatMessage, Message, Participant } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 import { createModalStore } from "../../../shared/components/modal/model/store";
 
-export type MessageWithIsLeft = ChatMessage & {
-  isLeft?: boolean;
-};
-
 const initMainMessageState = {
   messages: [] as Message[],
 };

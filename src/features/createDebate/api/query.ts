@@ -1,15 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { DebateRoomBase } from "../../../shared/type";
 import { useContext } from "react";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useEnterModalStore } from "../../enterDebate/model/store";
 import { useInfoStore } from "../../../entities/debateInfo";
 import { useCreateDebateModalStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
+import { DebateRoomBaseType } from "../../../shared/type";
 
-type PostDebateRoomRequest = DebateRoomBase;
-type PostDebateRoomResponse = {
+export type CreateDebateRoomRequest = DebateRoomBaseType;
+export type CreateDebateRoomResponse = {
   id: string; // 토론방 ID
   memberId: string; // 사용자 UUID
 };
@@ -20,16 +20,16 @@ export const useCreateRoomQuery = () => {
   const updateDebateInfo = useInfoStore((state) => state.updateDebateInfo);
   const updateUserInfo = useInfoStore((state) => state.updateUserInfo);
   const postCreateRoom = (
-    data: PostDebateRoomRequest
-  ): Promise<ServerResponse<PostDebateRoomResponse>> => axios.post("/chat", data);
+    data: CreateDebateRoomRequest
+  ): Promise<ServerResponse<CreateDebateRoomResponse>> => axios.post("/chat", data);
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
 
   return useMutation({
     mutationKey: [CreateRoomKey],
-    mutationFn: (data: PostDebateRoomRequest) => postCreateRoom(data),
-    onSuccess: (data: ServerResponse<PostDebateRoomResponse>) => {
+    mutationFn: (data: CreateDebateRoomRequest) => postCreateRoom(data),
+    onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
       updateDebateInfo({ id: response.id });

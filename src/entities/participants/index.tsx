@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { center, commonButton } from "../../shared/style/commonStyle";
 import { useParticipantsModalStore, useParticipantsStore } from "./model/store";
 import { ModalImage } from "./ui/ModalImage";
-import { useRoomSettingStore } from "../roomSetting/model/store";
+import { useRoomSettingStore } from "../debateSetting/model/store";
 
 const ParticipantButton = () => {
   const { modalVisible, closeModal, clickModal } = useParticipantsModalStore((state) => state);

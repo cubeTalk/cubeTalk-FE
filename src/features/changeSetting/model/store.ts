@@ -1,0 +1,16 @@
+import { create } from "zustand";
+import {
+  createRoomSettingStore,
+  useRoomSettingStore,
+} from "../../../entities/debateSetting/model/store";
+import { createModalStore } from "../../../shared/components/modal/model/store";
+
+export const useSettingChangeModalStore = createModalStore(false);
+
+export const changeSettingStore = createRoomSettingStore({
+  maxParticipants: useRoomSettingStore.getState().maxParticipants,
+  chatDuration: useRoomSettingStore.getState().getChatDuration(),
+  debateSettings: useRoomSettingStore.getState().getDebateSettings(),
+});
+
+export const useChangeSettingStore = create(changeSettingStore);
