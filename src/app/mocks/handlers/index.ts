@@ -5,6 +5,7 @@ import { mockingGetDebateRoomHandler } from "./getDebateRoom";
 import { mockingChangeDescriptionHandler } from "./changeDescription";
 import { mockingChangeSettingHandler } from "./changeSetting";
 import { mockingGetDebateRoomsHandler } from "./getDebateRooms";
+import { mockingGetParticipantsListHandler } from "./getParticipants";
 
 export const serverResponse = <T>(data: T, message = "테스트용", status = "200") => ({
   status,
@@ -32,4 +33,7 @@ export const handlers = [
 
   // 토론방 목록 조회
   mockingGetDebateRoomsHandler,
+
+  // 팀선택 인원 조회
+  mockingGetParticipantsListHandler,
 ];

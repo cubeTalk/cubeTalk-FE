@@ -3,7 +3,7 @@ import { CloseButton } from "../../../shared/components/button";
 import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
 import { Participant, ParticipantStatus } from "../../../shared/type";
-import { useDebateInfoStore, useUserInfoStore } from "../../debateInfo";
+import { useUserInfoStore } from "../../debateInfo";
 
 interface ModalImageProps {
   closeModal: () => void;
@@ -40,11 +40,11 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
       <ParticipantsConatiner>
         {participants.map((user) => {
           if (memberId !== user.memberId) return;
-          return <MyProfile user={user} />;
+          return <MyProfile user={user} key={user.memberId}/>;
         })}
         {participants.map((user) => {
           if (memberId === user.memberId) return;
-          return <UserProfile user={user} />;
+          return <UserProfile user={user} key={user.memberId}/>;
         })}
       </ParticipantsConatiner>
     </Layout>
