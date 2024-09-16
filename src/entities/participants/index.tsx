@@ -7,7 +7,7 @@ import { useRoomSettingStore } from "../debateSetting/model/store";
 const ParticipantButton = () => {
   const { modalVisible, closeModal, clickModal } = useParticipantsModalStore((state) => state);
   const maxParitipants = useRoomSettingStore((state) => state.maxParticipants);
-  const participants = useParticipantsStore((state) => state.list);
+  const participants = useParticipantsStore((state) => state.participants);
   return (
     <>
       <ShowParticipants onClick={clickModal}>

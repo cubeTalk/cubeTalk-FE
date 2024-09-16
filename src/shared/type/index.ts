@@ -84,7 +84,7 @@ export type DebateRoomAddition = {
 
 export type DebateRoomType = DebateRoomBaseType & DebateRoomAddition;
 
-export type DebateRole = "찬성" | "반대" | "관전";
+export type DebateRole = "찬성" | "반대" | "관전" | "";
 
 export interface Participant {
   nickName: string;
@@ -100,10 +100,11 @@ export type UserInfo = {
   nickName: string; // 토론 참가자 닉네임
   channelId: string; // 메인 채팅방 ID
   subChannelId: string; // 서브 채팅방 ID
-  role: string;
+  role: DebateRole;
 };
 
-export type MessageType = "CHAT" | "VOTE" | "READY" | ProgressMessageType;
+export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType;
+export type ChatMessageType = "찬성" | "반대" | "MAIN" | "관전";
 
 export type ProgressMessageType =
   | "긍정입장"
@@ -121,7 +122,7 @@ type BaseMessage = {
 };
 
 export interface ChatMessage extends BaseMessage {
-  type: "CHAT";
+  type: ChatMessageType;
   messageId: string; // 메세지 ID
   sender: string; // 보낸 유저 UUID
   message: string; // 채팅 내용
@@ -130,7 +131,7 @@ export interface ChatMessage extends BaseMessage {
 }
 
 export interface SendChatMessage extends BaseMessage {
-  type: "CHAT";
+  type: ChatMessageType;
   messageId: string; // 메세지 ID
   sender: string; // 보낸 유저 UUID
   message: string; // 채팅 내용
@@ -172,7 +173,7 @@ export type MessageWithIsLeft = ChatMessage & {
 
 // type gurads
 export const isChatMessage = (message: Message): message is MessageWithIsLeft =>
-  message.type === "CHAT";
+  message.type === "MAIN" || message.type === "찬성" || message.type === "반대" ||  message.type === "관전";
 export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
 export const isTimerMessage = (message: Message): message is TimerMessage =>
   message.type === "긍정입장" ||

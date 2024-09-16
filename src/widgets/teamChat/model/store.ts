@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
-import { ChatMessage, Message } from "../../../shared/type";
+import { ChatMessage, isChatMessage, Message } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 
 export type MessageWithIsLeft = ChatMessage & {
@@ -11,12 +11,10 @@ const initSubMessageState = {
   messages: [] as Message[],
 };
 
-const isChatMessage = (message: Message): message is ChatMessage => message.type === "CHAT";
-
 export const useSubMessageStore = create(
   persist(
     combine(initSubMessageState, (set) => ({
-      MessageAdd: (newMessage: Message, myNickName: string) => {
+      messageAdd: (newMessage: Message, myNickName: string) => {
         let isLeft = true;
         if (isChatMessage(newMessage)) {
           isLeft = newMessage.sender !== myNickName;
@@ -26,7 +24,7 @@ export const useSubMessageStore = create(
         }));
       },
     })),
-    { name: "MainMessages" }
+    { name: "TeamMessages" }
   )
 );
 

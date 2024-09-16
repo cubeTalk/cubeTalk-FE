@@ -5,7 +5,6 @@ import {
   isVoteMessage,
   Message,
 } from "../../shared/type";
-import { useDebateInfoStore } from "../debateInfo";
 import Bubble from "./ui/Bubble";
 import {
   ModeratorBubble,
@@ -45,7 +44,10 @@ const MessageRender = ({ message }: MessageRenderProps) => {
         return <DebateOutComeBubble message={message} />;
       }
       break;
-    case "CHAT":
+    case "MAIN": 
+    case "찬성": 
+    case "반대": 
+    case "관전":
     default:
       if (isChatMessage(message)) {
         return <Bubble message={message} isLeft={message.isLeft} />;
