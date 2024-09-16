@@ -13,7 +13,7 @@ interface RoomHeaderProps {
 }
 
 const SortDropdowns = () => {
-  const { order, setOrder, setSort, setStatus, sort, status } = useDebateSearchParamsStore(
+  const { mode, setMode, setSort, setStatus, sort, status } = useDebateSearchParamsStore(
     (state) => state
   );
   return (
@@ -26,11 +26,11 @@ const SortDropdowns = () => {
         setSelected={setSort}
       />
       <Dropdown
-        label="순서"
+        label="모드"
         useStore={useDebateDropdownStore}
-        list={["asc", "desc"]}
-        selected={order}
-        setSelected={setOrder}
+        list={["자유", "찬반"]}
+        selected={mode}
+        setSelected={setMode}
       />
       <Dropdown
         label="상태"

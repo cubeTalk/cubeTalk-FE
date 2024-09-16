@@ -6,14 +6,14 @@ export const useDebateDropdownStore = createUseOpenDropdownStore();
 
 const initialDebateDropdownState = {
   sort: "createdAt",
-  order: "asc",
+  mode: "자유",
   status: "CREATED",
 };
 
 export const useDebateSearchParamsStore = create(
   combine(initialDebateDropdownState, (set) => ({
     setSort: (newSort: string) => set(() => ({ sort: newSort })),
-    setOrder: (newOrder: string) => set(() => ({ order: newOrder })),
+    setMode: (newMode: string) => set(() => ({ mode: newMode })),
     setStatus: (newStatus: string) => set(() => ({ status: newStatus })),
   }))
 );

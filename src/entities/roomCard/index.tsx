@@ -33,27 +33,27 @@ const RoomCard = ({
         <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
           <Title>{title}</Title>
           <div className="flex items-center gap-4">
-            <h3 className="bg-slate-500 text-gray-800 py-1 px-2 rounded-md shrink-0">{chatMode}</h3>
-            {started ? (
-              <h4 className="text-gray-700 text-sm bg-cyan-200 py-1 px-2 rounded-md">
+            <h3 className="bg-slate-500 py-1 px-2 rounded-md shrink-0">{chatMode}</h3>
+            {chatDuration && createdAt && (!started ? (
+              <h3 className="text-gray-700 text-sm bg-cyan-200 py-1 px-2 rounded-md">
                 {chatDuration}분
-              </h4>
+              </h3>
             ) : (
-              <h4 className="text-gray-700 text-sm bg-rose-200 py-1 px-2 rounded-md">
+              <h3 className="text-gray-700 text-sm bg-rose-200 py-1 px-2 rounded-md">
                 {calculateRemainingTime(chatDuration, createdAt)}
-              </h4>
-            )}
+              </h3>
+            ))}
 
             {!started ? (
               <div className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
-                <h4>
+                <h3>
                   {currentParticipantsCount}명/{maxParticipants}명
-                </h4>
+                </h3>
               </div>
             ) : (
-              <h4 className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
+              <h3 className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
                 {currentParticipantsCount}명 참가
-              </h4>
+              </h3>
             )}
           </div>
         </div>
