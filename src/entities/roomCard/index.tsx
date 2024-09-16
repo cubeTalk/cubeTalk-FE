@@ -57,7 +57,7 @@ const RoomCard = ({
             )}
           </div>
         </div>
-        <DescriptionText>{description}{description}{description}{description}{description}{description}</DescriptionText>
+        <DescriptionText>{description}</DescriptionText>
       </CardContainer>
       <Divider color="#e0e0e0" margin={15} />
     </>

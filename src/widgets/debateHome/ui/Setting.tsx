@@ -16,7 +16,6 @@ const SettingHeader = () => {
 const SettingBody = () => {
   const { chatDuration, debateSettings, maxParticipants } = useRoomSettingStore((state) => state);
   const chatMode = useDebateInfoStore((state) => state.chatMode);
-
   return (
     <div className="flex flex-col gap-2 mb-1">
       <div className="flex flex-row gap-2">

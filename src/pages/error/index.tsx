@@ -39,7 +39,4 @@ const LogoContainer = styled.div`
     height: 40px;
     margin-right: 8px;
   }
-  h1 {
-    color: var(--white);
-  }
 `;
