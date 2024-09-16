@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import RoomCard from "../../entities/roomCard";
 import RoomHeader from "../../widgets/roomHeader";
+import { CardList } from "./ui/CardList";
 import { colflex } from "../../shared/style/commonStyle";
 
 const RoomPage = () => {
   return (
     <PageLayout>
       <RoomHeader text="토론 목록" imgSrc="/Icon/playing.png" />
-      <RoomCard />
+      <CardList />
     </PageLayout>
   );
 };

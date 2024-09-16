@@ -3,6 +3,7 @@ import { colflex, commonButton, spinner } from "../../../shared/style/commonStyl
 import { useEffect, useRef, useState } from "react";
 import ParticipantButton from "../../../entities/participants";
 import { useDebateInfoStore } from "../../../entities/debateInfo";
+import { useisOwnerStore } from "../../../features/createDebate/model/store";
 
 const Title = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -38,18 +39,28 @@ const Title = () => {
 const Start = () => {
   return (
     <StartButton disabled={false} onClick={() => {}}>
-      {false ? <Spinner /> : <h3>시작하기</h3>}
+      <h3>시작하기</h3>
     </StartButton>
   );
-}
+};
+
+const Ready = () => {
+  return (
+    <ReadyButton disabled={false} onClick={() => {}}>
+      <h3>준비하기</h3>
+    </ReadyButton>
+  );
+};
+
 
 const ScreenHeader = () => {
+  const isOwner = useisOwnerStore((state) => state.isOwner);
   return (
     <HeaderContainer>
       <Title />
       <ButtonContainer>
         <ParticipantButton />
-        <Start />
+        {isOwner ? <Start /> : <Ready />}
       </ButtonContainer>
     </HeaderContainer>
   );
@@ -83,6 +94,14 @@ const StartButton = styled.button`
   padding: 0px 8px;
   margin: 5px;
 `;
+
+const ReadyButton = styled.button`
+  ${commonButton}
+  background-color: var(--color-mid);
+  padding: 0px 8px;
+  margin: 5px;
+`;
+
 
 const Spinner = styled.div`
   ${spinner}
