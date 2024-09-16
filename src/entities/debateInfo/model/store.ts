@@ -1,0 +1,58 @@
+import { create } from "zustand";
+import { combine, persist, subscribeWithSelector } from "zustand/middleware";
+import { DebateStatus, UserInfo } from "../../../shared/type";
+import { useDescriptionStore } from "../../../widgets/debateHome/model/store";
+
+const initalUserInfoState: UserInfo = {
+  id: "",
+  memberId: "",
+  nickName: "",
+  channelId: "",
+  subChannelId: "",
+  role: "",
+};
+
+export const useUserInfoStore = create(
+  persist(
+    combine(initalUserInfoState, (set) => ({
+      setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
+      changeTeam: (role: string, subChannelId: string) =>
+        set((state) => ({ ...state, role, subChannelId })),
+      setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
+      reset: () => set(initalUserInfoState),
+    })),
+    { name: "UserInfo" }
+  )
+);
+
+interface DebateInfo {
+  id: string;
+  title: string;
+  description: string;
+  chatMode: string;
+  chatStatus: DebateStatus;
+}
+
+const initalDebateInfoState: DebateInfo = {
+  id: "",
+  title: "",
+  description: "",
+  chatMode: "",
+  chatStatus: "CREATED",
+};
+
+export const useDebateInfoStore = create(
+  subscribeWithSelector(
+    combine(initalDebateInfoState, (set) => ({
+      setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+      setId: (id: string) => set((state) => ({ ...state, id })),
+    }))
+  )
+);
+
+useDebateInfoStore.subscribe(
+  (state) => state.description,
+  (description) => {
+    useDescriptionStore.setState(() => ({ value: description }));
+  }
+);
