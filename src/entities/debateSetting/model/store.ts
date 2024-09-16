@@ -3,7 +3,6 @@ import { createUseOpenDropdownStore } from "../../../shared/components/dropdown/
 import { create } from "zustand";
 import {
   DebateSetting,
-  hasFreeSetting,
   hasProsConsSetting,
   FreeSetting,
   ProsConsSetting,

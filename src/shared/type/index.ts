@@ -92,7 +92,7 @@ export interface Participant {
   role: DebateRole;
   status: ParticipantStatus;
 }
-export type ParticipantStatus = "방장" | "준비" | "대기";
+export type ParticipantStatus = "OWNER" | "READY" | "PENDING";
 
 export type UserInfo = {
   id: string; // 토론방 ID

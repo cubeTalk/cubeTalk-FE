@@ -9,6 +9,8 @@ interface ModalImageProps {
   closeModal: () => void;
 }
 
+const StatusE2K = new Map([["PENDING","대기"], ["READY","준비"], ["OWNER","방장"]]);
+
 const MyProfile = ({ user }: { user: Participant }) => {
   return (
     <div key={user.memberId} className="flex flex-row justify-between">
@@ -16,7 +18,7 @@ const MyProfile = ({ user }: { user: Participant }) => {
         <UserNickName $role={user.role}>{user.nickName}</UserNickName>
         <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">나</h5>
       </div>
-      <h5 className={statusStyle(user.status)}>{user.status}</h5>
+      {user.role !== "관전" && <h5 className={statusStyle(user.status)}>{StatusE2K.get(user.status)}</h5>}
     </div>
   );
 };
@@ -25,7 +27,7 @@ const UserProfile = ({ user }: { user: Participant }) => {
   return (
     <div key={user.memberId} className="flex flex-row justify-between flex-wrap">
       <UserNickName $role={user.role}>{user.nickName}</UserNickName>
-      {user.role !== "관전" && <h5 className={statusStyle(user.status)}>{user.status}</h5>}
+      {user.role !== "관전" && <h5 className={statusStyle(user.status)}>{StatusE2K.get(user.status)}</h5>}
     </div>
   );
 };
@@ -53,8 +55,8 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
 
 const statusStyle = (status: ParticipantStatus) =>
   `px-1 self-center rounded-xl font-semibold flex-shrink-0 ${
-    status === "준비" ? "bg-green" : status === "대기" ? "bg-lightgray" : "bg-red"
-  } ${status === "준비" && "text-white"}`;
+    status === "READY" ? "bg-green" : status === "PENDING" ? "bg-lightgray" : "bg-red"
+  } ${status === "READY" && "text-white"}`;
 
 const Layout = styled.div`
   position: absolute;

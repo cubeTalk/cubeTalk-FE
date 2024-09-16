@@ -3,6 +3,8 @@ import { colflex, rowflex } from "../../shared/style/commonStyle";
 import Divider from "../../shared/components/divider";
 import Dropdown from "../../shared/components/dropdown";
 import { CreateDebateButton } from "../../features/createDebate";
+import { Link } from "react-router-dom";
+import { useDebateDropdownStore, useDebateSearchParamsStore } from "./model/store";
 
 interface RoomHeaderProps {
   text: string;
@@ -10,22 +12,63 @@ interface RoomHeaderProps {
   isHome?: boolean;
 }
 
+const SortDropdowns = () => {
+  const { mode, setMode, setSort, setStatus, sort, status } = useDebateSearchParamsStore(
+    (state) => state
+  );
+  return (
+    <>
+      <Dropdown
+        label="정렬"
+        useStore={useDebateDropdownStore}
+        list={["participants", "createdAt"]}
+        selected={sort}
+        setSelected={setSort}
+      />
+      <Dropdown
+        label="모드"
+        useStore={useDebateDropdownStore}
+        list={["자유", "찬반"]}
+        selected={mode}
+        setSelected={setMode}
+      />
+      <Dropdown
+        label="상태"
+        useStore={useDebateDropdownStore}
+        list={["STARTED", "CREATED"]}
+        selected={status}
+        setSelected={setStatus}
+      />
+    </>
+  );
+};
+
 const RoomHeader = ({ text, imgSrc, isHome = false }: RoomHeaderProps) => {
   return (
     <HeaderContainer>
-      <Title>
-        <img src={imgSrc} alt="titleIcon" />
-        <h2>{text}</h2>
-      </Title>
-      {!isHome && <CreateDebateButton />}
-      {!isHome && (
-        <DorpdownContainer>
-          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
-          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
-          <Dropdown list={["목록1", "목록2", "목록3"]} selected="목록1" />
-        </DorpdownContainer>
+      {isHome ? (
+        <Link to="/room">
+          <Title>
+            <img src={imgSrc} alt="titleIcon" />
+            <h2>{text}</h2>
+          </Title>
+        </Link>
+      ) : (
+        <Title>
+          <img src={imgSrc} alt="titleIcon" />
+          <h2>{text}</h2>
+        </Title>
       )}
-
+      {!isHome && (
+        <div className="flex flex-row justify-between flex-wrap mb-1 mx-1">
+          <DorpdownContainer>
+            <SortDropdowns />
+          </DorpdownContainer>
+          <div className="flex flex-1 justify-end">
+            <CreateDebateButton className="break-keep" />
+          </div>
+        </div>
+      )}
       <Divider />
     </HeaderContainer>
   );
@@ -50,4 +93,5 @@ const Title = styled.div`
 const DorpdownContainer = styled.div`
   ${rowflex}
   flex-wrap: wrap;
+  gap: 10px;
 `;

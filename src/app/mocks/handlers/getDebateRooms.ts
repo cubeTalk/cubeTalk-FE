@@ -17,11 +17,11 @@ export const mockingGetDebateRoomsHandler = http.get<
   const url = new URL(request.url);
   const query = url.searchParams;
 
-  const sort = query.get('sort') || 'createdAt';
-  const order = query.get('order') || 'asc';
-  const status = query.get('status') as "STARTED" | "CREATED";
-  const page = Number(query.get('page')) || 0;
-  const size = Number(query.get('size')) || 20;
+  const sort = query.get("sort") || "createdAt";
+  const order = query.get("order") || "asc";
+  const status = query.get("status") as "STARTED" | "CREATED";
+  const page = Number(query.get("page")) || 0;
+  const size = Number(query.get("size")) || 20;
 
   let filteredRooms = roomList.filter((room) => room.chatMode === mode);
 
@@ -31,12 +31,12 @@ export const mockingGetDebateRoomsHandler = http.get<
 
   // Sort the rooms by participants or createdAt
   filteredRooms = filteredRooms.sort((a, b) => {
-    if (sort === 'participants') {
-      return order === 'asc'
+    if (sort === "participants") {
+      return order === "asc"
         ? a.participants.length - b.participants.length
         : b.participants.length - a.participants.length;
-    } else if (sort === 'createdAt') {
-      return order === 'asc'
+    } else if (sort === "createdAt") {
+      return order === "asc"
         ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     }
@@ -44,11 +44,13 @@ export const mockingGetDebateRoomsHandler = http.get<
   });
 
   const paginatedRooms = filteredRooms.slice(page * size, (page + 1) * size);
-
   if (!paginatedRooms.length) {
     return HttpResponse.json(serverResponse([], "No Rooms found"), { status: 200 });
   }
 
+  const addedpaginatedRooms = paginatedRooms.map((room) => {
+    return { ...room, currentParticipantsCount: room.participants.length };
+  });
   // Otherwise, return the paginated list of rooms
-  return HttpResponse.json(serverResponse(paginatedRooms), { status: 200 });
+  return HttpResponse.json(serverResponse(addedpaginatedRooms), { status: 200 });
 });

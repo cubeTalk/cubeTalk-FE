@@ -7,5 +7,5 @@ export const calculateRemainingTime = (chatDuration: string, createdAt: string):
   const remainingMinutes = Number(chatDuration) - elapsedMinutes;
 
   // Ensure it doesn't go negative
-  return remainingMinutes > 2 ? `${remainingMinutes}분 남음` : "곧 끝남";
+  return remainingMinutes > 0 ? `${remainingMinutes}분 남음` : "곧 종료";
 };

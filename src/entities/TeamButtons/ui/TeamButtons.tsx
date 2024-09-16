@@ -1,11 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { useDebateInfoStore, useUserInfoStore } from "../../debateInfo";
+import { useUserInfoStore } from "../../debateInfo";
 import { useTeamChoseStore } from "../model/store";
-import { getDebateParticipants } from "../api/query";
+import { useDebateParticipantsQuery } from "../api/query";
 import { spinner } from "../../../shared/style/commonStyle";
 import styled from "styled-components";
-import { useContext, useEffect } from "react";
-import { AlertContext } from "../../alertDialog/model/context";
 
 // 타입 정의
 interface TeamButtonProps {
@@ -48,22 +45,14 @@ const TeamButton = ({
 };
 
 export const TeamButtons = () => {
-  const id = useDebateInfoStore((state) => state.id);
-  const { data, isPending } = useQuery({
-    queryKey: ["getDebateParticipants"],
-    queryFn: async () => getDebateParticipants(id),
-    refetchInterval: 5000,
-  });
-
-  const { alert } = useContext(AlertContext);
+  const { data, isPending } = useDebateParticipantsQuery();
   const originTeam = useUserInfoStore((state) => state.role);
   const { team, setTeam } = useTeamChoseStore();
 
-  useEffect(() => {}, [alert, data]);
   if (!(data && data.data)) {
     return (
-      <div className="flex justify-center items-center">
-        <h2>팀선택 불가능</h2>
+      <div className="flex justify-center items-center my-4">
+        <h3>팀선택 오류 입니다. 다시 시도해 주세요</h3>
       </div>
     );
   }
