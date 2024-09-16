@@ -5,7 +5,14 @@ import {
   CreateDebateRoomResponse,
 } from "../../../features/createDebate/api/query";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
-import { DebateRoomAddition, DebateRoomType, FreeDebate, hasFreeSetting, hasProsConsSetting, ProsConsDebate } from "../../../shared/type";
+import {
+  DebateRoomAddition,
+  DebateRoomType,
+  FreeDebate,
+  hasFreeSetting,
+  hasProsConsSetting,
+  ProsConsDebate,
+} from "../../../shared/type";
 import { generateUserID, generateUUID } from "../lib/uuid";
 
 export const mockingCreateDebateHandler = http.post<
@@ -22,43 +29,43 @@ export const mockingCreateDebateHandler = http.post<
   const newMemberId = generateUserID();
   const newChannelId = generateUUID();
   const CreateTime = new Date().toISOString();
-  const newRoom: DebateRoomType = chatMode === "자유" ? {
-    channelId: newChannelId,
-    chatStatus: "CREATED",
-    ownerId: "",
-    id: newId,
-    title,
-    description,
-    maxParticipants,
-    chatMode,
-    chatDuration: hasFreeSetting(body),
-    participants: [],
-    updatedAt: CreateTime,
-    createdAt: CreateTime,
-  } as FreeDebate & DebateRoomAddition : {
-    channelId: newChannelId,
-    chatGenerationTime: new Date().toISOString(),
-    chatStatus: "CREATED",
-    ownerId: "",
-    id: newId,
-    title,
-    description,
-    maxParticipants,
-    chatMode,
-    debateSettings: hasProsConsSetting(body),
-    participants: [],
-    updatedAt: CreateTime,
-    createdAt: CreateTime,
-  } as ProsConsDebate & DebateRoomAddition;
+  const newRoom: DebateRoomType =
+    chatMode === "자유"
+      ? ({
+          channelId: newChannelId,
+          chatStatus: "CREATED",
+          ownerId: "",
+          id: newId,
+          title,
+          description,
+          maxParticipants,
+          chatMode,
+          chatDuration: hasFreeSetting(body),
+          participants: [],
+          updatedAt: CreateTime,
+          createdAt: CreateTime,
+        } as FreeDebate & DebateRoomAddition)
+      : ({
+          channelId: newChannelId,
+          chatGenerationTime: new Date().toISOString(),
+          chatStatus: "CREATED",
+          ownerId: "",
+          id: newId,
+          title,
+          description,
+          maxParticipants,
+          chatMode,
+          debateSettings: hasProsConsSetting(body),
+          participants: [],
+          updatedAt: CreateTime,
+          createdAt: CreateTime,
+        } as ProsConsDebate & DebateRoomAddition);
 
-  roomList.push(newRoom);
+  Array.from({ length: 100 }).forEach(() => roomList.push(newRoom));
   const responseData = {
     id: newId,
     memberId: newMemberId,
-  }
+  };
 
-  return HttpResponse.json(
-    serverResponse(responseData),
-    { status: 201 }
-  );
+  return HttpResponse.json(serverResponse(responseData), { status: 201 });
 });

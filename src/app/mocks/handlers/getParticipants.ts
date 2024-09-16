@@ -13,7 +13,7 @@ export const mockingGetParticipantsListHandler = http.get<
   never,
   ServerResponse<GetDebateParticipantsResponse | null>,
   string
->(`${import.meta.env.VITE_HTTP}chat/:id/participants/list`, async ({ params }) => {
+>(`${import.meta.env.VITE_HTTP}chat/:id/participants`, async ({ params }) => {
   const { id } = params;
   
   const room = roomList.find((room) => room.id === id);
