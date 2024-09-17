@@ -1,5 +1,6 @@
 import * as StompJs from "@stomp/stompjs";
-import { ChatMessage, ReadyMessage, VoteMessage } from "../type";
+import { SendChatMessage, ReadyMessage, VoteMessage } from "../type";
+import SockJS from "sockjs-client";
 
 interface ConnectArgs {
   id: string;
@@ -60,6 +61,10 @@ class WebSocketManager {
           console.log("Connecting failed");
         }
       },
+      webSocketFactory: () => {
+        console.log("usign SockJS");
+        return new SockJS(`${import.meta.env.VITE_HTTP}ws`);
+      },
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
         console.error("Additional details: " + frame.body);
@@ -90,7 +95,7 @@ class WebSocketManager {
     }
   };
 
-  sendMessage = (channelId: string, chatMessage: ChatMessage) => {
+  sendMessage = (channelId: string, chatMessage: SendChatMessage) => {
     if (this.client && this.connected) {
       this.client.publish({
         destination: `/pub/message/${channelId}`,
