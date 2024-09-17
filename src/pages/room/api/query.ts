@@ -29,10 +29,9 @@ export const useGetDebateRoomsQuery = () => {
   return useInfiniteQuery({
     queryKey: ["getCreatedDebate"],
     queryFn: async ({ pageParam = 0 }) =>
-      getDebateRooms(mode, "des", sort, status, pageParam.toString(), "20"),
+      getDebateRooms(mode, sort, "desc", status, pageParam.toString(), "20"),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      console.log({ lastPage, allPages });
       const nextPage = allPages?.length;
       return lastPage?.length === 0 ? undefined : nextPage;
     },

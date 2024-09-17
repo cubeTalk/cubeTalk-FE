@@ -1,15 +1,17 @@
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { RoomCardType } from "../../../shared/type";
-import RoomCard from "../../../entities/roomCard";
 import { blackSpinner } from "../../../shared/style/commonStyle";
 import styled from "styled-components";
 import { useGetDebateRoomsQuery } from "../api/query";
+import { RoomCardList } from "../../../entities/roomCard";
+import { useDebateSearchParamsStore } from "../../../widgets/roomHeader/model/store";
+import RoomCard from "../../../entities/roomCard/ui/RoomCard";
 
-const NoDebateRooms = ({ text }: { text: string }) => {
+const NoDebateRooms = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-60 gap-4">
-      <h2 className="text-2xl">{text} 토론이 존재하지 않습니다.</h2>
+      <h2 className="text-2xl">참가 가능한 토론이 존재하지 않습니다.</h2>
     </div>
   );
 };
@@ -31,23 +33,23 @@ const Spinning = () => {
 };
 
 export const CardList = () => {
-  const { data, isLoading, isError, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useGetDebateRoomsQuery();
-  
+  const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } = useGetDebateRoomsQuery();
+  const mode = useDebateSearchParamsStore((state) => state.mode);
   const { ref, inView } = useInView();
   useEffect(() => {
-    console.log(inView);
     if (inView) {
       fetchNextPage();
     }
   }, [fetchNextPage, inView]);
 
-  if (isError) {
+  if (isError || !data || !data.pages) {
     return <ErrorText />;
   }
-  if (isLoading || !data || !data.pages) {
+
+  if (isLoading) {
     return <Spinning />;
   }
+  
   return (
     <>
       <div>
@@ -64,17 +66,17 @@ export const CardList = () => {
                 createdAt={room.createdAt}
                 maxParticipants={room.maxParticipants}
                 currentParticipantsCount={room.currentParticipantsCount}
-                started={false}
+                started={mode === "STARTED"}
               />
             ))
           ) : index === 0 ? (
-            <NoDebateRooms text="참가 가능한" />
+            <NoDebateRooms />
           ) : (
             <></>
           )
         )}
       </div>
-      {isFetchingNextPage ? <Spinning /> : hasNextPage && <div ref={ref} />}
+      {isFetchingNextPage ? <Spinning /> : <div ref={ref} />}
     </>
   );
 };
