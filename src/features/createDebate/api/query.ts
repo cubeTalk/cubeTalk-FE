@@ -37,7 +37,7 @@ export const useCreateDebateQuery = () => {
       setMemberId(response.memberId);
       setIsOwner();
       closeCreateDebateModal();
-      openEnterDebateModal();
+      openEnterDebateModal(false);
     },
     onError: async () => {
       await alert("토론방 생성에 실패했습니다. 나중에 다시 시도해주세요", "확인");

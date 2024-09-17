@@ -21,7 +21,7 @@ const RoomCard = ({
   const onClickHandler = () => {
     if (id) {
       setId(id);
-      openEnterDebateModal();
+      openEnterDebateModal(started);
     }
   };
   return (
