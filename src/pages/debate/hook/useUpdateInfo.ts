@@ -7,6 +7,29 @@ import { hasFreeSetting, hasProsConsSetting } from "../../../shared/type";
 import { useGetDebateInfoQuery } from "../api/query";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
+import { useGetMessagesQuery } from "../../../widgets/mainChat/api/query";
+import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
+
+export const useUpdateMessageList = () => {
+  const { data, isError, isLoading } = useGetMessagesQuery();
+  const messageUpdate = useMainMessageStore(state => state.actions.messageUpdate)
+  const nickName = useUserInfoStore(state => state.nickName);
+  const { alert } = useContext(AlertContext);
+  useEffect(() => {
+    if (isError) {
+      alert("메세지를 불러오기를 실패하였습니다. F5를 눌러 새로고침 해주세요", "확인");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError])
+
+  useEffect(() => {
+    if (data) {
+      messageUpdate(data, nickName);
+    }
+  },[data, messageUpdate, nickName])
+
+  return isLoading;
+};
 
 export const useFetchandUpdateData = () => {
   const updateDebateInfo = useDebateInfoStore((state) => state.setInfo);
@@ -24,8 +47,6 @@ export const useFetchandUpdateData = () => {
       navigate("/");
     }
   }, [isError, alert, navigate]);
-
-
 
   useEffect(() => {
     if (data && data.data) {

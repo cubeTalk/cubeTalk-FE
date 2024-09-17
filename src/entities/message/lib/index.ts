@@ -35,7 +35,7 @@ export const handleMessages = (
       { ...newMessage, isLeft, color, isName: false, isTime },
     ];
   }
-  return [...messages, { ...newMessage, isLeft, color, isName, isTime }];
+  return [...messages, { ...newMessage, isLeft, color, isName: isLeft && isName, isTime }];
 };
 
 export const handleMessage = (
@@ -58,7 +58,7 @@ export const handleMessage = (
       serverTimestamp: newMessage.severTimeStamp,
       isLeft,
       color,
-      isName,
+      isName: isLeft && isName,
       isTime: false,
     };
   }
@@ -67,7 +67,7 @@ export const handleMessage = (
     serverTimestamp: newMessage.severTimeStamp,
     isLeft,
     color,
-    isName,
+    isName: isLeft && isName,
     isTime,
   };
 };

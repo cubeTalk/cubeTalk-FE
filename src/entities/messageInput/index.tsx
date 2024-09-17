@@ -27,7 +27,6 @@ const MessageInput = ({ containerRef, messageInputStore, channelId, type }: Mess
         return;
       }
       const bubbleContainer = containerRef.current;
-      console.log(bubbleContainer.scrollTop, bubbleContainer.clientHeight, bubbleContainer.scrollHeight);
       if (!checkingBottom) {
         bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
         return;

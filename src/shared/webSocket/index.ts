@@ -4,8 +4,8 @@ import SockJS from "sockjs-client";
 
 interface ConnectArgs {
   id: string;
-  mainChatId: string;
-  subChatId: string;
+  channelId: string;
+  subChannelId: string;
   nickName: string;
   mainChatCallback: (message: StompJs.IMessage) => void;
   subChatCallback: (message: StompJs.IMessage) => void;
@@ -21,8 +21,8 @@ class WebSocketManager {
   private useInfo: { id: string; nickName: string } = { id: "", nickName: "" };
   connect = ({
     id,
-    mainChatId,
-    subChatId,
+    channelId,
+    subChannelId,
     nickName,
     mainChatCallback,
     subChatCallback,
@@ -48,8 +48,8 @@ class WebSocketManager {
       heartbeatOutgoing: 10000,
       onConnect: () => {
         if (this.client) {
-          this.client.subscribe(`/topic/chat.${mainChatId}`, mainChatCallback, this.useInfo);
-          // this.client.subscribe(`/topic/chat.${subChatId}`, subChatCallback, this.useInfo);
+          this.client.subscribe(`/topic/chat.${channelId}`, mainChatCallback, this.useInfo);
+          // this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, this.useInfo);
           // this.client.subscribe(`/topic/progress.${id}`, progressCallback, this.useInfo);
           // this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, this.useInfo);
           // this.client.subscribe(`/topic/error`, errorCallback);

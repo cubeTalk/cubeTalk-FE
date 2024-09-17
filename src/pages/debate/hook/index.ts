@@ -1,31 +1,10 @@
 import { IMessage } from "@stomp/stompjs";
 import { ChatMessage } from "../../../shared/type";
-import { useMainMessageStore } from "../model/store";
-import { useSubMessageStore } from "../../teamChat/model/store";
 import { useUserInfoStore } from "../../../entities/debateInfo";
-import { useGetMessagesQuery } from "../api/query";
-import { useContext, useEffect } from "react";
-import { AlertContext } from "../../../entities/alertDialog/model/context";
-
-export const useUpdateMessageList = () => {
-  const { data, isError, isLoading } = useGetMessagesQuery();
-  const messageUpdate = useMainMessageStore(state => state.messageUpdate)
-  const { alert } = useContext(AlertContext);
-  useEffect(() => {
-    if (isError) {
-      alert("메세지를 불러오기를 실패하였습니다. F5를 눌러 새로고침 해주세요", "확인");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError])
-
-  useEffect(() => {
-    if (data) {
-      messageUpdate(data);
-    }
-  },[data, messageUpdate])
-
-  return isLoading;
-};
+import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
+import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
+import { useEffect } from "react";
+import webSocket from "../../../shared/webSocket";
 
 interface WebSocketCallback {
   mainChatCallback: (message: IMessage) => void;
@@ -37,7 +16,7 @@ interface WebSocketCallback {
 
 export const useWebSocketMessageCallback = (): WebSocketCallback => {
   const nickName = useUserInfoStore((state) => state.nickName);
-  const mainMessageAdd = useMainMessageStore((state) => state.messageAdd);
+  const mainMessageAdd = useMainMessageStore((state) => state.actions.messageAdd);
   const subMessageAdd = useSubMessageStore((state) => state.messageAdd);
 
   const mainChatCallback = (message: IMessage) => {
@@ -68,4 +47,39 @@ export const useWebSocketMessageCallback = (): WebSocketCallback => {
     participantsCallback,
     errorCallback,
   };
+};
+
+export const useWebSocketConnection = () => {
+  const { id, channelId, subChannelId, nickName } = useUserInfoStore((state) => state);
+  const {
+    mainChatCallback,
+    subChatCallback,
+    progressCallback,
+    participantsCallback,
+    errorCallback,
+  } = useWebSocketMessageCallback();
+
+  useEffect(() => {
+    webSocket.connect({
+      id,
+      channelId,
+      subChannelId,
+      nickName,
+      mainChatCallback,
+      subChatCallback,
+      progressCallback,
+      participantsCallback,
+      errorCallback,
+    });
+  }, [
+    channelId,
+    errorCallback,
+    id,
+    mainChatCallback,
+    nickName,
+    participantsCallback,
+    progressCallback,
+    subChannelId,
+    subChatCallback,
+  ]);
 };

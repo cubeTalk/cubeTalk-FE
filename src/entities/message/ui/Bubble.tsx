@@ -9,7 +9,7 @@ const Bubble = ({ message }: BubbleProps) => {
   const isLeft = !!message.isLeft;
   const color = message.color ? message.color : "var(--white)";
   return (
-    <div>
+    <div className={message.isTime ? "mb-2" : ""}>
       {message.isName && <UserName $isLeft={isLeft}>{message.sender}</UserName>}{" "}
       <BubbleWrapper $isLeft={isLeft}>
         <NormalBubble $isLeft={isLeft} $color={color}>
@@ -30,8 +30,9 @@ const Bubble = ({ message }: BubbleProps) => {
 
 export default Bubble;
 
-const UserName = styled.h3<{ $isLeft: boolean }>`
-  margin: 0px 0px 5px 5px;
+const UserName = styled.h4<{ $isLeft: boolean }>`
+  font-size: 15px;
+  margin: 0px 0px 5px 4px;
   text-align: ${({ $isLeft }) => ($isLeft ? "left" : "right")};
 `;
 

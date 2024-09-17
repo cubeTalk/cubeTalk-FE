@@ -102,7 +102,6 @@ const ReadyButton = styled.button`
   margin: 5px;
 `;
 
-
 const Spinner = styled.div`
   ${spinner}
   width: 24px;

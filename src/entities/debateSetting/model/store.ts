@@ -24,6 +24,8 @@ export type DebateSettingActions = {
   resetSettings: (data: DebateSetting) => void;
 };
 
+export type DebateSettingState = ProsConsSetting & FreeSetting & DebateSettingActions;
+
 export const initialRoomSettingState: ProsConsSetting & FreeSetting = {
   maxParticipants: 6,
   chatDuration: 30,

@@ -23,17 +23,12 @@ const Header = () => {
 };
 
 const SetParticipants = () => {
-  return (
-    <MaxParticipants
-      className="flex flex-row gap-3 items-center"
-      useStore={useChangeSettingStore}
-    />
-  );
+  return <MaxParticipants />;
 };
 
 const Setting = () => {
   const chatMode = useDebateInfoStore((state) => state.chatMode);
-  return <RoomSetting chatMode={chatMode} useStore={useChangeSettingStore} />;
+  return <RoomSetting chatMode={chatMode} />;
 };
 
 const ChangeSetting = () => {

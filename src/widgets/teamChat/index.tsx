@@ -32,7 +32,7 @@ export default TeamChat;
 const BubbleContainer = styled.div`
   ${colflex}
   ${scrollBar}
-  gap: 10px;
+  gap: 5px;
   overflow-y: auto;
   margin-bottom: 8px;
-`;
+  padding: 0px 10px 0 5px;`;

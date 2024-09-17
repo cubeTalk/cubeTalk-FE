@@ -27,6 +27,6 @@ export const useParticipantsModalStore = createModalStore(false);
 useParticipantsStore.subscribe(
   (state) => state.participants,
   (participants) => {
-    useMainMessageStore.getState().resetParticipants(participants);
+    useMainMessageStore.getState().actions.resetParticipants(participants);
   }
 );
