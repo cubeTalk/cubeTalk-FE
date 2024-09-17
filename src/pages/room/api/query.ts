@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { RoomCardType } from "../../../shared/type";
 import { useDebateSearchParamsStore } from "../../../widgets/roomHeader/model/store";
+import { useMemo } from "react";
 
 export type GetDebateRoomsResponse = RoomCardType[]
 
@@ -26,7 +26,7 @@ export const getDebateRooms = async (
 
 export const useGetDebateRoomsQuery = () => {
   const { sort, mode, status } = useDebateSearchParamsStore((state) => state);
-  return useInfiniteQuery({
+  const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ["getCreatedDebate"],
     queryFn: async ({ pageParam = 0 }) =>
       getDebateRooms(mode, sort, "desc", status, pageParam.toString(), "20"),
@@ -36,5 +36,9 @@ export const useGetDebateRoomsQuery = () => {
       return lastPage?.length === 0 ? undefined : nextPage;
     },
   });
+  const rooms = useMemo(() => {
+    return data?.pages.flat();
+  }, [data]);
+  return { rooms, isLoading, isError, isFetchingNextPage, fetchNextPage };
 }
     
