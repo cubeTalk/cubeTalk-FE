@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import RoomHeader from "../../widgets/roomHeader";
+import RoomHeader from "../../entities/roomListHeader";
 import { CardList } from "./ui/CardList";
 import { colflex } from "../../shared/style/commonStyle";
 

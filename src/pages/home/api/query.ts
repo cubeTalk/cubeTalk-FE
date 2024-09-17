@@ -1,23 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { RoomCardType } from "../../../shared/type";
+import { QueryString } from "../../room/api/query";
 
 export type GetDebateRoomsResponse = RoomCardType[]
 
-export type QueryString = {
-  sort: "participants" | "createdAt";
-  order?: "asc" | "desc";
-  status?: "STARTED" | "CREATED";
-  page?: string;
-  size?: string;
-}
-
-export const getDebateRooms = (
+export const getDebateRooms = async (
   status: string
-): Promise<ServerResponse<GetDebateRoomsResponse>> => axios.get(`/chat/chatrooms/찬반`, {
-  params: { sort: "participants", order: "desc", status, page:"0", size: "5" } as QueryString
-});
+): Promise<GetDebateRoomsResponse> =>  {
+  const response = await axios.get(`/chat/chatrooms`, {
+    params: {sort: "participants", order: "desc", status, page:"0", size: "5" } as QueryString
+  });
+  return response.data 
+} 
 
 export const useGetStartedDebateQuery = () => {
   return useQuery({

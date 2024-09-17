@@ -4,7 +4,7 @@ import { blackSpinner } from "../../../shared/style/commonStyle";
 import styled from "styled-components";
 import { useGetDebateRoomsQuery } from "../api/query";
 import { RoomCardList } from "../../../entities/roomCard";
-import { useDebateSearchParamsStore } from "../../../widgets/roomHeader/model/store";
+import { useDebateSearchParamsStore } from "../../../entities/roomListHeader/model/store";
 
 const Spinning = () => {
   return (
@@ -26,7 +26,12 @@ export const CardList = () => {
 
   return (
     <>
-      <RoomCardList cardList={rooms} isError={isError} isLoading={isLoading} started={mode === "STARTED"} />
+      <RoomCardList
+        cardList={rooms}
+        isError={isError}
+        isLoading={isLoading}
+        started={mode === "시작전"}
+      />
       {isFetchingNextPage ? <Spinning /> : <div ref={ref} />}
     </>
   );

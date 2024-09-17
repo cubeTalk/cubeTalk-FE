@@ -5,6 +5,7 @@ import Dropdown from "../../shared/components/dropdown";
 import { CreateDebateButton } from "../../features/createDebate";
 import { Link } from "react-router-dom";
 import { useDebateDropdownStore, useDebateSearchParamsStore } from "./model/store";
+import { useRefreshGetDebateRooms } from "./hook";
 
 interface RoomHeaderProps {
   text: string;
@@ -16,26 +17,27 @@ const SortDropdowns = () => {
   const { mode, setMode, setSort, setStatus, sort, status } = useDebateSearchParamsStore(
     (state) => state
   );
+  useRefreshGetDebateRooms();
   return (
     <>
       <Dropdown
         label="정렬"
         useStore={useDebateDropdownStore}
-        list={["participants", "createdAt"]}
+        list={["사람순", "생성순"]}
         selected={sort}
         setSelected={setSort}
       />
       <Dropdown
         label="모드"
         useStore={useDebateDropdownStore}
-        list={["자유", "찬반"]}
+        list={["자유", "찬반", "모두"]}
         selected={mode}
         setSelected={setMode}
       />
       <Dropdown
         label="상태"
         useStore={useDebateDropdownStore}
-        list={["STARTED", "CREATED"]}
+        list={["진행중", "시작전", "모두"]}
         selected={status}
         setSelected={setStatus}
       />

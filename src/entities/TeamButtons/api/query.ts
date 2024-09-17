@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { useDebateInfoStore } from "../../debateInfo";
 
 export type GetDebateParticipantsResponse = {
@@ -12,17 +11,19 @@ export type GetDebateParticipantsResponse = {
   spectatorCount: number;
 };
 
-export const getDebateParticipants = (
+export const getDebateParticipants = async (
   id: string
-): Promise<ServerResponse<GetDebateParticipantsResponse>> =>
-  axios.get(`/chat/${id}/participants`);
+): Promise<GetDebateParticipantsResponse> => {
+  const response = await axios.get(`/chat/${id}/participants`);
+  return response.data;
+}
 
 
 export const useDebateParticipantsQuery = () => {
   const id = useDebateInfoStore((state) => state.id);
   return useQuery({
     queryKey: ["getDebateParticipants"],
-    queryFn: async () => getDebateParticipants(id),
+    queryFn: () => getDebateParticipants(id),
     refetchInterval: 5000,
   });
 }

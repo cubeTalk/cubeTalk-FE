@@ -33,7 +33,7 @@ const RoomCard = ({
         <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
           <Title>{title}</Title>
           <div className="flex items-center gap-4">
-            <h3 className="bg-slate-500 py-1 px-2 rounded-md shrink-0">{chatMode}</h3>
+            <h3 className={`${chatMode === "찬반" ? "bg-amber-200": "bg-lime-200"} py-1 px-2 rounded-md shrink-0`}>{chatMode}</h3>
             {chatDuration &&
               createdAt &&
               (!started ? (

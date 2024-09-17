@@ -3,20 +3,16 @@ import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { GetDebateRoomResponse } from "../../../pages/debate/api/query";
 import { roomList, serverResponse } from ".";
 
-type GetChatRoomParams = {
-  mode: "찬반" | "자유";
-};
-
 export const mockingGetDebateRoomsHandler = http.get<
-  GetChatRoomParams,
+  never,
   never,
   ServerResponse<GetDebateRoomResponse[]>,
   string
->(`${import.meta.env.VITE_HTTP}chat/chatrooms/:mode`, async ({ params, request }) => {
-  const { mode } = params;
+>(`${import.meta.env.VITE_HTTP}chat/chatrooms`, async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams;
 
+  const mode = query.get("mode") || "찬반";
   const sort = query.get("sort") || "createdAt";
   const order = query.get("order") || "asc";
   const status = query.get("status") as "STARTED" | "CREATED";
