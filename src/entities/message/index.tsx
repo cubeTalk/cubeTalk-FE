@@ -29,7 +29,6 @@ const MessageRender = ({ message }: MessageRenderProps) => {
         if (message.type === "긍정입장") {
           return <DebateStartBubble />;
         }
-
         return <ModeratorBubble message={message} />;
       }
       break;
@@ -50,12 +49,12 @@ const MessageRender = ({ message }: MessageRenderProps) => {
     case "관전":
     default:
       if (isChatMessage(message)) {
-        return <Bubble message={message} isLeft={message.isLeft} />;
+        return <Bubble message={message} />;
       }
       break;
   }
-  console.error("잘못된 메세지 type 입니다.");
-  console.error({ message });
+  // console.log("잘못된 메세지 type 입니다.");
+  // console.log({ message });
   return <div />;
 };
 

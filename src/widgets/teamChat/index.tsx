@@ -34,4 +34,5 @@ const BubbleContainer = styled.div`
   ${scrollBar}
   gap: 10px;
   overflow-y: auto;
+  margin-bottom: 8px;
 `;

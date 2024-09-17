@@ -49,7 +49,7 @@ const User = ({ user }: { user: Participant }) => {
 };
 
 const VoteContent = () => {
-  const users = useParticipantsStore((state) => state.list);
+  const users = useParticipantsStore((state) => state.participants);
   return (
     <>
       <TeamButtons/>

@@ -34,7 +34,7 @@ const UserProfile = ({ user }: { user: Participant }) => {
 
 export const ModalImage = ({ closeModal }: ModalImageProps) => {
   const memberId = useUserInfoStore((state) => state.memberId);
-  const participants = useParticipantsStore((state) => state.list);
+  const participants = useParticipantsStore((state) => state.participants);
   return (
     <Layout>
       <CloseButton onClickHandler={closeModal} />

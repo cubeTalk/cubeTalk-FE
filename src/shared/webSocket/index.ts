@@ -18,7 +18,7 @@ class WebSocketManager {
   private client: StompJs.Client | null = null;
   private connected: boolean = false;
   private chatRoomId: string = "";
-
+  private useInfo: { id: string; nickName: string } = { id: "", nickName: "" };
   connect = ({
     id,
     mainChatId,
@@ -33,38 +33,35 @@ class WebSocketManager {
     if (this.client) {
       this.client.deactivate();
     }
-
+    this.useInfo = { id, nickName };
     this.client = new StompJs.Client({
       brokerURL: `${import.meta.env.VITE_SOCKET}ws`,
       connectHeaders: {
         id,
         nickName,
       },
-      debug: (str) => {
-        console.log(str);
-      },
+      // debug: (str) => {
+      //   console.log(str);
+      // },
       reconnectDelay: 4000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
       onConnect: () => {
         if (this.client) {
-          this.client.subscribe(`/topic/chat.${mainChatId}`, mainChatCallback);
-          this.client.subscribe(`/topic/chat.${subChatId}`, subChatCallback);
-          this.client.subscribe(`/topic/progress.${id}`, progressCallback);
-          this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback);
-          this.client.subscribe(`/topic/error`, errorCallback);
+          this.client.subscribe(`/topic/chat.${mainChatId}`, mainChatCallback, this.useInfo);
+          // this.client.subscribe(`/topic/chat.${subChatId}`, subChatCallback, this.useInfo);
+          // this.client.subscribe(`/topic/progress.${id}`, progressCallback, this.useInfo);
+          // this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, this.useInfo);
+          // this.client.subscribe(`/topic/error`, errorCallback);
 
           this.connected = true;
-          this.chatRoomId = id;
           console.log("Connected");
         } else {
           console.log("Connecting failed");
         }
       },
-      webSocketFactory: () => {
-        console.log("usign SockJS");
-        return new SockJS(`${import.meta.env.VITE_HTTP}ws`);
-      },
+      webSocketFactory: () => new SockJS(`${import.meta.env.VITE_HTTP}ws`)
+      ,
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
         console.error("Additional details: " + frame.body);
@@ -91,7 +88,7 @@ class WebSocketManager {
   ) => {
     if (this.client && this.connected) {
       this.client.unsubscribe(`/topic/chat.${oldSubChatId}`);
-      this.client.subscribe(`/topic/chat.${newSubCHatId}`, chatCallback);
+      this.client.subscribe(`/topic/chat.${newSubCHatId}`, chatCallback, this.useInfo);
     }
   };
 

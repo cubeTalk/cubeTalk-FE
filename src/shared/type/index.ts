@@ -104,7 +104,7 @@ export type UserInfo = {
 };
 
 export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType;
-export type ChatMessageType = "찬성" | "반대" | "MAIN" | "관전";
+export type ChatMessageType = "찬성" | "반대" | "MAIN" | "관전" | "";
 
 export type ProgressMessageType =
   | "긍정입장"
@@ -132,10 +132,10 @@ export interface ChatMessage extends BaseMessage {
 
 export interface SendChatMessage extends BaseMessage {
   type: ChatMessageType;
-  messageId: string; // 메세지 ID
+  id: string; // 채팅방 ID
   sender: string; // 보낸 유저 UUID
   message: string; // 채팅 내용
-  replyToMessageId: string; // 언급한 메세지 ID
+  replyToMessageId?: string; // 언급한 메세지 ID
 }
 
 export interface TimerMessage extends BaseMessage {
@@ -165,14 +165,17 @@ export interface ReadyMessage extends BaseMessage {
   status: "READY" | "PENDING";
 }
 
-export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage;
+export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage | MessageWithType;
 
-export type MessageWithIsLeft = ChatMessage & {
+export type MessageWithType = ChatMessage & {
   isLeft?: boolean;
+  color?: string;
+  isName?: boolean;
+  isTime?: string;
 };
 
 // type gurads
-export const isChatMessage = (message: Message): message is MessageWithIsLeft =>
+export const isChatMessage = (message: Message): message is MessageWithType =>
   message.type === "MAIN" || message.type === "찬성" || message.type === "반대" ||  message.type === "관전";
 export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
 export const isTimerMessage = (message: Message): message is TimerMessage =>

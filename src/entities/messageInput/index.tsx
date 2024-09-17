@@ -3,15 +3,22 @@ import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
 import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { InputStoreType } from "./model/store";
+import webSocket from "../../shared/webSocket";
+import { SendChatMessage, ChatMessageType } from "../../shared/type";
+import { useUserInfoStore } from "../debateInfo";
 
 interface MessageInputProps {
   containerRef: React.RefObject<HTMLDivElement>;
   messageInputStore: UseBoundStore<StoreApi<InputStoreType>>;
+  channelId: string;
+  type: ChatMessageType
 }
 
-const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) => {
+const MessageInput = ({ containerRef, messageInputStore, channelId, type }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { value, action } = messageInputStore((state) => state);
+  const sender = useUserInfoStore(state => state.nickName);
+  const id = useUserInfoStore(state => state.id);
 
   // 스크롤이 바닥에 있었으면 계속 유지하도록함
   const scrollToBottom = useCallback(
@@ -20,7 +27,7 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
         return;
       }
       const bubbleContainer = containerRef.current;
-
+      console.log(bubbleContainer.scrollTop, bubbleContainer.clientHeight, bubbleContainer.scrollHeight);
       if (!checkingBottom) {
         bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
         return;
@@ -64,7 +71,14 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
 
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
-    if (!value.trim()) {
+    if (value.trim()) {
+      const messageBody: SendChatMessage = {
+        id,
+        sender,
+        type,
+        message: value,
+      }
+      webSocket.sendMessage(channelId, messageBody);
       action.resetValue();
       scrollToBottom(false);
     }

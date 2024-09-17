@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { combine, persist } from "zustand/middleware";
-import { isChatMessage, Message, Participant } from "../../../shared/type";
+import { isChatMessage, Message, MessageWithType, Participant } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 import { createModalStore } from "../../../shared/components/modal/model/store";
+import { messageColorMap } from "../../../shared/style/commonStyle";
+import { handleMessage, handleMessages } from "../../../entities/message/lib";
 
 const initMainMessageState = {
   messages: [] as Message[],
@@ -12,18 +14,27 @@ const initMainMessageState = {
 export const useMainMessageStore = create(
   persist(
     combine(initMainMessageState, (set) => ({
-      messageAdd: (newMessage: Message) => {
+      messageAdd: (newMessage: Message, nickName: string) => {
         set((state) => {
-          let isLeft = true;
           if (isChatMessage(newMessage)) {
-            const user = state.participants.find(
-              (user) => user.nickName === newMessage.sender
-            );
-            isLeft = user?.role === "찬성";
+            return {messages: handleMessages(newMessage, state.messages, nickName, state.participants)}
           }
-          return {
-            messages: [...state.messages, { ...newMessage, isLeft }],
-          };
+          return {messages: [...state.messages, newMessage] };
+        });
+      },
+      messageUpdate: (newMessages: Message[], nickName: string) => {
+        set((state) => {
+          let isName = true;
+          const messages = newMessages.map((newMessage, index) => {
+            if (isChatMessage(newMessage)) {
+              const nextSeverTimeStamp = index + 1 === newMessages.length ? "" : newMessages[index + 1].severTimeStamp;
+              const handledMessage = handleMessage(newMessage, nextSeverTimeStamp, nickName, state.participants, isName);
+              isName = handledMessage.isTime;
+              return handledMessage;
+            }
+            return newMessage;
+          });
+          return { messages };
         });
       },
       resetParticipants: (data: Participant[]) => set(() => ({ participants: data })),
