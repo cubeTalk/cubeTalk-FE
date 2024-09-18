@@ -26,7 +26,7 @@ const DescriptionHeader = ({ isOwner }: { isOwner: boolean }) => {
   const resetValue = useDescriptionStore((state) => state.action.resetValue);
   return (
     <div className="flex flex-row items-center justify-between mb-1">
-      <h3>설명</h3>
+      <h3 className="text-xl">설명</h3>
       {isOwner && (
         <div className="flex flex-row gap-2">
           <ChangDescription />{" "}

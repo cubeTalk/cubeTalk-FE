@@ -13,18 +13,19 @@ const initSubMessageState = {
 };
 
 export const useSubMessageStore = create(
-  combine(initSubMessageState, (set) => ({
-    actions: {
+  persist(
+    combine(initSubMessageState, (set) => ({
       messageAdd: (newMessage: Message, nickName: string) => {
         set((state) => {
           if (isChatMessage(newMessage)) {
-            return { messages: handleMessages(newMessage, state.messages, nickName) };
+            return {messages: handleMessages(newMessage, state.messages, nickName)}
           }
-          return { messages: [...state.messages, newMessage] };
+          return {messages: [...state.messages, newMessage] };
         });
       },
-    },
-  }))
+    })),
+    { name: "TeamMessages" }
+  )
 );
 
 export const useSubInputStore = createInputStore("");

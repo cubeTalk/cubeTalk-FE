@@ -17,7 +17,7 @@ const Bubble = ({ message }: BubbleProps) => {
         </NormalBubble>
         {message.isTime && (
           <BubbleTime $isLeft={isLeft}>
-            {new Date(message.serverTimestamp).toLocaleTimeString([], {
+            {new Date(message.serverTimeStamp).toLocaleTimeString([], {
               hour: "numeric",
               minute: "2-digit",
             })}

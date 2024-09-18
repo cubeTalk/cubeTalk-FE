@@ -49,7 +49,7 @@ class WebSocketManager {
       onConnect: () => {
         if (this.client) {
           this.client.subscribe(`/topic/chat.${channelId}`, mainChatCallback, this.useInfo);
-          // this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, this.useInfo);
+          //this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, this.useInfo);
           // this.client.subscribe(`/topic/progress.${id}`, progressCallback, this.useInfo);
           // this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, this.useInfo);
           // this.client.subscribe(`/topic/error`, errorCallback);

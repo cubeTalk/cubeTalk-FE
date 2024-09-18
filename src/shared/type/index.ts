@@ -127,7 +127,7 @@ export interface ChatMessage extends BaseMessage {
   sender: string; // 보낸 유저 UUID
   message: string; // 채팅 내용
   replyToMessageId: string; // 언급한 메세지 ID
-  serverTimestamp: string; // 채팅 보낸 시각(timestamp)
+  serverTimeStamp: string; // 채팅 보낸 시각(timestamp)
 }
 
 export interface SendChatMessage extends BaseMessage {

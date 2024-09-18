@@ -8,6 +8,7 @@ const isSameMinute = (timestamp1: string, timestamp2: string) => {
   return date1.getHours() === date2.getHours() && date1.getMinutes() === date2.getMinutes();
 };
 
+// 버블 색상, 메세지 시간, 닉네임 표시 유무 판단
 export const handleMessages = (
   newMessage: MessageWithType,
   messages: Message[],
@@ -15,7 +16,7 @@ export const handleMessages = (
   participants?: Participant[]
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color;
+  let color = WatchingBubbleColor;
   if (participants) {
     const user = participants.find((user) => user.nickName === newMessage.sender);
     color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
@@ -27,7 +28,7 @@ export const handleMessages = (
   const isName = true;
   if (
     isChatMessage(lastMessage) &&
-    isSameMinute(lastMessage.serverTimestamp, newMessage.serverTimestamp)
+    isSameMinute(lastMessage.serverTimeStamp, newMessage.serverTimeStamp)
   ) {
     return [
       ...messages.slice(0, -1),
@@ -38,6 +39,7 @@ export const handleMessages = (
   return [...messages, { ...newMessage, isLeft, color, isName: isLeft && isName, isTime }];
 };
 
+// 버블 색상, 메세지 시간, 닉네임 표시 유무 판단
 export const handleMessage = (
   newMessage: MessageWithType,
   nextSeverTimeStamp: string,
@@ -46,16 +48,12 @@ export const handleMessage = (
   isName = true
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color = WatchingBubbleColor;
-  if (isChatMessage(newMessage)) {
-    const user = participants.find((user) => user.nickName === newMessage.sender);
-    color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
-  }
-  const isTime = true;
-  if (nextSeverTimeStamp && isSameMinute(nextSeverTimeStamp, newMessage.severTimeStamp)) {
+  const user = participants.find((user) => user.nickName === newMessage.sender);
+  const color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
+  
+  if (nextSeverTimeStamp && isSameMinute(nextSeverTimeStamp, newMessage.serverTimeStamp)) {
     return {
       ...newMessage,
-      serverTimestamp: newMessage.severTimeStamp,
       isLeft,
       color,
       isName: isLeft && isName,
@@ -64,11 +62,10 @@ export const handleMessage = (
   }
   return {
     ...newMessage,
-    serverTimestamp: newMessage.severTimeStamp,
     isLeft,
     color,
     isName: isLeft && isName,
-    isTime,
+    isTime: true,
   };
 };
 

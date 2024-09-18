@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { combine, persist } from "zustand/middleware";
+import { combine } from "zustand/middleware";
 import { isChatMessage, Message, Participant } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 import { createModalStore } from "../../../shared/components/modal/model/store";
@@ -23,16 +23,18 @@ export const useMainMessageStore = create(
           return { messages: [...state.messages, newMessage] };
         });
       },
+      // 이전 메세지와 다음메세지를 확인하여 시간과 닉네임 표시 유무 체크
       messageUpdate: (newMessages: Message[], nickName: string) => {
         set((state) => {
           let isName = true;
           const messages = newMessages.map((newMessage, index) => {
-            if (isChatMessage(newMessage)) {
-              const nextSeverTimeStamp =
-                index + 1 === newMessages.length ? "" : newMessages[index + 1].severTimeStamp;
+            if (!isChatMessage(newMessage)) return newMessage;
+            const nextMessage =
+              index + 1 === newMessages.length ? null : newMessages[index + 1];
+            if (nextMessage && isChatMessage(nextMessage)) {
               const handledMessage = handleMessage(
                 newMessage,
-                nextSeverTimeStamp,
+                nextMessage.serverTimeStamp,
                 nickName,
                 state.participants,
                 isName

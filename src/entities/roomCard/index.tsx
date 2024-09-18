@@ -37,12 +37,12 @@ interface RoomCardListProp {
 }
 
 export const RoomCardList = ({ cardList, isError, isLoading, started }: RoomCardListProp) => {
-  if (isError || !cardList) {
-    return <ErrorText />;
-  }
-
   if (isLoading) {
     return <Spinning />;
+  }
+
+  if (isError || !cardList) {
+    return <ErrorText />;
   }
 
   return (
