@@ -103,7 +103,7 @@ export type UserInfo = {
   role: DebateRole;
 };
 
-export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType;
+export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType | "ENTER";
 export type ChatMessageType = "찬성" | "반대" | "MAIN" | "관전" | "";
 
 export type ProgressMessageType =
@@ -165,7 +165,12 @@ export interface ReadyMessage extends BaseMessage {
   status: "READY" | "PENDING";
 }
 
-export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage | MessageWithType;
+export interface EnterMessage extends BaseMessage {
+  type: "ENTER";
+  message: string;
+}
+
+export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage | MessageWithType | EnterMessage;
 
 export type MessageWithType = ChatMessage & {
   isLeft?: boolean;
@@ -190,3 +195,5 @@ export const isTimerMessage = (message: Message): message is TimerMessage =>
   message.type === "TIMER_END";
 export const isTimerEndMessage = (message: Message): message is TimerEndMessage =>
   message.type === "TIMER_END";
+export const isEnterMessage = (message: Message): message is EnterMessage =>
+  message.type === "ENTER";
