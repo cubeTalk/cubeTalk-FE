@@ -33,7 +33,7 @@ export const useUpdateMessageList = () => {
 
 export const useFetchandUpdateData = () => {
   const updateDebateInfo = useDebateInfoStore((state) => state.setInfo);
-  const resetSettings = useRoomSettingStore((state) => state.resetSettings);
+  const resetSettings = useRoomSettingStore((state) => state.actions.resetSettings);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
   const memberId = useUserInfoStore((state) => state.memberId);
   const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);

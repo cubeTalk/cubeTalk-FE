@@ -61,12 +61,12 @@ const ChatMode = () => {
 };
 
 const Participants = () => {
-  return <MaxParticipants />;
+  return <MaxParticipants useStore={useRoomSettingStore}/>;
 };
 
 const Setting = () => {
   const chatMode = useRoomStore((state) => state.chatMode);
-  return <RoomSetting chatMode={chatMode} />;
+  return <RoomSetting chatMode={chatMode} useStore={useRoomSettingStore} />;
 };
 
 const Submit = () => {

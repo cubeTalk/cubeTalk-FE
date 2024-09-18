@@ -25,6 +25,7 @@ export const useisOwnerStore = create(
   combine({ isOwner: false }, (set) => ({
     actions: {
       setIsOwner: () => set({ isOwner: true }),
+      setIsNotOwner: () => set({ isOwner: false }),
     },
   }))
 );

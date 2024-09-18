@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Description } from "./ui/Description";
 import { colflex, shadow } from "../../shared/style/commonStyle";
 import { Setting } from "./ui/Setting";
+import { Description } from "../../features/changeDescription";
 
 const Home = () => {
   return (
