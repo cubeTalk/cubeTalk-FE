@@ -8,22 +8,50 @@ import TeamChat from "../../../widgets/teamChat";
 import Home from "../../../widgets/debateHome";
 import Memo from "../../../widgets/debateMemo";
 
-const Screen = ({ menu }: { menu: MenuType }) => {
+const DeskTopScreen = ({ menu }: { menu: MenuType }) => {
   return (
-    <ScreenLayout>
-      <Display $menu={menu} $label={"Home"}>
-        <Home />
-      </Display>
-      <Display $menu={menu} $label={"Memo"}>
-        <Memo />
-      </Display>
-      <Display $menu={menu} $label={"TeamChat"}>
-        <TeamChat />
-      </Display>
-      <Display $menu={menu} $label={"MainChat"}>
+    <Desktop>
+      {menu !== "MainChat" && (
+        <>
+          <ScreenLayout>
+            <Display $menu={menu} $label={"Home"}>
+              <Home />
+            </Display>
+            <Display $menu={menu} $label={"Memo"}>
+              <Memo />
+            </Display>
+            <Display $menu={menu} $label={"TeamChat"}>
+              <TeamChat />
+            </Display>
+          </ScreenLayout>
+          <div className="w-4" />
+        </>
+      )}
+      <ScreenLayout>
         <MainChat />
-      </Display>
-    </ScreenLayout>
+      </ScreenLayout>
+    </Desktop>
+  );
+};
+
+const NonDeskTopScreen = ({ menu }: { menu: MenuType }) => {
+  return (
+    <NonDesktop>
+      <ScreenLayout>
+        <Display $menu={menu} $label={"Home"}>
+          <Home />
+        </Display>
+        <Display $menu={menu} $label={"Memo"}>
+          <Memo />
+        </Display>
+        <Display $menu={menu} $label={"TeamChat"}>
+          <TeamChat />
+        </Display>
+        <Display $menu={menu} $label={"MainChat"}>
+          <MainChat />
+        </Display>
+      </ScreenLayout>
+    </NonDesktop>
   );
 };
 
@@ -34,20 +62,8 @@ const ScreenContainer = () => {
     <ScreenConatiner className="bg-darkgray">
       <ScreenHeader />
       <ScreenWarpper>
-        <Desktop>
-          {menu !== "MainChat" && (
-            <>
-              <Screen menu={menu} />
-              <div className="w-4" />
-            </>
-          )}
-          <ScreenLayout>
-            <MainChat />
-          </ScreenLayout>
-        </Desktop>
-        <NonDesktop>
-          <Screen menu={menu} />
-        </NonDesktop>
+        <DeskTopScreen menu={menu} />
+        <NonDeskTopScreen menu={menu} />
       </ScreenWarpper>
     </ScreenConatiner>
   );
