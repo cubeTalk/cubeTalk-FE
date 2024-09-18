@@ -48,20 +48,34 @@ class WebSocketManager {
       heartbeatOutgoing: 10000,
       onConnect: () => {
         if (this.client) {
-          this.client.subscribe(`/topic/chat.${channelId}`, mainChatCallback, this.useInfo);
-          //this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, this.useInfo);
-          // this.client.subscribe(`/topic/progress.${id}`, progressCallback, this.useInfo);
-          // this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, this.useInfo);
-          // this.client.subscribe(`/topic/error`, errorCallback);
-
+          this.client.subscribe(`/topic/chat.${channelId}`, mainChatCallback, {
+            ...this.useInfo,
+            id: channelId,
+          });
+          this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, {
+            ...this.useInfo,
+            id: subChannelId,
+          });
+          this.client.subscribe(`/topic/progress.${id}`, progressCallback, {
+            ...this.useInfo,
+            id: `progress${channelId}`,
+          });
+          this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, {
+            ...this.useInfo,
+            id: `participants${channelId}`,
+          });
+          this.client.subscribe(`/topic/error`, errorCallback, {
+            ...this.useInfo,
+            id: `error${channelId}`,
+          });
+          
           this.connected = true;
           console.log("Connected");
         } else {
           console.log("Connecting failed");
         }
       },
-      webSocketFactory: () => new SockJS(`${import.meta.env.VITE_HTTP}ws`)
-      ,
+      webSocketFactory: () => new SockJS(`${import.meta.env.VITE_HTTP}ws`),
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
         console.error("Additional details: " + frame.body);

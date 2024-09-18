@@ -27,6 +27,7 @@ export const handleMessages = (
   const isTime = true;
   const isName = true;
   if (
+    lastMessage &&
     isChatMessage(lastMessage) &&
     isSameMinute(lastMessage.serverTimeStamp, newMessage.serverTimeStamp)
   ) {
