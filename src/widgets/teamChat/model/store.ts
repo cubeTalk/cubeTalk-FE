@@ -13,6 +13,7 @@ export const useSubMessageStore = create(
     combine(initSubMessageState, (set) => ({
       messageAdd: (newMessage: ChatMessage, nickName: string) =>
         set((state) => ({ messages: handleMessages(newMessage, state.messages, nickName) })),
+      reset: () => set(() => ({ messages: [] })),
     })),
     { name: "TeamMessages" }
   )
