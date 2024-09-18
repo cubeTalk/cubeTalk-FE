@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { combine, persist, subscribeWithSelector } from "zustand/middleware";
 import { DebateRole, DebateStatus, UserInfo } from "../../../shared/type";
-import { useDescriptionStore } from "../../../widgets/debateHome/model/store";
+import { useDescriptionStore } from "../../../features/changeDescription/model/store";
 
 const initalUserInfoState: UserInfo = {
   id: "",
@@ -53,6 +53,6 @@ export const useDebateInfoStore = create(
 useDebateInfoStore.subscribe(
   (state) => state.description,
   (description) => {
-    useDescriptionStore.setState(() => ({ value: description }));
+    useDescriptionStore.setState(() => ({ value: description, resetvalue: description }));
   }
 );

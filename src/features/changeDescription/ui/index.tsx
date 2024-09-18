@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { colflex, scrollBar, spinner } from "../../../shared/style/commonStyle";
-import { useDescriptionStore } from "../model/store";
-import { useisOwnerStore } from "../../../features/createDebate/model/store";
-import { Submit } from "../../../shared/components/button";
-import { useChangeDescriptionQuery } from "../api/query";
 import { useUserInfoStore } from "../../../entities/debateInfo";
+import { Submit } from "../../../shared/components/button";
+import { scrollBar, spinner } from "../../../shared/style/commonStyle";
+import { useChangeDescriptionQuery } from "../api/query";
+import { useDescriptionStore } from "../model/store";
 
 const ChangDescription = () => {
   const description = useDescriptionStore((state) => state.value);
@@ -22,31 +21,33 @@ const ChangDescription = () => {
   );
 };
 
-const DescriptionHeader = ({ isOwner }: { isOwner: boolean }) => {
+const ResetDescription = () => {
   const resetValue = useDescriptionStore((state) => state.action.resetValue);
+  return (
+    <Reset onClick={resetValue}>
+    <img src="/Icon/reset.png" alt="reset" />
+  </Reset>
+  );
+}
+
+export const DescriptionHeader = ({ isOwner }: { isOwner: boolean }) => {
   return (
     <div className="flex flex-row items-center justify-between mb-1">
       <h3 className="text-xl">설명</h3>
       {isOwner && (
         <div className="flex flex-row gap-2">
-          <ChangDescription />{" "}
-          <Reset onClick={() => resetValue()}>
-            <img src="/Icon/reset.png" alt="reset" />
-          </Reset>
+          <ChangDescription />
+          <ResetDescription />
         </div>
       )}
     </div>
   );
 };
 
-export const Description = () => {
+export const DescriptionBody = ({ isOwner }: { isOwner: boolean }) => {
   const { value, action } = useDescriptionStore((state) => state);
-  const isOwner = useisOwnerStore((state) => state.isOwner);
   return (
-    <Container>
-      <DescriptionHeader isOwner={isOwner} />
-      {isOwner ? <Multiline onChange={action.onChangeValue} value={value} /> : <h3>{value}</h3>}
-    </Container>
+    <>{isOwner ? <Multiline onChange={action.onChangeValue} value={value} /> : <h3>{value}</h3>}</>
   );
 };
 
@@ -67,12 +68,6 @@ const Reset = styled.button`
     width: 20px;
     height: 20px;
   }
-`;
-
-const Container = styled.div`
-  ${colflex}
-  width: 100%;
-  height: 100%;
 `;
 
 const Spinner = styled.div`
