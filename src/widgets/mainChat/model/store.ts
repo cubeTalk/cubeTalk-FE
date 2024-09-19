@@ -8,23 +8,24 @@ import { handleMessage, handleMessages } from "../../../entities/message/lib";
 const initMainMessageState = {
   messages: [] as Message[],
   participants: [] as Participant[],
+  role: "" as DebateRole
 };
 
 export const useMainMessageStore = create(
   combine(initMainMessageState, (set) => ({
     actions: {
-      messageAdd: (newMessage: Message, nickName: string, role: DebateRole) => {
+      messageAdd: (newMessage: Message, nickName: string) => {
         set((state) => {
           if (isChatMessage(newMessage)) {
             return {
-              messages: handleMessages(newMessage, state.messages, nickName, role, state.participants),
+              messages: handleMessages(newMessage, state.messages, nickName, state.role, state.participants),
             };
           }
           return { messages: [...state.messages, newMessage] };
         });
       },
       // 이전 메세지와 다음메세지를 확인하여 시간과 닉네임 표시 유무 체크
-      messageUpdate: (newMessages: Message[], nickName: string, role: DebateRole) => {
+      messageUpdate: (newMessages: Message[], nickName: string) => {
         set((state) => {
           let isName = true;
           const messages = newMessages.map((newMessage, index) => {
@@ -37,7 +38,7 @@ export const useMainMessageStore = create(
                 nextMessage.serverTimeStamp,
                 nickName,
                 state.participants,
-                role,
+                state.role,
                 isName,
               );
               isName = handledMessage.isTime;

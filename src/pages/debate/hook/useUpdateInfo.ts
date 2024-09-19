@@ -15,7 +15,6 @@ export const useUpdateMessageList = () => {
   const { data, isError, isPending } = useGetMessagesQuery();
   const messageUpdate = useMainMessageStore((state) => state.actions.messageUpdate);
   const nickName = useUserInfoStore((state) => state.nickName);
-  const role = useUserInfoStore((state) => state.role);
   const { alert } = useContext(AlertContext);
   useEffect(() => {
     if (isError) {
@@ -25,7 +24,7 @@ export const useUpdateMessageList = () => {
 
   useEffect(() => {
     if (data) {
-      messageUpdate(data, nickName, role);
+      messageUpdate(data, nickName);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, messageUpdate, nickName]);
@@ -59,6 +58,11 @@ export const useFetchandUpdateData = () => {
         chatStatus: debateInfo.chatStatus,
         description: debateInfo.description,
         title: debateInfo.title,
+      });
+      console.log({
+        maxParticipants: debateInfo.maxParticipants,
+        chatDuration: hasFreeSetting(debateInfo),
+        debateSettings: hasProsConsSetting(debateInfo),
       });
       resetSettings({
         maxParticipants: debateInfo.maxParticipants,

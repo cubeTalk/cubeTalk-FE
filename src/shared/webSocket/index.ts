@@ -17,8 +17,8 @@ interface ConnectArgs {
 class WebSocketManager {
   private client: StompJs.Client | null = null;
   private connected: boolean = false;
+  private nickName: string = "";
   private chatRoomId: string = "";
-  private useInfo: { id: string; nickName: string } = { id: "", nickName: "" };
   connect = ({
     id,
     channelId,
@@ -33,12 +33,13 @@ class WebSocketManager {
     if (this.client) {
       this.client.deactivate();
     }
-    this.useInfo = { id, nickName };
+    this.chatRoomId = id;
+    this.nickName = nickName;
     this.client = new StompJs.Client({
       brokerURL: `${import.meta.env.VITE_SOCKET}ws`,
       connectHeaders: {
-        id,
         nickName,
+        chatRoomId: this.chatRoomId,
       },
       // debug: (str) => {
       //   console.log(str);
@@ -49,26 +50,25 @@ class WebSocketManager {
       onConnect: () => {
         if (this.client) {
           this.client.subscribe(`/topic/chat.${channelId}`, mainChatCallback, {
-            ...this.useInfo,
+            nickName,
             id: channelId,
+            chatRoomId: id,
           });
           this.client.subscribe(`/topic/chat.${subChannelId}`, subChatCallback, {
-            ...this.useInfo,
+            nickName,
             id: subChannelId,
+            chatRoomId: id,
           });
           this.client.subscribe(`/topic/progress.${id}`, progressCallback, {
-            ...this.useInfo,
-            id: `progress${channelId}`,
+            id: `progress${id}`,
           });
           this.client.subscribe(`/topic/${id}.participants.list`, participantsCallback, {
-            ...this.useInfo,
-            id: `participants${channelId}`,
+            id: `participants${id}`,
           });
           this.client.subscribe(`/topic/error`, errorCallback, {
-            ...this.useInfo,
-            id: `error${channelId}`,
+            id: `error${id}`,
           });
-          
+
           this.connected = true;
           console.log("Connected");
         } else {
@@ -96,13 +96,18 @@ class WebSocketManager {
   };
 
   changeTeam = (
-    oldSubChatId: string,
-    newSubCHatId: string,
+    oldSubChannelId: string,
+    newSubChannelId: string,
     chatCallback: (message: StompJs.IMessage) => void
   ) => {
     if (this.client && this.connected) {
-      this.client.unsubscribe(`/topic/chat.${oldSubChatId}`);
-      this.client.subscribe(`/topic/chat.${newSubCHatId}`, chatCallback, this.useInfo);
+      this.client.unsubscribe(oldSubChannelId, {
+        chatRoomId: this.chatRoomId,
+      });
+      this.client.subscribe(`/topic/chat.${newSubChannelId}`, chatCallback, {
+        nickName: this.nickName,
+        chatRoomId: this.chatRoomId,
+      });
     }
   };
 

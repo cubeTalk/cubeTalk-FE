@@ -34,5 +34,5 @@ const BubbleContainer = styled.div`
   gap: 5px;
   overflow-y: auto;
   margin-bottom: 8px;
-  padding: 0px 10px 0 5px;
+  padding: 5px 10px 0 5px;
 `;

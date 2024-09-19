@@ -1,8 +1,14 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
+import { DebateRole } from "../../../shared/type";
 
-export const useTeamChoseStore = create(
-  combine({ team: "" }, (set) => ({
-    setTeam: (newTeam: string) => set(() => ({ team: newTeam })),
+interface InitalTeamState {
+  team: DebateRole;
+  setTeam: (newTeam: DebateRole) => void;
+}
+
+export const useTeamChoseStore = create<InitalTeamState>(
+  combine({ team: "" } as { team: DebateRole }, (set) => ({
+    setTeam: (newTeam: DebateRole) => set(() => ({ team: newTeam })),
   }))
 );

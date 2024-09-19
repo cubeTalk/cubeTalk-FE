@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colflex, commonButton, spinner } from "../../../shared/style/commonStyle";
+import { colflex, commonButton } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
 import { useDebateInfoStore } from "../../../entities/debateInfo";
 import { useisOwnerStore } from "../../../features/createDebate/model/store";
@@ -101,10 +101,4 @@ const ReadyButton = styled.button`
   background-color: var(--color-mid);
   padding: 0px 8px;
   margin: 5px;
-`;
-
-const Spinner = styled.div`
-  ${spinner}
-  width: 24px;
-  height: 24px;
 `;

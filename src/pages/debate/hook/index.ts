@@ -18,7 +18,6 @@ interface WebSocketCallback {
 
 export const useWebSocketMessageCallback = (): WebSocketCallback => {
   const nickName = useUserInfoStore((state) => state.nickName);
-  const role = useUserInfoStore((state) => state.role);
   const mainMessageAdd = useMainMessageStore((state) => state.actions.messageAdd);
   const subMessageAdd = useSubMessageStore((state) => state.messageAdd);
   const queryClient = useQueryClient();
@@ -26,15 +25,15 @@ export const useWebSocketMessageCallback = (): WebSocketCallback => {
   const mainChatCallback = (message: IMessage) => {
     const chatMessage: ChatMessage = JSON.parse(message.body);
     console.log(chatMessage);
-    mainMessageAdd(chatMessage, nickName, role);
+    mainMessageAdd(chatMessage, nickName);
   };
   const subChatCallback = (message: IMessage) => {
     const chatMessage: ChatMessage = JSON.parse(message.body);
-    subMessageAdd(chatMessage, nickName, role);
+    subMessageAdd(chatMessage, nickName);
   };
   const progressCallback = (message: IMessage) => {
     const chatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName, role);
+    mainMessageAdd(chatMessage, nickName);
   };
   const participantsCallback = (message: IMessage) => {
     const participants: Participant[] = JSON.parse(message.body);

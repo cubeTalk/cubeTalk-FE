@@ -5,6 +5,17 @@ import { TeamBubbles } from "./ui/TeamBubbles";
 import MessageInput from "../../entities/messageInput";
 import { useSubInputStore } from "./model/store";
 import { useUserInfoStore } from "../../entities/debateInfo";
+import { ChangeTeamButton, ChangeTeamModal } from "../../features/changeTeam";
+
+const TeamChatHeader = () => {
+  return (
+    <div className="flex flex-row justify-between">
+      <h2>팀 채팅</h2>
+      <ChangeTeamButton />
+      <ChangeTeamModal />
+    </div>
+  );
+};
 
 const TeamChat = () => {
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
@@ -13,7 +24,7 @@ const TeamChat = () => {
 
   return (
     <>
-      <h2>팀 채팅</h2>
+      <TeamChatHeader />
       <BubbleContainer ref={bubbleContainerRef}>
         <TeamBubbles />
       </BubbleContainer>
@@ -35,4 +46,5 @@ const BubbleContainer = styled.div`
   gap: 5px;
   overflow-y: auto;
   margin-bottom: 8px;
-  padding: 0px 10px 0 5px;`;
+  padding: 5px 10px 0 5px;
+`;

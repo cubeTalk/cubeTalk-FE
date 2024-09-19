@@ -4,15 +4,17 @@ import { useDebateParticipantsQuery } from "../api/query";
 import { spinner } from "../../../shared/style/commonStyle";
 import styled from "styled-components";
 import { useEnterModalStore } from "../../../features/enterDebate/model/store";
+import { useEffect } from "react";
+import { DebateRole } from "../../../shared/type";
 
 // 타입 정의
 interface TeamButtonProps {
-  label: string;
+  label: DebateRole;
   count: number;
   maxCount: number;
   originTeam: string;
   chosenTeam: string;
-  setTeam: (team: string) => void;
+  setTeam: (team: DebateRole) => void;
   bgColor: string;
   isPending: boolean;
   isdisable: boolean;
@@ -53,8 +55,12 @@ export const TeamButtons = () => {
   const originTeam = useUserInfoStore((state) => state.role);
   const { team, setTeam } = useTeamChoseStore();
   const isStarted = useEnterModalStore(state => state.isStarted);
+  useEffect(() => {
+    setTeam("");
+  }, [setTeam])
 
-  if (isError) {
+
+  if (isError || !data) {
     return (
       <div className="flex justify-center items-center my-4">
         <h3>팀선택 오류 입니다. 다시 시도해 주세요</h3>

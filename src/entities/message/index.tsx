@@ -23,7 +23,7 @@ const MessageRender = ({ message }: MessageRenderProps) => {
   switch (message.type) {
     case "ENTER":
       if (isEnterMessage(message)) {
-        return <EnterBubble message={message.message} /> 
+        return <EnterBubble message={message} /> 
       }
       break;
     case "긍정입장":

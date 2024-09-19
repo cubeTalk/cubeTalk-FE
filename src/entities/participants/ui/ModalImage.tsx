@@ -4,7 +4,6 @@ import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
 import { ParticipantStatus } from "../../../shared/type";
 import { useUserInfoStore } from "../../debateInfo";
-import { useParticipantsUpdate } from "../hook/useParticipantsUpdate";
 
 interface ModalImageProps {
   closeModal: () => void;
@@ -32,7 +31,6 @@ const MyProfile = () => {
 
 const OtherProfiles = () => {
   const participants = useParticipantsStore((state) => state.participants);
-  useParticipantsUpdate();
   return (
     <>
       {participants.map((user) => {

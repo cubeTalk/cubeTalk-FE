@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { combine, persist, subscribeWithSelector } from "zustand/middleware";
 import { DebateRole, DebateStatus, UserInfo } from "../../../shared/type";
 import { useDescriptionStore } from "../../../features/changeDescription/model/store";
+import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
+import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
 
 const initalUserInfoState: UserInfo = {
   id: "",
@@ -13,17 +15,27 @@ const initalUserInfoState: UserInfo = {
 };
 
 export const useUserInfoStore = create(
-  persist(
-    combine(initalUserInfoState, (set) => ({
-      setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
-      changeTeam: (role: DebateRole, subChannelId: string) =>
-        set((state) => ({ ...state, role, subChannelId })),
-      setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
-      reset: () => set(initalUserInfoState),
-    })),
-    { name: "UserInfo" }
+  subscribeWithSelector(
+    persist(
+      combine(initalUserInfoState, (set) => ({
+        setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
+        setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
+        changeTeam: (role: DebateRole, subChannelId: string) => set(() => ({ role, subChannelId })),
+        reset: () => set(initalUserInfoState),
+      })),
+      { name: "UserInfo" }
+    )
   )
 );
+
+useUserInfoStore.subscribe(
+  (state) => state.role,
+  (role) => {
+    useMainMessageStore.setState(() => ({role}));
+    useSubMessageStore.setState(() => ({role}));
+  }
+);
+
 
 interface DebateInfo {
   id: string;
@@ -48,7 +60,7 @@ export const useDebateInfoStore = create(
         setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
         setDescription: (newDescription: string) => set({ description: newDescription }),
         setId: (id: string) => set((state) => ({ ...state, id })),
-      }
+      },
     }))
   )
 );
