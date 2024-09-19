@@ -1,10 +1,12 @@
 import { IMessage } from "@stomp/stompjs";
-import { ChatMessage } from "../../../shared/type";
+import { ChatMessage, Participant } from "../../../shared/type";
 import { useUserInfoStore } from "../../../entities/debateInfo";
 import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 import { useEffect } from "react";
 import webSocket from "../../../shared/webSocket";
+import { useQueryClient } from "@tanstack/react-query";
+import { GetParticipantsKey } from "../../../entities/participants/api/query";
 
 interface WebSocketCallback {
   mainChatCallback: (message: IMessage) => void;
@@ -16,24 +18,27 @@ interface WebSocketCallback {
 
 export const useWebSocketMessageCallback = (): WebSocketCallback => {
   const nickName = useUserInfoStore((state) => state.nickName);
+  const role = useUserInfoStore((state) => state.role);
   const mainMessageAdd = useMainMessageStore((state) => state.actions.messageAdd);
   const subMessageAdd = useSubMessageStore((state) => state.messageAdd);
+  const queryClient = useQueryClient();
 
   const mainChatCallback = (message: IMessage) => {
     const chatMessage: ChatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName);
+    console.log(chatMessage);
+    mainMessageAdd(chatMessage, nickName, role);
   };
   const subChatCallback = (message: IMessage) => {
     const chatMessage: ChatMessage = JSON.parse(message.body);
-    subMessageAdd(chatMessage, nickName);
+    subMessageAdd(chatMessage, nickName, role);
   };
   const progressCallback = (message: IMessage) => {
     const chatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName);
+    mainMessageAdd(chatMessage, nickName, role);
   };
   const participantsCallback = (message: IMessage) => {
-    const chatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName);
+    const participants: Participant[] = JSON.parse(message.body);
+    queryClient.setQueryData<Participant[]>([GetParticipantsKey], participants);
   };
   const errorCallback = (message: IMessage) => {
     const errorMessage: { tittle: string; message: string } = JSON.parse(message.body);

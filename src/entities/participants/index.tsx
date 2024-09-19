@@ -3,14 +3,18 @@ import { center, commonButton } from "../../shared/style/commonStyle";
 import { useParticipantsModalStore, useParticipantsStore } from "./model/store";
 import { ModalImage } from "./ui/ModalImage";
 import { useRoomSettingStore } from "../debateSetting/model/store";
+import { useUserInfoStore } from "../debateInfo";
 
 export const ParticipantsButton = () => {
   const clickModal = useParticipantsModalStore((state) => state.clickModal);
   const maxParitipants = useRoomSettingStore((state) => state.maxParticipants);
+  const role = useUserInfoStore((state) => state.role);
   const participants = useParticipantsStore((state) => state.participants);
+  const currentNumber = participants.filter((item) => item.role !== "관전").length;
+  const currentNumberWithMe = role !== "관전" ? currentNumber + 1 : currentNumber;
   return (
     <ShowParticipants onClick={clickModal}>
-      <h3>{`${participants.length !== 0 ? participants.filter((item) => item.role !== "관전").length : 0}/${maxParitipants}`}</h3>
+      <h3>{`${currentNumberWithMe}/${maxParitipants}`}</h3>
       <Profile>
         <img alt="profile" src="/Icon/profile.png" />
       </Profile>

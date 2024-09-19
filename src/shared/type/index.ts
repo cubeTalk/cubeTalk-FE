@@ -104,7 +104,7 @@ export type UserInfo = {
 };
 
 export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType | "ENTER";
-export type ChatMessageType = "찬성" | "반대" | "MAIN" | "관전" | "";
+export type ChatMessageType = DebateRole | "MAIN";
 
 export type ProgressMessageType =
   | "긍정입장"

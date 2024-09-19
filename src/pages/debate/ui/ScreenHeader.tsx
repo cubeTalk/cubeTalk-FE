@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { colflex, commonButton, spinner } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
-import ParticipantButton from "../../../entities/participants";
 import { useDebateInfoStore } from "../../../entities/debateInfo";
 import { useisOwnerStore } from "../../../features/createDebate/model/store";
+import { ParticipantsButton, ParticipantsModal } from "../../../entities/participants";
 
 const Title = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -59,7 +59,8 @@ const ScreenHeader = () => {
     <HeaderContainer>
       <Title />
       <ButtonContainer>
-        <ParticipantButton />
+        <ParticipantsButton />
+        <ParticipantsModal />
         {isOwner ? <Start /> : <Ready />}
       </ButtonContainer>
     </HeaderContainer>
