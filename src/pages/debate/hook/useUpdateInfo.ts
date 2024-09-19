@@ -35,7 +35,6 @@ export const useUpdateMessageList = () => {
 export const useFetchandUpdateData = () => {
   const updateDebateInfo = useDebateInfoStore((state) => state.actions.setInfo);
   const resetSettings = useRoomSettingStore((state) => state.actions.resetSettings);
-  const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
   const memberId = useUserInfoStore((state) => state.memberId);
   const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetDebateInfoQuery();
@@ -59,21 +58,13 @@ export const useFetchandUpdateData = () => {
         description: debateInfo.description,
         title: debateInfo.title,
       });
-      console.log({
-        maxParticipants: debateInfo.maxParticipants,
-        chatDuration: hasFreeSetting(debateInfo),
-        debateSettings: hasProsConsSetting(debateInfo),
-      });
       resetSettings({
         maxParticipants: debateInfo.maxParticipants,
         chatDuration: hasFreeSetting(debateInfo),
         debateSettings: hasProsConsSetting(debateInfo),
       });
       queryClient.setQueryData([GetParticipantsKey], () => debateInfo.participants);
-      if (debateInfo.ownerId === memberId) {
-        setIsOwner();
-      }
     }
-  }, [data, memberId, queryClient, resetSettings, setIsOwner, updateDebateInfo]);
+  }, [data, memberId, queryClient, resetSettings, updateDebateInfo]);
   return isPending;
 };
