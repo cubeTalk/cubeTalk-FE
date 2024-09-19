@@ -41,7 +41,7 @@ const statusDisplay = new Map([
 
 export const useGetDebateRoomsQuery = () => {
   const { sort, mode, status } = useDebateSearchParamsStore((state) => state);
-  const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+  const { data, isPending, isError, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ["getDebateRooms", mode, sort, status],
     queryFn: async ({ queryKey, pageParam = 0 }) => {
       const [, modeParam, sortParam, statusParam] = queryKey;
@@ -64,5 +64,5 @@ export const useGetDebateRoomsQuery = () => {
   const rooms = useMemo(() => {
     return data?.pages.flat();
   }, [data]);
-  return { rooms, isLoading, isError, isFetchingNextPage, fetchNextPage };
+  return { rooms, isPending, isError, isFetchingNextPage, fetchNextPage };
 };

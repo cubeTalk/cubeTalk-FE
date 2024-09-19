@@ -49,12 +49,12 @@ const TeamButton = ({
 };
 
 export const TeamButtons = () => {
-  const { data, isPending } = useDebateParticipantsQuery();
+  const { data, isPending, isError } = useDebateParticipantsQuery();
   const originTeam = useUserInfoStore((state) => state.role);
   const { team, setTeam } = useTeamChoseStore();
   const isStarted = useEnterModalStore(state => state.isStarted);
 
-  if (!data) {
+  if (isError) {
     return (
       <div className="flex justify-center items-center my-4">
         <h3>팀선택 오류 입니다. 다시 시도해 주세요</h3>
@@ -64,7 +64,7 @@ export const TeamButtons = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-0.5">
+      <div className="flex flex-wrap gap-1 flex-grow w-full">
         <TeamButton
           label="찬성"
           count={data.supportCount}
@@ -89,7 +89,7 @@ export const TeamButtons = () => {
         />
       </div>
       <button
-        className={`min-h-11 flex flex-row justify-center gap-3 rounded-md py-3 bg-gray ${chooseBorder(team, "관전")}`}
+        className={`w-full mt-1 min-h-11 flex flex-row justify-center gap-3 rounded-md py-3 bg-gray ${chooseBorder(team, "관전")}`}
         onClick={() => setTeam("관전")}
         disabled={data.spectatorCount === 4}
       >
@@ -107,7 +107,7 @@ export const TeamButtons = () => {
   );
 };
 
-const TeamStyle = "flex flex-1 flex-col justify-center items-center py-1 rounded-md border-2"; // 기본 border 적용
+const TeamStyle = "flex flex-1 flex-col justify-center items-center rounded-md border-2"; // 기본 border 적용
 const chosenStyle = "bg-red rounded-xl px-2";
 const chooseBorder = (team: string, condition: string) =>
   team === condition ? "border-2 border-green" : "border-2 border-transparent";

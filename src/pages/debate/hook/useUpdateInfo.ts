@@ -11,7 +11,7 @@ import { useGetMessagesQuery } from "../../../widgets/mainChat/api/query";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 
 export const useUpdateMessageList = () => {
-  const { data, isError, isLoading } = useGetMessagesQuery();
+  const { data, isError, isPending } = useGetMessagesQuery();
   const messageUpdate = useMainMessageStore(state => state.actions.messageUpdate)
   const nickName = useUserInfoStore(state => state.nickName);
   const { alert } = useContext(AlertContext);
@@ -28,7 +28,7 @@ export const useUpdateMessageList = () => {
     }
   },[data, messageUpdate, nickName])
 
-  return isLoading;
+  return isPending;
 };
 
 export const useFetchandUpdateData = () => {
@@ -37,7 +37,7 @@ export const useFetchandUpdateData = () => {
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
   const memberId = useUserInfoStore((state) => state.memberId);
   const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
-  const { data, isError } = useGetDebateInfoQuery();
+  const { data, isPending, isError } = useGetDebateInfoQuery();
   
   const navigate = useNavigate();
   const { alert } = useContext(AlertContext);
@@ -69,4 +69,5 @@ export const useFetchandUpdateData = () => {
       }
     }
   }, [data, memberId, resetParticipants, resetSettings, setIsOwner, updateDebateInfo]);
+  return isPending;
 }

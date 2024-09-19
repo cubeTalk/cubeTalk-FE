@@ -1,25 +1,18 @@
 import styled from "styled-components";
-import { blackSpinner, colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
+import { colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
 import MenuTab from "./ui/MenuTab";
 import ScreenContainer from "./ui/ScreenContainer";
 import { useFetchandUpdateData, useUpdateMessageList } from "./hook/useUpdateInfo";
 import { useWebSocketConnection } from "./hook";
-
-const LoadingSpinner = () => {
-  return (
-    <div className="flex justify-center items-center absolute bg-black/[.30] inset-0 z-50">
-      <Spinner />
-    </div>
-  );
-};
+import { PageLoadingSpinner } from "../../shared/components/spinner";
 
 const DebatePage = () => {
-  useFetchandUpdateData();
-  const isLoading = useUpdateMessageList();
+  const isfetchingLoading = useFetchandUpdateData();
+  const isMessageLoading = useUpdateMessageList();
   useWebSocketConnection();
   return (
     <PageLayout>
-      {isLoading && <LoadingSpinner />}
+      {(isMessageLoading || isfetchingLoading) && <PageLoadingSpinner />}
       <MenuTab />
       <ScreenContainer />
     </PageLayout>
@@ -46,10 +39,4 @@ const PageLayout = styled.div`
     ${rowflex}
     gap: 20px;
   }
-`;
-
-const Spinner = styled.div`
-  ${blackSpinner}
-  width: 60px;
-  height: 60px;
 `;

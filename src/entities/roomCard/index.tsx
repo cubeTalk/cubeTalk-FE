@@ -32,12 +32,12 @@ const Spinning = () => {
 interface RoomCardListProp {
   cardList: RoomCardType[] | undefined;
   isError: boolean;
-  isLoading: boolean;
+  isPending: boolean;
   started: boolean;
 }
 
-export const RoomCardList = ({ cardList, isError, isLoading, started }: RoomCardListProp) => {
-  if (isLoading) {
+export const RoomCardList = ({ cardList, isError, isPending, started }: RoomCardListProp) => {
+  if (isPending) {
     return <Spinning />;
   }
 

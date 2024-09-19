@@ -2,15 +2,15 @@ import { useGetCreatedDebateQuery, useGetStartedDebateQuery } from "../api/query
 import { RoomCardList } from "../../../entities/roomCard";
 
 export const StartedRoomsCardList = () => {
-  const { data, isLoading, isError } = useGetStartedDebateQuery();
+  const { data, isPending, isError } = useGetStartedDebateQuery();
   return (
-    <RoomCardList cardList={data} isError={isError} isLoading={isLoading} started={true} />
+    <RoomCardList cardList={data} isError={isError} isPending={isPending} started={true} />
   );
 };
 
 export const CreatedRoomsCardList = () => {
-  const { data, isLoading, isError } = useGetCreatedDebateQuery();
+  const { data, isPending, isError } = useGetCreatedDebateQuery();
   return (
-    <RoomCardList cardList={data} isError={isError} isLoading={isLoading} started={false} />
+    <RoomCardList cardList={data} isError={isError} isPending={isPending} started={false} />
   );
 };

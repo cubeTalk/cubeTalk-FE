@@ -15,7 +15,7 @@ const Spinning = () => {
 };
 
 export const CardList = () => {
-  const { rooms, isLoading, isError, isFetchingNextPage, fetchNextPage } = useGetDebateRoomsQuery();
+  const { rooms, isPending, isError, isFetchingNextPage, fetchNextPage } = useGetDebateRoomsQuery();
   const mode = useDebateSearchParamsStore((state) => state.mode);
   const { ref, inView } = useInView();
   useEffect(() => {
@@ -29,7 +29,7 @@ export const CardList = () => {
       <RoomCardList
         cardList={rooms}
         isError={isError}
-        isLoading={isLoading}
+        isPending={isPending}
         started={mode === "시작전"}
       />
       {isFetchingNextPage ? <Spinning /> : <div ref={ref} />}
