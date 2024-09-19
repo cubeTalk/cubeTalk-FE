@@ -4,6 +4,7 @@ import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
 import { Participant, ParticipantStatus } from "../../../shared/type";
 import { useUserInfoStore } from "../../debateInfo";
+import { useParticipantsUpdate } from "../hook/useParticipantsUpdate";
 
 interface ModalImageProps {
   closeModal: () => void;
@@ -35,6 +36,7 @@ const UserProfile = ({ user }: { user: Participant }) => {
 export const ModalImage = ({ closeModal }: ModalImageProps) => {
   const memberId = useUserInfoStore((state) => state.memberId);
   const participants = useParticipantsStore((state) => state.participants);
+  useParticipantsUpdate();
   return (
     <Layout>
       <CloseButton onClickHandler={closeModal} />
