@@ -20,7 +20,6 @@ const MainChat = () => {
         containerRef={bubbleContainerRef}
         messageInputStore={useMainInputStore}
         channelId={channelId}
-        type={"MAIN"}
       />
     </>
   );

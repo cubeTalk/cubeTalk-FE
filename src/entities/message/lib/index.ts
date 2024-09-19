@@ -1,5 +1,9 @@
 import { messageColorMap } from "../../../shared/style/commonStyle";
-import { DebateRole, isChatMessage, Message, MessageWithType, Participant } from "../../../shared/type";
+import {
+  isChatMessage,
+  Message,
+  MessageWithType,
+} from "../../../shared/type";
 
 const isSameMinute = (timestamp1: string, timestamp2: string) => {
   const date1 = new Date(timestamp1);
@@ -13,19 +17,10 @@ export const handleMessages = (
   newMessage: MessageWithType,
   messages: Message[],
   nickName: string,
-  role: DebateRole,
-  participants?: Participant[],
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color = WatchingBubbleColor;
-  if (!isLeft) {
-    color = messageColorMap.get(role) || WatchingBubbleColor;
-  } else if (participants) {
-    const user = participants.find((user) => user.nickName === newMessage.sender);
-    color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
-  } else {
-    color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
-  }
+  const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
+  
   const lastMessage = messages[messages.length - 1];
   const isTime = true;
   const isName = true;
@@ -48,20 +43,11 @@ export const handleMessage = (
   newMessage: MessageWithType,
   nextSeverTimeStamp: string,
   nickName: string,
-  participants: Participant[],
-  role: DebateRole,
   isName = true
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color = WatchingBubbleColor
-  if (isLeft) {
-    const user = participants.find((user) => user.nickName === newMessage.sender);
-    color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
-  } else {
-    color = messageColorMap.get(role) || WatchingBubbleColor;
-  }
-  
-  
+  const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
+
   if (nextSeverTimeStamp && isSameMinute(nextSeverTimeStamp, newMessage.serverTimeStamp)) {
     return {
       ...newMessage,

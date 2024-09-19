@@ -1,14 +1,12 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { DebateRole, isChatMessage, Message, Participant } from "../../../shared/type";
+import { isChatMessage, Message } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 import { createModalStore } from "../../../shared/components/modal/model/store";
 import { handleMessage, handleMessages } from "../../../entities/message/lib";
 
 const initMainMessageState = {
   messages: [] as Message[],
-  participants: [] as Participant[],
-  role: "" as DebateRole
 };
 
 export const useMainMessageStore = create(
@@ -18,7 +16,7 @@ export const useMainMessageStore = create(
         set((state) => {
           if (isChatMessage(newMessage)) {
             return {
-              messages: handleMessages(newMessage, state.messages, nickName, state.role, state.participants),
+              messages: handleMessages(newMessage, state.messages, nickName),
             };
           }
           return { messages: [...state.messages, newMessage] };
@@ -26,7 +24,7 @@ export const useMainMessageStore = create(
       },
       // 이전 메세지와 다음메세지를 확인하여 시간과 닉네임 표시 유무 체크
       messageUpdate: (newMessages: Message[], nickName: string) => {
-        set((state) => {
+        set(() => {
           let isName = true;
           const messages = newMessages.map((newMessage, index) => {
             if (!isChatMessage(newMessage)) return newMessage;
@@ -37,9 +35,7 @@ export const useMainMessageStore = create(
                 newMessage,
                 nextMessage.serverTimeStamp,
                 nickName,
-                state.participants,
-                state.role,
-                isName,
+                isName
               );
               isName = handledMessage.isTime;
               return handledMessage;
@@ -49,7 +45,6 @@ export const useMainMessageStore = create(
           return { messages };
         });
       },
-      resetParticipants: (data: Participant[]) => set(() => ({ participants: data })),
     },
   }))
 );

@@ -24,7 +24,6 @@ export const useWebSocketMessageCallback = (): WebSocketCallback => {
 
   const mainChatCallback = (message: IMessage) => {
     const chatMessage: ChatMessage = JSON.parse(message.body);
-    console.log(chatMessage);
     mainMessageAdd(chatMessage, nickName);
   };
   const subChatCallback = (message: IMessage) => {

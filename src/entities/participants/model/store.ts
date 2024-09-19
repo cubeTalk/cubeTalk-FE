@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { combine, subscribeWithSelector } from "zustand/middleware";
 import { Participant, ParticipantStatus } from "../../../shared/type";
 import { createModalStore } from "../../../shared/components/modal/model/store";
-import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 import { useisOwnerStore } from "../../../features/createDebate/model/store";
 
 const initalParticipantsState = {
@@ -40,9 +39,4 @@ useParticipantsStore.subscribe(
       actions.setIsNotOwner();
     }
   }
-);
-
-useParticipantsStore.subscribe(
-  (state) => state.participants,
-  (participants) => useMainMessageStore.getState().actions.resetParticipants(participants)
 );

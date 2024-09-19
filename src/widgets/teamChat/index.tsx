@@ -20,7 +20,6 @@ const TeamChatHeader = () => {
 const TeamChat = () => {
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
   const subChannelId = useUserInfoStore((state) => state.subChannelId);
-  const role = useUserInfoStore((state) => state.role);
 
   return (
     <>
@@ -32,7 +31,6 @@ const TeamChat = () => {
         containerRef={bubbleContainerRef}
         messageInputStore={useSubInputStore}
         channelId={subChannelId}
-        type={role}
       />
     </>
   );

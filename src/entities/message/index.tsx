@@ -50,7 +50,6 @@ const MessageRender = ({ message }: MessageRenderProps) => {
         return <DebateOutComeBubble message={message} />;
       }
       break;
-    case "MAIN": 
     case "찬성": 
     case "반대": 
     case "관전":

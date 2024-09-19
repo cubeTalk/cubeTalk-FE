@@ -4,21 +4,21 @@ import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { InputStoreType } from "./model/store";
 import webSocket from "../../shared/webSocket";
-import { SendChatMessage, ChatMessageType } from "../../shared/type";
+import { SendChatMessage } from "../../shared/type";
 import { useUserInfoStore } from "../debateInfo";
 
 interface MessageInputProps {
   containerRef: React.RefObject<HTMLDivElement>;
   messageInputStore: UseBoundStore<StoreApi<InputStoreType>>;
   channelId: string;
-  type: ChatMessageType
 }
 
-const MessageInput = ({ containerRef, messageInputStore, channelId, type }: MessageInputProps) => {
+const MessageInput = ({ containerRef, messageInputStore, channelId }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { value, action } = messageInputStore((state) => state);
   const sender = useUserInfoStore(state => state.nickName);
   const id = useUserInfoStore(state => state.id);
+  const type = useUserInfoStore((state) => state.role);
 
   // 스크롤이 바닥에 있었으면 계속 유지하도록함
   const scrollToBottom = useCallback(

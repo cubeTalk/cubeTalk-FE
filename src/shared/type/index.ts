@@ -104,7 +104,7 @@ export type UserInfo = {
 };
 
 export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType | "ENTER";
-export type ChatMessageType = DebateRole | "MAIN";
+export type ChatMessageType = DebateRole;
 
 export type ProgressMessageType =
   | "긍정입장"
@@ -181,7 +181,7 @@ export type MessageWithType = ChatMessage & {
 
 // type gurads
 export const isChatMessage = (message: Message): message is MessageWithType =>
-  message.type === "MAIN" || message.type === "찬성" || message.type === "반대" ||  message.type === "관전";
+  message.type === "찬성" || message.type === "반대" ||  message.type === "관전";
 export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
 export const isTimerMessage = (message: Message): message is TimerMessage =>
   message.type === "긍정입장" ||
