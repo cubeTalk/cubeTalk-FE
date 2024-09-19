@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { colflex, shadow } from "../../shared/style/commonStyle";
 import { Setting } from "./ui/Setting";
 import { Description } from "../../features/changeDescription";
+import { useUpdateDebateSetting } from "./hook/useUpdateDebateSetting";
 
 const Home = () => {
+  useUpdateDebateSetting();
   return (
     <>
       <h2>개요</h2>

@@ -44,8 +44,11 @@ const initalDebateInfoState: DebateInfo = {
 export const useDebateInfoStore = create(
   subscribeWithSelector(
     combine(initalDebateInfoState, (set) => ({
-      setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
-      setId: (id: string) => set((state) => ({ ...state, id })),
+      actions: {
+        setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+        setDescription: (newDescription: string) => set({ description: newDescription }),
+        setId: (id: string) => set((state) => ({ ...state, id })),
+      }
     }))
   )
 );

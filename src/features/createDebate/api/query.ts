@@ -23,7 +23,7 @@ export const useCreateDebateQuery = () => {
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
-  const setId = useDebateInfoStore((state) => state.setId);
+  const setId = useDebateInfoStore((state) => state.actions.setId);
   const setMemberId = useUserInfoStore((state) => state.setMemberId);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 

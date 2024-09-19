@@ -17,7 +17,7 @@ const RoomCard = ({
   started,
 }: Partial<RoomCardType> & { started: boolean }) => {
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
-  const setId = useDebateInfoStore((state) => state.setId);
+  const setId = useDebateInfoStore((state) => state.actions.setId);
   const onClickHandler = () => {
     if (id) {
       setId(id);
