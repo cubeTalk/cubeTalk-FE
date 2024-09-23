@@ -47,10 +47,8 @@ export const useEnterDebateQuery = () => {
     onError: async (error: AxiosError<ServerResponse>, variables) => {
       if (error.response?.data?.message === "이미 사용중인 닉네임 입니다.") {
         setCheckName(variables.nickName);
-        await alert("이미 사용중인 닉네임 입니다.", "확인");
-      } else {
-        await alert("토론 참가에 실패했습니다. 다시 시도해주세요", "확인");
-      }
+      } 
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };

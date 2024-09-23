@@ -7,6 +7,7 @@ import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useSettingChangeModalStore } from "../model/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GetDebateSettingKey } from "../../../widgets/debateHome/api/query";
+import { AxiosError } from "axios";
 
 export type ChangeSettingRequest = DebateSetting & { ownerId: string };
 
@@ -27,8 +28,8 @@ export const useChangeSettingQuery = () => {
       closeCreateDebateModal();
       queryclient.refetchQueries({ queryKey: [GetDebateSettingKey], exact: true})
     },
-    onError: async () => {
-      await alert("설정 변경에 실패했습니다. 다시 시도해주세요", "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };

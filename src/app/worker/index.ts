@@ -1,4 +1,7 @@
+import { useUserInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
+import { useChangeStatusErrorStore } from "../../features/changeStatus/model/store";
+import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
   ReadyMessage,
   VoteMessage,
@@ -54,9 +57,24 @@ worker.onmessage = (event) => {
     case "subChat":
       useSubMessageStore.getState().messageAdd(data.message as ChatMessage, data.nickName);
       return;
-    case "participants":
-      useParticipantsStore.getState().actions.resetParticipants(data.participants as Participant[]);
+    case "participants": {
+      const response: ServerResponse<Participant[]> = data.participants;
+      if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
+        const nickName = useUserInfoStore.getState().nickName;
+        const updateActions = useParticipantsStore.getState().actions;
+        const excludedParticipants = response.data.filter((participant) => {
+          if (participant.nickName === nickName) {
+            updateActions.updateMyStatus(participant.status);
+            return false;
+          }
+          return true;
+        });
+        updateActions.resetParticipants(excludedParticipants);
+      } else {
+        useChangeStatusErrorStore.getState().setError(response.message)
+      }
       return;
+    }
     default:
       console.log("Worker send Worng Message");
       return;

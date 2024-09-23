@@ -5,6 +5,7 @@ import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GetDebateSettingKey } from "../../../widgets/debateHome/api/query";
+import { AxiosError } from "axios";
 
 export type ChangeDescriptionRequest = {
   ownerId: string;
@@ -27,8 +28,8 @@ export const useChangeDescriptionQuery = () => {
       await alert("변경 완료하였습니다.", "확인");
       queryclient.refetchQueries({ queryKey: [GetDebateSettingKey], exact: true})
     },
-    onError: async () => {
-      await alert("토론방 설명 변경에 실패했습니다. 다시 시도해주세요", "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };

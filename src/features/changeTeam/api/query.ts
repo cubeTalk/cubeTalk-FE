@@ -7,6 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { DebateRole } from "../../../shared/type";
 import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
 import { changeTeamWebSocket } from "../../../app/worker";
+import { AxiosError } from "axios";
+import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 
 export type ChangeTeamRequest = { role: DebateRole; subChannelId: string };
 export type ChangeTeamResponse = {
@@ -43,8 +45,8 @@ export const useChangeTeamQuery = () => {
       changeTeam(variables.role, data.newSubChannelId);
       closeModal();
     },
-    onError: async () => {
-      await alert("팀 변경에 실패했습니다. 다시 시도해주세요", "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };

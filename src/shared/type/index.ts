@@ -88,7 +88,6 @@ export type DebateRole = "찬성" | "반대" | "관전" | "";
 
 export interface Participant {
   nickName: string;
-  memberId: string;
   role: DebateRole;
   status: ParticipantStatus;
 }
@@ -103,7 +102,7 @@ export type UserInfo = {
   role: DebateRole;
 };
 
-export type MessageType = ChatMessageType | "VOTE" | "READY" | ProgressMessageType | "ENTER";
+export type MessageType = ChatMessageType | "VOTE" | "찬반" | "자유" | ProgressMessageType | "ENTER";
 export type ChatMessageType = DebateRole;
 
 export type ProgressMessageType =
@@ -160,7 +159,7 @@ export interface VoteMessage extends BaseMessage {
 }
 
 export interface ReadyMessage extends BaseMessage {
-  type: "READY";
+  type: "찬반" | "자유";
   memberId: string;
   status: "READY" | "PENDING";
 }

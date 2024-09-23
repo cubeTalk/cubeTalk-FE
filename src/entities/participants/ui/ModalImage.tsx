@@ -35,7 +35,7 @@ const OtherProfiles = () => {
     <>
       {participants.map((user) => {
         return (
-          <div key={user.memberId} className="flex flex-row justify-between flex-wrap">
+          <div key={user.nickName} className="flex flex-row justify-between flex-wrap">
             <UserNickName $role={user.role}>{user.nickName}</UserNickName>
             {user.role !== "관전" && (
               <h5 className={statusStyle(user.status)}>{StatusE2K.get(user.status)}</h5>

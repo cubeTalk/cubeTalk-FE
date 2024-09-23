@@ -8,7 +8,7 @@ export const useParticipantsUpdate = () => {
   const { data, isPending, isError } = useGetParticipantsQuery();
   const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
   const updateMyStatus = useParticipantsStore((state) => state.actions.updateMyStatus);
-  const memberId = useUserInfoStore((state) => state.memberId);
+  const nickName = useUserInfoStore((state) => state.nickName);
   const { alert } = useContext(AlertContext);
   if (isError) {
     alert("참가자 목록을 불러오는데 실패했습니다.", "확인");
@@ -16,7 +16,7 @@ export const useParticipantsUpdate = () => {
   useEffect(() => {
     if (data) {
       const excludedParticipants = data.filter((participant) => {
-        if (participant.memberId === memberId) {
+        if (participant.nickName === nickName) {
           updateMyStatus(participant.status);
           return false;
         }
@@ -24,6 +24,6 @@ export const useParticipantsUpdate = () => {
       });
       resetParticipants(excludedParticipants);
     }
-  }, [data, memberId, resetParticipants, updateMyStatus]);
+  }, [data, nickName, resetParticipants, updateMyStatus]);
   return isPending;
 };

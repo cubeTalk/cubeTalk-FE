@@ -17,11 +17,11 @@ export const useParticipantsStore = create(
         resetParticipants: (data: Participant[]) => set(() => ({ participants: data })),
         addParticipants: (data: Participant) =>
           set((state) => ({ participants: [...state.participants, data] })),
-        removeParticipants: (memberId: string) =>
+        removeParticipants: (nickName: string) =>
           set((state) => ({
-            participants: state.participants.filter((item) => item.memberId !== memberId),
+            participants: state.participants.filter((item) => item.nickName !== nickName),
           })),
-        updateMyStatus: (newStatus: ParticipantStatus) => set(() => ({ myStatus: newStatus })),
+        updateMyStatus: (newStatus: ParticipantStatus) => set((state) => ({ ...state, myStatus: newStatus })),
       },
     }))
   )
