@@ -47,7 +47,6 @@ export const readyMessage = (readyMessage: ReadyMessage) => {
 // Worker로부터 메시지 수신 처리
 worker.onmessage = (event) => {
   const { type, data } = event.data;
-  console.log(event, data);
   switch (type) {
     case "mainChat":
       useMainMessageStore.getState().actions.messageAdd(data.message as ChatMessage, data.nickName);

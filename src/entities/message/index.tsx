@@ -23,7 +23,6 @@ const MessageRender = ({ message }: MessageRenderProps) => {
   switch (message.type) {
     case "ENTER":
       if (isEnterMessage(message)) {
-        console.log("why?");
         return <EnterBubble message={message} /> 
       }
       break;

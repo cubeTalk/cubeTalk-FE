@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { combine, persist, subscribeWithSelector } from "zustand/middleware";
+import { combine, createJSONStorage, persist, subscribeWithSelector } from "zustand/middleware";
 import { DebateRole, DebateStatus, UserInfo } from "../../../shared/type";
 import { useDescriptionStore } from "../../../features/changeDescription/model/store";
 
@@ -20,7 +20,7 @@ export const useUserInfoStore = create(
       changeTeam: (role: DebateRole, subChannelId: string) => set(() => ({ role, subChannelId })),
       reset: () => set(initalUserInfoState),
     })),
-    { name: "UserInfo" }
+    { name: "UserInfo", storage: createJSONStorage(() => sessionStorage)}
   )
 );
 

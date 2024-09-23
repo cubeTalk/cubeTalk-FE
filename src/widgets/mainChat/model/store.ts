@@ -22,23 +22,23 @@ export const useMainMessageStore = create(
           return { messages: [...state.messages, newMessage] };
         });
       },
-      // 이전 메세지와 다음메세지를 확인하여 시간과 닉네임 표시 유무 체크
+      // 이전 메세지가 같은 사람이 보낸것 인지와 다음메세지를 확인하여 시간과 닉네임 표시 유무 체크
       messageUpdate: (newMessages: Message[], nickName: string) => {
         set(() => {
-          let isName = true;
+          let beforeSame = false;
           const messages = newMessages.map((newMessage, index) => {
-            if (!isChatMessage(newMessage)) return newMessage;
-            const nextMessage =
-              index + 1 === newMessages.length ? null : newMessages[index + 1];
-            if (nextMessage && isChatMessage(nextMessage)) {
+            if (isChatMessage(newMessage)) {
+              const nextMessage = index + 1 === newMessages.length ? null : newMessages[index + 1];
               const handledMessage = handleMessage(
                 newMessage,
-                nextMessage.serverTimeStamp,
+                nextMessage,
                 nickName,
-                isName
+                beforeSame
               );
-              isName = handledMessage.isTime;
+              beforeSame = !handledMessage.isTime;
               return handledMessage;
+            } else {
+              beforeSame = false;
             }
             return newMessage;
           });

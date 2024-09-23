@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
-import { useisOwnerStore } from "../../../features/createDebate/model/store";
 import { hasFreeSetting, hasProsConsSetting } from "../../../shared/type";
 import { useGetDebateInfoQuery } from "../api/query";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,6 @@ export const useUpdateMessageList = () => {
     if (data) {
       messageUpdate(data, nickName);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, messageUpdate, nickName]);
 
   return isPending;

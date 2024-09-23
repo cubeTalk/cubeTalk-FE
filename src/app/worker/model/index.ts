@@ -20,7 +20,6 @@ type DetailedWorkerMessage =
 export const ctx: Worker = self as unknown as Worker;
 
 ctx.onmessage = ({ data }: { data: DetailedWorkerMessage }) => {
-  console.log(data, "data from onmessage");
   switch (data.type) {
     case "connect":
       webSocket.connect({ ...data.message, postMessage: ctx.postMessage });

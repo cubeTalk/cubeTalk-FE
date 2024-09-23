@@ -30,7 +30,7 @@ const RoomBubble = styled.h4`
   border-radius: 5px;
   word-wrap: break-word;
   max-width: 60%;
-  margin-top: 5px;
+  margin: 4px 0px;
 
   @media ${mediaQuery.mobile} {
     max-width: 80%;

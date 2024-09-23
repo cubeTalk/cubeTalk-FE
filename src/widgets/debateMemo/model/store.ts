@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { combine, persist } from "zustand/middleware";
+import { combine, createJSONStorage, persist } from "zustand/middleware";
 
 export const useDebateMemoStore = create(
   persist(
@@ -7,6 +7,6 @@ export const useDebateMemoStore = create(
       setMemo: (newMemo: string) => set({ memo: newMemo }),
       reset: () => set({ memo: "" }),
     })),
-    { name: "DebateMemo" }
+    { name: "DebateMemo", storage: createJSONStorage(() => sessionStorage) }
   )
 );

@@ -1,9 +1,5 @@
 import { messageColorMap } from "../../../shared/style/commonStyle";
-import {
-  isChatMessage,
-  Message,
-  MessageWithType,
-} from "../../../shared/type";
+import { isChatMessage, Message, MessageWithType } from "../../../shared/type";
 
 const isSameMinute = (timestamp1: string, timestamp2: string) => {
   const date1 = new Date(timestamp1);
@@ -12,21 +8,20 @@ const isSameMinute = (timestamp1: string, timestamp2: string) => {
   return date1.getHours() === date2.getHours() && date1.getMinutes() === date2.getMinutes();
 };
 
-// 버블 색상, 메세지 시간, 닉네임 표시 유무 판단
+// 같은 유저가 보냈는지, 같은 유저인데 같은 시간대인지, 첫 메세지는 닉네임 존재, 마지막 메세지는 시간존재
 export const handleMessages = (
   newMessage: MessageWithType,
   messages: Message[],
-  nickName: string,
+  nickName: string
 ) => {
   const isLeft = newMessage.sender !== nickName;
   const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
-  
   const lastMessage = messages[messages.length - 1];
   const isTime = true;
-  const isName = true;
   if (
     lastMessage &&
     isChatMessage(lastMessage) &&
+    lastMessage.sender === newMessage.sender &&
     isSameMinute(lastMessage.serverTimeStamp, newMessage.serverTimeStamp)
   ) {
     return [
@@ -35,25 +30,30 @@ export const handleMessages = (
       { ...newMessage, isLeft, color, isName: false, isTime },
     ];
   }
-  return [...messages, { ...newMessage, isLeft, color, isName: isLeft && isName, isTime }];
+  return [...messages, { ...newMessage, isLeft, color, isName: isLeft, isTime }];
 };
 
-// 버블 색상, 메세지 시간, 닉네임 표시 유무 판단
+// 시간은 다음 메세지가 같은 유저인데 같은 시간대인지, 닉네임은 이전 메세지가 같은 유저인지, 
 export const handleMessage = (
   newMessage: MessageWithType,
-  nextSeverTimeStamp: string,
+  nextMessage: Message | null,
   nickName: string,
-  isName = true
+  beforeSame: boolean,
 ) => {
   const isLeft = newMessage.sender !== nickName;
   const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
 
-  if (nextSeverTimeStamp && isSameMinute(nextSeverTimeStamp, newMessage.serverTimeStamp)) {
+  if (
+    nextMessage &&
+    isChatMessage(nextMessage) &&
+    nextMessage.sender === newMessage.sender &&
+    isSameMinute(nextMessage.serverTimeStamp, newMessage.serverTimeStamp)
+  ) {
     return {
       ...newMessage,
       isLeft,
       color,
-      isName: isLeft && isName,
+      isName: isLeft && !beforeSame,
       isTime: false,
     };
   }
@@ -61,7 +61,7 @@ export const handleMessage = (
     ...newMessage,
     isLeft,
     color,
-    isName: isLeft && isName,
+    isName: isLeft && !beforeSame,
     isTime: true,
   };
 };

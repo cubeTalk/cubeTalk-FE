@@ -39,10 +39,10 @@ const NonDeskTopScreen = () => {
       <NewScreenLayout $menu={menu} $label={"Memo"}>
         <Memo />
       </NewScreenLayout>
-      <NewScreenLayout $menu={menu} $label={"MainChat"}>
+      <NewScreenLayout $menu={menu} $label={"TeamChat"}>
         <TeamChat />
       </NewScreenLayout>
-      <NewScreenLayout $menu={menu} $label={"TeamChat"}>
+      <NewScreenLayout $menu={menu} $label={"MainChat"}>
         <MainChat />
       </NewScreenLayout>
     </NonDesktop>

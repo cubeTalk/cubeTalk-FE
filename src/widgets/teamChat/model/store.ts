@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { combine, persist } from "zustand/middleware";
+import { combine, createJSONStorage, persist } from "zustand/middleware";
 import { ChatMessage, Message } from "../../../shared/type";
 import { createInputStore } from "../../../entities/messageInput/model/store";
 import { handleMessages } from "../../../entities/message/lib";
@@ -15,7 +15,7 @@ export const useSubMessageStore = create(
         set((state) => ({ messages: handleMessages(newMessage, state.messages, nickName) })),
       reset: () => set(() => ({ messages: [] })),
     })),
-    { name: "TeamMessages" }
+    { name: "TeamMessages", storage: createJSONStorage(() => sessionStorage) }
   )
 );
 
