@@ -4,8 +4,8 @@ import {
   ReadyMessageArgs,
   SendMessageArgs,
   VoteMessageArgs,
-} from "./webSocket.type";
-import { WebSocketManager } from "./webSocketManager";
+} from "../lib/webSocket.type";
+import { WebSocketManager } from "../api/webSocketManager";
 
 const webSocket = new WebSocketManager();
 

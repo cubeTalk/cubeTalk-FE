@@ -1,12 +1,14 @@
 import * as StompJs from "@stomp/stompjs";
 import SockJS, { CloseEvent } from "sockjs-client";
 import { getCloseEventCodeReason } from "../lib";
-import { ConnectArgs } from "./webSocket.type";
+import { ConnectArgs } from "../lib/webSocket.type";
 import {
   ChatMessage,
   Participant,
   ReadyMessage,
   SendChatMessage,
+  TimerEndMessage,
+  TimerMessage,
   VoteMessage,
 } from "../../../shared/type";
 
@@ -18,11 +20,13 @@ type PostMessageFunction = (
   message:
     | { type: string; data: { message: ChatMessage; nickName: string } }
     | { type: string; data: { participants: Participant[] } }
+    | { type: string; data: { message: TimerMessage | TimerEndMessage } }
 ) => void;
 type Args = ConnectArgs & {
   mainChatPostMessage: DummyFunc;
   subChatPostMessage: DummyFunc;
   participantsPostMessage: DummyFunc;
+  progressPostMessage: DummyFunc;
 };
 
 export class WebSocketManager {
@@ -35,6 +39,7 @@ export class WebSocketManager {
     mainChatPostMessage: dummyFunc,
     subChatPostMessage: dummyFunc,
     participantsPostMessage: dummyFunc,
+    progressPostMessage: dummyFunc,
   };
 
   connect = ({
@@ -69,6 +74,13 @@ export class WebSocketManager {
       participantsPostMessage: (message: StompJs.IMessage) => {
         const participants: Participant[] = JSON.parse(message.body);
         postMessage({ type: "participants", data: { participants } });
+      },
+      progressPostMessage: (message: StompJs.IMessage) => {
+        const timerMessage: TimerMessage | TimerEndMessage = JSON.parse(message.body);
+        postMessage({
+          type: "progress",
+          data: { message: timerMessage },
+        });
       },
     };
     this.client = new StompJs.Client({
@@ -123,7 +135,7 @@ export class WebSocketManager {
       this.chatSubscribe(this.args.subChannelId, this.args.subChatPostMessage);
       this.client.subscribe(
         `/topic/progress.${this.args.chatRoomId}`,
-        this.args.mainChatPostMessage,
+        this.args.progressPostMessage,
         {
           id: `progress${this.args.chatRoomId}`,
         }

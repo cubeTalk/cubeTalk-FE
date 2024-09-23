@@ -1,15 +1,15 @@
 export type RoomCardType = {
-  id : string;
-  chatMode : string;
-  title : string;
-  description : string;
-  chatDuration : string;
-  ownerNickName : string;
-  maxParticipants : number;
-  currentParticipantsCount : number;
-  createdAt :  string;
-  updatedAt : string;
-}
+  id: string;
+  chatMode: string;
+  title: string;
+  description: string;
+  chatDuration: string;
+  ownerNickName: string;
+  maxParticipants: number;
+  currentParticipantsCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type DebateMode = "찬반" | "자유";
 export type DebateStatus = "CREATED" | "STARTED";
@@ -102,19 +102,24 @@ export type UserInfo = {
   role: DebateRole;
 };
 
-export type MessageType = ChatMessageType | "VOTE" | "찬반" | "자유" | ProgressMessageType | "ENTER";
+export type MessageType =
+  | ChatMessageType
+  | "VOTE"
+  | "찬반"
+  | "자유"
+  | ProgressMessageType
+  | "ENTER";
 export type ChatMessageType = DebateRole;
 
 export type ProgressMessageType =
-  | "긍정입장"
-  | "부정질의"
-  | "부정입장"
-  | "긍정질의"
-  | "긍정반박"
-  | "부정반박"
-  | "투표"
-  | "결과"
-  | "TIMER_END";
+  | "positiveEntry"
+  | "negativeQuestioning"
+  | "negativeEntry"
+  | "positiveQuestioning"
+  | "positiveRebuttal"
+  | "negativeRebuttal"
+  | "votingTime"
+  | "result";
 
 type BaseMessage = {
   type: MessageType;
@@ -139,12 +144,12 @@ export interface SendChatMessage extends BaseMessage {
 
 export interface TimerMessage extends BaseMessage {
   type: ProgressMessageType;
-  remainingTime: number;
+  remainingTime: string;
   message: string;
 }
 
 export interface TimerEndMessage extends TimerMessage {
-  type: "TIMER_END";
+  type: "result";
   result: {
     support: number;
     opposite: number;
@@ -154,7 +159,7 @@ export interface TimerEndMessage extends TimerMessage {
 
 export interface VoteMessage extends BaseMessage {
   type: "VOTE";
-  team: "찬성" | "반대";
+  team: "OPPOSITE" | "SUPPORT";
   mvp: string;
 }
 
@@ -169,7 +174,14 @@ export interface EnterMessage extends BaseMessage {
   message: string;
 }
 
-export type Message = ReadyMessage | VoteMessage | TimerMessage | TimerEndMessage | ChatMessage | MessageWithType | EnterMessage;
+export type Message =
+  | ReadyMessage
+  | VoteMessage
+  | TimerMessage
+  | TimerEndMessage
+  | ChatMessage
+  | MessageWithType
+  | EnterMessage;
 
 export type MessageWithType = ChatMessage & {
   isLeft?: boolean;
@@ -180,19 +192,21 @@ export type MessageWithType = ChatMessage & {
 
 // type gurads
 export const isChatMessage = (message: Message): message is MessageWithType =>
-  message.type === "찬성" || message.type === "반대" ||  message.type === "관전";
-export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "투표";
+  message.type === "찬성" || message.type === "반대" || message.type === "관전";
+export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "votingTime";
 export const isTimerMessage = (message: Message): message is TimerMessage =>
-  message.type === "긍정입장" ||
-  message.type === "부정질의" ||
-  message.type === "부정입장" ||
-  message.type === "긍정질의" ||
-  message.type === "긍정반박" ||
-  message.type === "부정반박" ||
-  message.type === "투표" ||
-  message.type === "결과" ||
-  message.type === "TIMER_END";
+  isProgressiveType(message.type);
+
+export const isProgressiveType = (type: string): type is ProgressMessageType =>
+  type === "positiveEntry" ||
+  type === "negativeQuestioning" ||
+  type === "negativeEntry" ||
+  type === "positiveQuestioning" ||
+  type === "positiveRebuttal" ||
+  type === "negativeRebuttal" ||
+  type === "votingTime" ||
+  type === "result";
 export const isTimerEndMessage = (message: Message): message is TimerEndMessage =>
-  message.type === "TIMER_END";
+  message.type === "result";
 export const isEnterMessage = (message: Message): message is EnterMessage =>
   message.type === "ENTER";

@@ -1,5 +1,6 @@
 import { useUserInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
+import { useDebateTimerStore } from "../../entities/timer/model/store";
 import { useChangeStatusErrorStore } from "../../features/changeStatus/model/store";
 import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
@@ -8,41 +9,37 @@ import {
   SendChatMessage,
   ChatMessage,
   Participant,
+  TimerMessage,
+  TimerEndMessage,
 } from "../../shared/type";
 import { useMainMessageStore } from "../../widgets/mainChat/model/store";
 import { useSubMessageStore } from "../../widgets/teamChat/model/store";
-import { ConnectArgs } from "./model/webSocket.type";
+import { ConnectArgs } from "./lib/webSocket.type";
 
 export const worker = new Worker(new URL("./model", import.meta.url), {
   type: "module",
 });
 
-// 연결 함수
 export const connectWebSocket = (args: ConnectArgs) => {
   worker.postMessage({ type: "connect", message: args });
 };
 
-// 연결 해제 함수
 export const disconnectWebSocket = () => {
   worker.postMessage({ type: "disconnect", message: null });
 };
 
-// 팀 변경 함수
 export const changeTeamWebSocket = (newSubChannelId: string) => {
   worker.postMessage({ type: "changeTeam", message: { newSubChannelId } });
 };
 
-// 메시지 전송 함수
 export const sendMessageWebSocket = (channelId: string, chatMessage: SendChatMessage) => {
   worker.postMessage({ type: "sendMessage", message: { channelId, chatMessage } });
 };
 
-// 메시지 투표 함수
 export const voteMessageWebSocket = (voteMessage: VoteMessage) => {
   worker.postMessage({ type: "voteMessage", message: { voteMessage } });
 };
 
-// 준비 메시지 함수
 export const readyMessage = (readyMessage: ReadyMessage) => {
   worker.postMessage({ type: "ReadyMessage", message: { readyMessage } });
 };
@@ -59,24 +56,39 @@ worker.onmessage = (event) => {
       return;
     case "participants": {
       const response: ServerResponse<Participant[]> = data.participants;
-      if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
-        const nickName = useUserInfoStore.getState().nickName;
-        const updateActions = useParticipantsStore.getState().actions;
-        const excludedParticipants = response.data.filter((participant) => {
-          if (participant.nickName === nickName) {
-            updateActions.updateMyStatus(participant.status);
-            return false;
-          }
-          return true;
-        });
-        updateActions.resetParticipants(excludedParticipants);
-      } else {
-        useChangeStatusErrorStore.getState().setError(response.message)
-      }
-      return;
+      return participationUpdate(response);
+    }
+    case "progress": {
+      const message: TimerMessage | TimerEndMessage = data.message;
+      return progressupdate(message);
     }
     default:
       console.log("Worker send Worng Message");
       return;
   }
+};
+
+const participationUpdate = (response: ServerResponse<Participant[]>) => {
+  if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
+    const nickName = useUserInfoStore.getState().nickName;
+    const updateActions = useParticipantsStore.getState().actions;
+    const excludedParticipants = response.data.filter((participant) => {
+      if (participant.nickName === nickName) {
+        updateActions.updateMyStatus(participant.status);
+        return false;
+      }
+      return true;
+    });
+    updateActions.resetParticipants(excludedParticipants);
+  } else {
+    useChangeStatusErrorStore.getState().setError(response.message);
+  }
+};
+
+const progressupdate = (message: TimerMessage | TimerEndMessage) => {
+  if (useDebateTimerStore.getState().type !== message.type) {
+    useMainMessageStore.getState().actions.messageAdd(message, "");
+  }
+  useDebateTimerStore.getState().actions.setTimer(message.remainingTime);
+  useDebateTimerStore.getState().actions.setType(message.type);
 };

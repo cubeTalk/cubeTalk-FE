@@ -26,26 +26,25 @@ const MessageRender = ({ message }: MessageRenderProps) => {
         return <EnterBubble message={message} /> 
       }
       break;
-    case "긍정입장":
-    case "부정질의":
-    case "부정입장":
-    case "긍정질의":
-    case "긍정반박":
-    case "부정반박":
+    case "positiveEntry":
+    case "negativeQuestioning":
+    case "negativeEntry":
+    case "positiveQuestioning":
+    case "positiveRebuttal":
+    case "negativeRebuttal":
       if (isTimerMessage(message)) {
-        if (message.type === "긍정입장") {
+        if (message.type === "positiveEntry") {
           return <DebateStartBubble />;
         }
         return <ModeratorBubble message={message} />;
       }
       break;
-    case "투표":
+    case "votingTime":
       if (isVoteMessage(message)) {
         return <VoteBubble />;
       }
       break;
-    case "결과":
-    case "TIMER_END":
+    case "result":
       if (isTimerEndMessage(message)) {
         return <DebateOutComeBubble message={message} />;
       }

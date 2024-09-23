@@ -7,6 +7,7 @@ import { MenuType, useMenuStore } from "../model/store";
 import TeamChat from "../../../widgets/teamChat";
 import Home from "../../../widgets/debateHome";
 import Memo from "../../../widgets/debateMemo";
+import { DebateTimer } from "../../../entities/timer";
 
 const DeskTopScreen = () => {
   const menu = useMenuStore((state) => state.menu);
@@ -53,6 +54,7 @@ const ScreenContainer = () => {
   return (
     <ScreenConatiner className="bg-darkgray">
       <ScreenHeader />
+      <DebateTimer />
       <ScreenWarpper>
         <DeskTopScreen />
         <NonDeskTopScreen />
