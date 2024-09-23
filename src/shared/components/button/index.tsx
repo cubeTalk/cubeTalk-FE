@@ -10,8 +10,8 @@ interface ButtonProps {
 
 export const SubmitButton = ({
   onClickHandler,
-  isPending,
   text,
+  isPending = false,
   ...rest
 }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (

@@ -4,22 +4,23 @@ import { center, colflex } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../participants/model/store";
 import { Participant } from "../../../shared/type";
 import { useVoteDebateStore } from "../model/store";
+import { voteMessageWebSocket } from "../../../app/worker";
 
 const TeamButtons = () => {
-  const team = useVoteDebateStore(state => state.team);
-  const setTeam = useVoteDebateStore(state => state.actions.setTeam);
+  const team = useVoteDebateStore((state) => state.team);
+  const setTeam = useVoteDebateStore((state) => state.actions.setTeam);
   return (
     <ButtonContainer>
       <CircleButton
-        $isselected={team === "찬성"}
-        onClick={() => setTeam("찬성")}
+        $isselected={team === "SUPPORT"}
+        onClick={() => setTeam("SUPPORT")}
         className="bg-yellow"
       >
         <h2>찬성</h2>
       </CircleButton>
       <CircleButton
-        $isselected={team === "반대"}
-        onClick={() => setTeam("반대")}
+        $isselected={team === "OPPOSITE"}
+        onClick={() => setTeam("OPPOSITE")}
         className="bg-sky"
       >
         <h2>반대</h2>
@@ -30,8 +31,8 @@ const TeamButtons = () => {
 
 const User = ({ user }: { user: Participant }) => {
   const name = user.nickName;
-  const MVP = useVoteDebateStore(state => state.MVP);
-  const setMVP = useVoteDebateStore(state => state.actions.setMVP);
+  const MVP = useVoteDebateStore((state) => state.MVP);
+  const setMVP = useVoteDebateStore((state) => state.actions.setMVP);
   return (
     <div className="flex justify-between items-center" key={name}>
       <h3 className={user.role === "찬성" ? "text-yellow" : "text-sky"}>{name}</h3>
@@ -48,17 +49,32 @@ const User = ({ user }: { user: Participant }) => {
   );
 };
 
+const Submit = () => {
+  const MVP = useVoteDebateStore((state) => state.MVP);
+  const team = useVoteDebateStore((state) => state.team);
+  const onClickHandler = () => {
+    if (team === "SUPPORT" || team === "OPPOSITE") {
+      voteMessageWebSocket({
+        type: "VOTE",
+        team,
+        mvp: MVP,
+      });
+    }
+  };
+  return <SubmitButton text="투표하기" onClickHandler={onClickHandler} />;
+};
+
 const VoteContent = () => {
-  const users = useParticipantsStore((state) => state.list);
+  const users = useParticipantsStore((state) => state.participants);
   return (
     <>
-      <TeamButtons/>
+      <TeamButtons />
       <UserContainer>
         {users.map((user) => (
-          <User user={user} key={user.memberId} />
+          <User user={user} key={user.nickName} />
         ))}
       </UserContainer>
-      <SubmitButton text="투표하기" onClickHandler={() => {}} />
+      <Submit />
     </>
   );
 };

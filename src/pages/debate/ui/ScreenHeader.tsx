@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { colflex, commonButton, spinner } from "../../../shared/style/commonStyle";
+import { colflex } from "../../../shared/style/commonStyle";
 import { useEffect, useRef, useState } from "react";
-import ParticipantButton from "../../../entities/participants";
 import { useDebateInfoStore } from "../../../entities/debateInfo";
-import { useisOwnerStore } from "../../../features/createDebate/model/store";
+import { ParticipantsButton, ParticipantsModal } from "../../../entities/participants";
+import { StatusButton } from "../../../features/changeStatus";
 
 const Title = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -36,31 +36,14 @@ const Title = () => {
   );
 };
 
-const Start = () => {
-  return (
-    <StartButton disabled={false} onClick={() => {}}>
-      <h3>시작하기</h3>
-    </StartButton>
-  );
-};
-
-const Ready = () => {
-  return (
-    <ReadyButton disabled={false} onClick={() => {}}>
-      <h3>준비하기</h3>
-    </ReadyButton>
-  );
-};
-
-
 const ScreenHeader = () => {
-  const isOwner = useisOwnerStore((state) => state.isOwner);
   return (
     <HeaderContainer>
       <Title />
       <ButtonContainer>
-        <ParticipantButton />
-        {isOwner ? <Start /> : <Ready />}
+        <ParticipantsButton />
+        <ParticipantsModal />
+        <StatusButton />
       </ButtonContainer>
     </HeaderContainer>
   );
@@ -86,25 +69,4 @@ const ButtonContainer = styled.div`
   ${colflex}
   gap: 0px;
   margin-left: auto;
-`;
-
-const StartButton = styled.button`
-  ${commonButton}
-  background-color: var(--color-mid);
-  padding: 0px 8px;
-  margin: 5px;
-`;
-
-const ReadyButton = styled.button`
-  ${commonButton}
-  background-color: var(--color-mid);
-  padding: 0px 8px;
-  margin: 5px;
-`;
-
-
-const Spinner = styled.div`
-  ${spinner}
-  width: 24px;
-  height: 24px;
 `;

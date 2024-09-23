@@ -5,9 +5,9 @@ import { combine } from "zustand/middleware";
 export const useDebateDropdownStore = createUseOpenDropdownStore();
 
 const initialDebateDropdownState = {
-  sort: "createdAt",
-  mode: "자유",
-  status: "CREATED",
+  sort: "사람순",
+  mode: "모두",
+  status: "시작전",
 };
 
 export const useDebateSearchParamsStore = create(
@@ -17,3 +17,4 @@ export const useDebateSearchParamsStore = create(
     setStatus: (newStatus: string) => set(() => ({ status: newStatus })),
   }))
 );
+

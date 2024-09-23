@@ -1,31 +1,28 @@
-import { useContext } from "react";
-import { useDebateInfoStore } from "../../../entities/debateInfo";
+import { useQuery } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
-import { AlertContext } from "../../../entities/alertDialog/model/context";
-import { useMutation } from "@tanstack/react-query";
+import { TimeSetting } from "../../../shared/type";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
-export type ChangeDescriptionRequest = {
-  ownerId: string;
+export type GetDebateSettingResponse = {
   description: string;
+  chatDuration?: number;
+  maxParticipants: number;
+  debateSettings?: TimeSetting;
 };
 
-export const ChangeDescriptionKey = "/changeDescription";
+export const GetDebateSettingKey = "getDebateSetting"
 
-export const useChangeDescriptionQuery = () => {
-  const id = useDebateInfoStore((state) => state.id);
-  const patchChangeDescription = (data: ChangeDescriptionRequest): Promise<ServerResponse<never>> =>
-    axios.patch(`/chat/${id}/description`, data);
-  const { alert } = useContext(AlertContext);
+const getDebateSetting = async (id: string): Promise<GetDebateSettingResponse> => {
+  const response = await axios.get(`/chat/${id}/home`);
+  return response.data;
+};
 
-  return useMutation({
-    mutationKey: [ChangeDescriptionKey],
-    mutationFn: (data: ChangeDescriptionRequest) => patchChangeDescription(data),
-    onSuccess: async () => {
-      await alert("변경 완료하였습니다.", "확인");
-    },
-    onError: async () => {
-      await alert("토론방 설명 변경에 실패했습니다. 다시 시도해주세요", "확인");
-    },
-  });
+export const useGetDebateSettingQuery = () => {
+  const id = useUserInfoStore(state => state.id);
+  return useQuery({
+    queryKey: [GetDebateSettingKey],
+    queryFn: () => getDebateSetting(id),
+    refetchOnMount: false,
+    retry: 1,
+  })
 };

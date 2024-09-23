@@ -97,3 +97,5 @@ export const blackSpinner = css`
     }
   }
 `;
+
+export const messageColorMap = new Map<string, string>([["찬성", "var(--color-pro)"], ["반대", "var(--color-con)"], ["관전", "var(--sub-white)"]])

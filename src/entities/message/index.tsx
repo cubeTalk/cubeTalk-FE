@@ -1,11 +1,11 @@
 import {
   isChatMessage,
+  isEnterMessage,
   isTimerEndMessage,
   isTimerMessage,
   isVoteMessage,
   Message,
 } from "../../shared/type";
-import { useDebateInfoStore } from "../debateInfo";
 import Bubble from "./ui/Bubble";
 import {
   ModeratorBubble,
@@ -13,6 +13,7 @@ import {
   DebateStartBubble,
   VoteBubble,
 } from "./ui/ModeratorBubble";
+import { EnterBubble } from "./ui/RoomBubbles";
 
 interface MessageRenderProps {
   message: Message;
@@ -20,40 +21,45 @@ interface MessageRenderProps {
 
 const MessageRender = ({ message }: MessageRenderProps) => {
   switch (message.type) {
-    case "긍정입장":
-    case "부정질의":
-    case "부정입장":
-    case "긍정질의":
-    case "긍정반박":
-    case "부정반박":
+    case "ENTER":
+      if (isEnterMessage(message)) {
+        return <EnterBubble message={message} /> 
+      }
+      break;
+    case "positiveEntry":
+    case "negativeQuestioning":
+    case "negativeEntry":
+    case "positiveQuestioning":
+    case "positiveRebuttal":
+    case "negativeRebuttal":
       if (isTimerMessage(message)) {
-        if (message.type === "긍정입장") {
+        if (message.type === "positiveEntry") {
           return <DebateStartBubble />;
         }
-
         return <ModeratorBubble message={message} />;
       }
       break;
-    case "투표":
+    case "votingTime":
       if (isVoteMessage(message)) {
         return <VoteBubble />;
       }
       break;
-    case "결과":
-    case "TIMER_END":
+    case "result":
       if (isTimerEndMessage(message)) {
         return <DebateOutComeBubble message={message} />;
       }
       break;
-    case "CHAT":
+    case "찬성": 
+    case "반대": 
+    case "관전":
     default:
       if (isChatMessage(message)) {
-        return <Bubble message={message} isLeft={message.isLeft} />;
+        return <Bubble message={message} />;
       }
       break;
   }
-  console.error("잘못된 메세지 type 입니다.");
-  console.error({ message });
+  // console.log("잘못된 메세지 type 입니다.");
+  // console.log({ message });
   return <div />;
 };
 

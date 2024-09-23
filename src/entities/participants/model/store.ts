@@ -1,22 +1,42 @@
 import { create } from "zustand";
-import { combine } from "zustand/middleware";
-import { Participant } from "../../../shared/type";
+import { combine, subscribeWithSelector } from "zustand/middleware";
+import { Participant, ParticipantStatus } from "../../../shared/type";
 import { createModalStore } from "../../../shared/components/modal/model/store";
+import { useisOwnerStore } from "../../../features/createDebate/model/store";
 
 const initalParticipantsState = {
-  list: [] as Participant[],
+  myStatus: "PENDING" as ParticipantStatus,
+  participants: [] as Participant[],
 };
 
 export const useParticipantsStore = create(
-  combine(initalParticipantsState, (set) => ({
-    actions: {
-      reset: () => set(() => (initalParticipantsState)),
-      resetParticipants: (data: Participant[]) => set(() => ({ list: data })),
-      addParticipants: (data: Participant) => set((state) => ({ list: [...state.list, data] })),
-      removeParticipants: (memberId: string) =>
-        set((state) => ({ list: state.list.filter((item) => item.memberId !== memberId) })),
-    }
-  })),
+  subscribeWithSelector(
+    combine(initalParticipantsState, (set) => ({
+      actions: {
+        reset: () => set(() => initalParticipantsState),
+        resetParticipants: (data: Participant[]) => set(() => ({ participants: data })),
+        addParticipants: (data: Participant) =>
+          set((state) => ({ participants: [...state.participants, data] })),
+        removeParticipants: (nickName: string) =>
+          set((state) => ({
+            participants: state.participants.filter((item) => item.nickName !== nickName),
+          })),
+        updateMyStatus: (newStatus: ParticipantStatus) => set((state) => ({ ...state, myStatus: newStatus })),
+      },
+    }))
+  )
 );
 
 export const useParticipantsModalStore = createModalStore(false);
+
+useParticipantsStore.subscribe(
+  (state) => state.myStatus,
+  (myStatus) => {
+    const actions = useisOwnerStore.getState().actions;
+    if (myStatus === "OWNER") {
+      actions.setIsOwner();
+    } else {
+      actions.setIsNotOwner();
+    }
+  }
+);

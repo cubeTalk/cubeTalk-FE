@@ -7,6 +7,7 @@ import { useCreateDebateModalStore, useisOwnerStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { DebateRoomBaseType } from "../../../shared/type";
 import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
+import { AxiosError } from "axios";
 
 export type CreateDebateRoomRequest = DebateRoomBaseType;
 export type CreateDebateRoomResponse = {
@@ -23,7 +24,7 @@ export const useCreateDebateQuery = () => {
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
-  const setId = useDebateInfoStore((state) => state.setId);
+  const setId = useDebateInfoStore((state) => state.actions.setId);
   const setMemberId = useUserInfoStore((state) => state.setMemberId);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
@@ -37,10 +38,10 @@ export const useCreateDebateQuery = () => {
       setMemberId(response.memberId);
       setIsOwner();
       closeCreateDebateModal();
-      openEnterDebateModal();
+      openEnterDebateModal(false);
     },
-    onError: async () => {
-      await alert("토론방 생성에 실패했습니다. 나중에 다시 시도해주세요", "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };

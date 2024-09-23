@@ -1,92 +1,75 @@
 import styled from "styled-components";
-import Divider from "../../shared/components/divider";
+import { blackSpinner } from "../../shared/style/commonStyle";
 import { RoomCardType } from "../../shared/type";
-import { useEnterModalStore } from "../../features/enterDebate/model/store";
-import { useDebateInfoStore } from "../debateInfo";
-import { calculateRemainingTime } from "./lib";
+import { CreateDebateButton } from "../../features/createDebate";
+import RoomCard from "./ui/RoomCard";
 
-const RoomCard = ({
-  title,
-  description,
-  id,
-  chatDuration,
-  chatMode,
-  createdAt,
-  maxParticipants,
-  currentParticipantsCount,
-  started,
-}: Partial<RoomCardType> & { started: boolean }) => {
-  const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
-  const setId = useDebateInfoStore((state) => state.setId);
-  const onClickHandler = () => {
-    if (id) {
-      setId(id);
-      openEnterDebateModal();
-    }
-  };
+const NoDebateRooms = () => {
   return (
-    <>
-      <CardContainer
-        onClick={onClickHandler}
-        className="hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer"
-      >
-        <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
-          <Title>{title}</Title>
-          <div className="flex items-center gap-4">
-            <h3 className="bg-slate-500 py-1 px-2 rounded-md shrink-0">{chatMode}</h3>
-            {chatDuration && createdAt && (!started ? (
-              <h3 className="text-gray-700 text-sm bg-cyan-200 py-1 px-2 rounded-md">
-                {chatDuration}분
-              </h3>
-            ) : (
-              <h3 className="text-gray-700 text-sm bg-rose-200 py-1 px-2 rounded-md">
-                {calculateRemainingTime(chatDuration, createdAt)}
-              </h3>
-            ))}
-
-            {!started ? (
-              <div className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
-                <h3>
-                  {currentParticipantsCount}명/{maxParticipants}명
-                </h3>
-              </div>
-            ) : (
-              <h3 className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
-                {currentParticipantsCount}명 참가
-              </h3>
-            )}
-          </div>
-        </div>
-        <DescriptionText>{description}</DescriptionText>
-      </CardContainer>
-      <Divider color="#e0e0e0" margin={15} />
-    </>
+    <div className="flex flex-col justify-center items-center min-h-60 gap-4">
+      <h2 className="text-2xl">참가가능한 토론이 존재하지 않습니다.</h2>
+      <CreateDebateButton />
+    </div>
   );
 };
 
-export default RoomCard;
+const ErrorText = () => {
+  return (
+    <div className="flex justify-center items-center min-h-60 ">
+      <h2>데이터를 로딩 오류입니다. </h2>
+    </div>
+  );
+};
 
-const CardContainer = styled.button`
-  padding: 10px 15px;
-  width: 100%;
-`;
+const Spinning = () => {
+  return (
+    <div className="flex justify-center items-center">
+      <CardSpinner />
+    </div>
+  );
+};
 
-const Title = styled.h3`
-  font-size: 1.25rem;
-  text-align: left;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+interface RoomCardListProp {
+  cardList: RoomCardType[] | undefined;
+  isError: boolean;
+  isPending: boolean;
+  started: boolean;
+}
 
+export const RoomCardList = ({ cardList, isError, isPending, started }: RoomCardListProp) => {
+  if (isPending) {
+    return <Spinning />;
+  }
 
-const DescriptionText = styled.h4`
-  text-align: left;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  if (isError || !cardList) {
+    return <ErrorText />;
+  }
+
+  return (
+    <div>
+      {cardList.length === 0 ? (
+        <NoDebateRooms />
+      ) : (
+        cardList.map((room: RoomCardType) => (
+          <RoomCard
+            key={room.id}
+            title={room.title}
+            description={room.description}
+            id={room.id}
+            chatDuration={room.chatDuration}
+            chatMode={room.chatMode}
+            createdAt={room.createdAt}
+            maxParticipants={room.maxParticipants}
+            currentParticipantsCount={room.currentParticipantsCount}
+            started={started}
+          />
+        )))}
+    </div>
+  );
+};
+
+const CardSpinner = styled.div`
+  ${blackSpinner}
+  width: 60px;
+  height: 60px;
 `;

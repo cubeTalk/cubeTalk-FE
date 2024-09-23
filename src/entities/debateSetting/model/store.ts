@@ -11,20 +11,24 @@ import {
 export const useModalDropdownStore = createUseOpenDropdownStore();
 
 export type DebateSettingActions = {
-  reset: () => void;
-  getState: () => DebateSetting;
-  setMaxParticipants: (newParticipant: number) => void;
-  setChatDuration: (newDuration: number) => void;
-  setPositiveEntry: (newPositiveEntry: number) => void;
-  setNegativeQuestioning: (newNegativeQuestioning: number) => void;
-  setNegativeEntry: (newNegativeEntry: number) => void;
-  setPositiveQuestioning: (newPositiveQuestioning: number) => void;
-  setPositiveRebuttal: (newPositiveRebuttal: number) => void;
-  setNegativeRebuttal: (newNegativeRebuttal: number) => void;
-  resetSettings: (data: DebateSetting) => void;
+  actions: {
+    reset: () => void;
+    getState: () => DebateSetting;
+    setMaxParticipants: (newParticipant: number) => void;
+    setChatDuration: (newDuration: number) => void;
+    setPositiveEntry: (newPositiveEntry: number) => void;
+    setNegativeQuestioning: (newNegativeQuestioning: number) => void;
+    setNegativeEntry: (newNegativeEntry: number) => void;
+    setPositiveQuestioning: (newPositiveQuestioning: number) => void;
+    setPositiveRebuttal: (newPositiveRebuttal: number) => void;
+    setNegativeRebuttal: (newNegativeRebuttal: number) => void;
+    resetSettings: (data: DebateSetting) => void;
+  };
 };
 
-export const initialRoomSettingState: ProsConsSetting & FreeSetting = {
+export type DebateSettingState = ProsConsSetting & FreeSetting & DebateSettingActions;
+
+export const initialRoomSettingState = {
   maxParticipants: 6,
   chatDuration: 30,
   debateSettings: {
@@ -37,67 +41,60 @@ export const initialRoomSettingState: ProsConsSetting & FreeSetting = {
   },
 };
 
-export const dummySetting = {
-  positiveEntry: 5,
-  negativeQuestioning: 5,
-  negativeEntry: 5,
-  positiveQuestioning: 5,
-  positiveRebuttal: 5,
-  negativeRebuttal: 5,
-};
-
 export const createRoomSettingStore = (initState = initialRoomSettingState) =>
-  combine<ProsConsSetting & FreeSetting, DebateSettingActions>(initState, (set, get) => ({
-    setMaxParticipants: (newParticipant: number) =>
-      set((state) => ({ ...state, maxParticipants: newParticipant })),
+  combine(initState, (set, get) => ({
+    actions: {
+      setMaxParticipants: (newParticipant: number) =>
+        set((state) => ({ ...state, maxParticipants: newParticipant })),
 
-    setChatDuration: (newDuration: number) =>
-      set((state) => ({ ...state, chatDuration: newDuration })),
-    setPositiveEntry: (newPositiveEntry: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: { ...hasProsConsSetting(get()), positiveEntry: newPositiveEntry },
-      })),
+      setChatDuration: (newDuration: number) =>
+        set((state) => ({ ...state, chatDuration: newDuration })),
+      setPositiveEntry: (newPositiveEntry: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: { ...hasProsConsSetting(get()), positiveEntry: newPositiveEntry },
+        })),
 
-    setNegativeQuestioning: (newNegativeQuestioning: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: {
-          ...hasProsConsSetting(get()),
-          negativeQuestioning: newNegativeQuestioning,
-        },
-      })),
+      setNegativeQuestioning: (newNegativeQuestioning: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: {
+            ...hasProsConsSetting(get()),
+            negativeQuestioning: newNegativeQuestioning,
+          },
+        })),
 
-    setNegativeEntry: (newNegativeEntry: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: { ...hasProsConsSetting(get()), negativeEntry: newNegativeEntry },
-      })),
+      setNegativeEntry: (newNegativeEntry: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: { ...hasProsConsSetting(get()), negativeEntry: newNegativeEntry },
+        })),
 
-    setPositiveQuestioning: (newPositiveQuestioning: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: {
-          ...hasProsConsSetting(get()),
-          positiveQuestioning: newPositiveQuestioning,
-        },
-      })),
+      setPositiveQuestioning: (newPositiveQuestioning: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: {
+            ...hasProsConsSetting(get()),
+            positiveQuestioning: newPositiveQuestioning,
+          },
+        })),
 
-    setPositiveRebuttal: (newPositiveRebuttal: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: { ...hasProsConsSetting(get()), positiveRebuttal: newPositiveRebuttal },
-      })),
+      setPositiveRebuttal: (newPositiveRebuttal: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: { ...hasProsConsSetting(get()), positiveRebuttal: newPositiveRebuttal },
+        })),
 
-    setNegativeRebuttal: (newNegativeRebuttal: number) =>
-      set((state) => ({
-        ...state,
-        debateSettings: { ...hasProsConsSetting(get()), negativeRebuttal: newNegativeRebuttal },
-      })),
+      setNegativeRebuttal: (newNegativeRebuttal: number) =>
+        set((state) => ({
+          ...state,
+          debateSettings: { ...hasProsConsSetting(get()), negativeRebuttal: newNegativeRebuttal },
+        })),
 
-    resetSettings: (data: DebateSetting) => set(() => ({ ...data })),
-    getState: () => get(),
-    reset: () => set(() => initState),
+      resetSettings: (data: DebateSetting) => set(() => ({ ...data })),
+      getState: () => get(),
+      reset: () => set(() => initState),
+    },
   }));
 
 const roomSettingStore = createRoomSettingStore();

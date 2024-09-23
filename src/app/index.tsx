@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DebatePage from "../pages/debate";
@@ -42,13 +41,11 @@ const queryClient = new QueryClient();
 
 enableMocking().then(() => {
   createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <AlertDialog>
-          <RouterProvider router={router} />
-        </AlertDialog>
-      </QueryClientProvider>
-    </StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AlertDialog>
+        <RouterProvider router={router} />
+      </AlertDialog>
+    </QueryClientProvider>
   );
 })
 

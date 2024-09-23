@@ -1,23 +1,28 @@
 import styled from "styled-components";
-import { ChatMessage } from "../../../shared/type";
+import { MessageWithType } from "../../../shared/type";
 
 interface BubbleProps {
-  message: ChatMessage;
-  isLeft?: boolean;
+  message: MessageWithType;
 }
 
-const Bubble = ({ message, isLeft = true }: BubbleProps) => {
+const Bubble = ({ message }: BubbleProps) => {
+  const isLeft = !!message.isLeft;
+  const color = message.color ? message.color : "var(--white)";
   return (
-    <div>
-      <UserName $isLeft={isLeft}>{message.sender}</UserName>
+    <div className={message.isTime ? "mb-2" : ""}>
+      {message.isName && <UserName $isLeft={isLeft}>{message.sender}</UserName>}{" "}
       <BubbleWrapper $isLeft={isLeft}>
-        <NormalBubble $isLeft={isLeft}>{message.message}</NormalBubble>
-        <BubbleTime $isLeft={isLeft}>
-          {new Date(message.serverTimestamp).toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit",
-          })}
-        </BubbleTime>
+        <NormalBubble $isLeft={isLeft} $color={color}>
+          {message.message}
+        </NormalBubble>
+        {message.isTime && (
+          <BubbleTime $isLeft={isLeft}>
+            {new Date(message.serverTimeStamp).toLocaleTimeString([], {
+              hour: "numeric",
+              minute: "2-digit",
+            })}
+          </BubbleTime>
+        )}
       </BubbleWrapper>
     </div>
   );
@@ -25,8 +30,9 @@ const Bubble = ({ message, isLeft = true }: BubbleProps) => {
 
 export default Bubble;
 
-const UserName = styled.h3<{ $isLeft: boolean }>`
-  margin: 0px 0px 5px 5px;
+const UserName = styled.h4<{ $isLeft: boolean }>`
+  font-size: 15px;
+  margin: 0px 0px 5px 4px;
   text-align: ${({ $isLeft }) => ($isLeft ? "left" : "right")};
 `;
 
@@ -36,9 +42,9 @@ const BubbleWrapper = styled.div<{ $isLeft: boolean }>`
   justify-content: ${({ $isLeft }) => ($isLeft ? "flex-start" : "flex-end")};
 `;
 
-const NormalBubble = styled.h4<{ $isLeft: boolean }>`
+const NormalBubble = styled.h4<{ $isLeft: boolean; $color: string }>`
   width: fit-content;
-  background-color: var(--color-pro);
+  background-color: ${({ $color }) => $color};
   line-height: 1.4;
   padding: 5px 10px;
   border-radius: 5px;

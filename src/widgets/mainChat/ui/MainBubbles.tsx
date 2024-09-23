@@ -8,8 +8,8 @@ export const MainBubbles = () => {
   return (
     <>
       <Announcement />
-      {messageList.map((message) => {
-        return <MessageRender message={message} />;
+      {messageList.map((message, index) => {
+        return <MessageRender message={message} key={`${message.type}${index}`} />;
       })}
     </>
   );

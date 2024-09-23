@@ -7,47 +7,57 @@ import { MenuType, useMenuStore } from "../model/store";
 import TeamChat from "../../../widgets/teamChat";
 import Home from "../../../widgets/debateHome";
 import Memo from "../../../widgets/debateMemo";
+import { DebateTimer } from "../../../entities/timer";
 
-const Screen = ({ menu }: { menu: MenuType }) => {
+const DeskTopScreen = () => {
+  const menu = useMenuStore((state) => state.menu);
   return (
-    <ScreenLayout>
-      <Display $menu={menu} $label={"Home"}>
+    <Desktop>
+      <NewScreenLayout $menu={menu} $label={"Home"}>
         <Home />
-      </Display>
-      <Display $menu={menu} $label={"Memo"}>
+      </NewScreenLayout>
+      <NewScreenLayout $menu={menu} $label={"Memo"}>
         <Memo />
-      </Display>
-      <Display $menu={menu} $label={"TeamChat"}>
+      </NewScreenLayout>
+      <NewScreenLayout $menu={menu} $label={"TeamChat"}>
         <TeamChat />
-      </Display>
-      <Display $menu={menu} $label={"MainChat"}>
+      </NewScreenLayout>
+      {menu !== "MainChat" && <div className="w-4" />}
+      <ScreenLayout>
         <MainChat />
-      </Display>
-    </ScreenLayout>
+      </ScreenLayout>
+    </Desktop>
+  );
+};
+
+const NonDeskTopScreen = () => {
+  const menu = useMenuStore((state) => state.menu);
+  return (
+    <NonDesktop>
+      <NewScreenLayout $menu={menu} $label={"Home"}>
+        <Home />
+      </NewScreenLayout>
+      <NewScreenLayout $menu={menu} $label={"Memo"}>
+        <Memo />
+      </NewScreenLayout>
+      <NewScreenLayout $menu={menu} $label={"TeamChat"}>
+        <TeamChat />
+      </NewScreenLayout>
+      <NewScreenLayout $menu={menu} $label={"MainChat"}>
+        <MainChat />
+      </NewScreenLayout>
+    </NonDesktop>
   );
 };
 
 const ScreenContainer = () => {
-  const menu = useMenuStore((state) => state.menu);
-
   return (
     <ScreenConatiner className="bg-darkgray">
       <ScreenHeader />
+      <DebateTimer />
       <ScreenWarpper>
-        <Desktop>
-          {menu !== "MainChat" && (
-            <>
-              <Screen menu={menu} />
-              <div className="w-4" />
-            </>
-          )}
-          <ScreenLayout>
-            <MainChat />
-          </ScreenLayout>
-        </Desktop>
-        <NonDesktop>
-          <Screen menu={menu} />
-        </NonDesktop>
+        <DeskTopScreen />
+        <NonDeskTopScreen />
       </ScreenWarpper>
     </ScreenConatiner>
   );
@@ -81,8 +91,12 @@ const ScreenLayout = styled.div`
   width: 100%;
 `;
 
-const Display = styled.div<{ $menu: MenuType; $label: string }>`
+const NewScreenLayout = styled.div<{ $menu: MenuType; $label: string }>`
   ${colflex}
-  display: ${({ $menu, $label }) => ($menu === $label ? "flex" : "none")};
+  padding: 5px;
+  border-radius: 8px;
+  background-color: var(--color-light);
   height: 100%;
+  width: 100%;
+  display: ${({ $menu, $label }) => ($menu === $label ? "flex" : "none")};
 `;

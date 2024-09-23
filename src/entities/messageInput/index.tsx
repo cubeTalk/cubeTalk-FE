@@ -3,15 +3,21 @@ import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
 import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { InputStoreType } from "./model/store";
+import { useUserInfoStore } from "../debateInfo";
+import { sendMessageWebSocket } from "../../app/worker";
 
 interface MessageInputProps {
   containerRef: React.RefObject<HTMLDivElement>;
   messageInputStore: UseBoundStore<StoreApi<InputStoreType>>;
+  channelId: string;
 }
 
-const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) => {
+const MessageInput = ({ containerRef, messageInputStore, channelId }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { value, action } = messageInputStore((state) => state);
+  const sender = useUserInfoStore((state) => state.nickName);
+  const id = useUserInfoStore((state) => state.id);
+  const type = useUserInfoStore((state) => state.role);
 
   // 스크롤이 바닥에 있었으면 계속 유지하도록함
   const scrollToBottom = useCallback(
@@ -20,7 +26,6 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
         return;
       }
       const bubbleContainer = containerRef.current;
-
       if (!checkingBottom) {
         bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
         return;
@@ -48,6 +53,10 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
     scrollToBottom(true);
   }, [scrollToBottom, value]);
 
+  useEffect(() => {
+    scrollToBottom(false);
+  }, [scrollToBottom]);
+
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -64,7 +73,13 @@ const MessageInput = ({ containerRef, messageInputStore }: MessageInputProps) =>
 
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
-    if (!value.trim()) {
+    if (value.trim()) {
+      sendMessageWebSocket(channelId, {
+        id,
+        sender,
+        type,
+        message: value,
+      });
       action.resetValue();
       scrollToBottom(false);
     }
