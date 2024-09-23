@@ -8,7 +8,7 @@ export type GetDebateRoomsResponse = RoomCardType[];
 
 export type QueryString = {
   mode: "찬반" | "자유" | undefined;
-  sort: "participants" | "createdAt";
+  sort?: "participants" | "createdAt";
   order?: "asc" | "desc";
   status?: "STARTED" | "CREATED" | undefined;
   page?: string;
@@ -17,7 +17,7 @@ export type QueryString = {
 
 export const getDebateRooms = async (
   mode: string | undefined,
-  sort: string,
+  sort: string | undefined,
   order: string,
   status: string | undefined,
   page: string,
@@ -41,17 +41,20 @@ const statusDisplay = new Map([
 
 export const useGetDebateRoomsQuery = () => {
   const { sort, mode, status } = useDebateSearchParamsStore((state) => state);
-  const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["getDebateRooms"],
-    queryFn: async ({ pageParam = 0 }) =>
-      getDebateRooms(
-        mode === "모두" ? undefined : mode,
-        sortDisplay.get(sort) || "CREATED",
+  const { data, isPending, isError, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["getDebateRooms", mode, sort, status],
+    queryFn: async ({ queryKey, pageParam = 0 }) => {
+      const [, modeParam, sortParam, statusParam] = queryKey;
+      return getDebateRooms(
+        modeParam === "모두" ? undefined : mode,
+        sortDisplay.get(sortParam),
         "desc",
-        statusDisplay.get(status),
+        statusDisplay.get(statusParam),
         pageParam.toString(),
         "20"
-      ),
+      );
+    },
+
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages?.length;
@@ -61,5 +64,5 @@ export const useGetDebateRoomsQuery = () => {
   const rooms = useMemo(() => {
     return data?.pages.flat();
   }, [data]);
-  return { rooms, isLoading, isError, isFetchingNextPage, fetchNextPage };
+  return { rooms, isPending, isError, isFetchingNextPage, fetchNextPage };
 };

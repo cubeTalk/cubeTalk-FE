@@ -31,10 +31,9 @@ export const mockingEnterDebateHandler = http.post<
   }
 
   const newParticipant: Participant = {
-    memberId: ownerId ? ownerId : generateUserID(),
     nickName: nickName || `user-${room.participants.length + 1}`,
     role,
-    status: ownerId ? "방장" : "대기",
+    status: ownerId ? "OWNER" : "PENDING",
   };
 
   room.ownerId = ownerId ? ownerId : "";
@@ -43,7 +42,7 @@ export const mockingEnterDebateHandler = http.post<
   // Return updated room info
   const responseData: EnterDebateResponse = {
     id,
-    memberId: newParticipant.memberId,
+    memberId: generateUserID(),
     nickName: newParticipant.nickName,
     channelId: room.channelId,
     subChannelId: generateChannelID(),

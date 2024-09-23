@@ -3,22 +3,21 @@ import { mediaQuery, rowflex, scrollBar } from "../../shared/style/commonStyle";
 import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
 import { StoreApi, UseBoundStore } from "zustand";
 import { InputStoreType } from "./model/store";
-import webSocket from "../../shared/webSocket";
-import { SendChatMessage, ChatMessageType } from "../../shared/type";
 import { useUserInfoStore } from "../debateInfo";
+import { sendMessageWebSocket } from "../../app/worker";
 
 interface MessageInputProps {
   containerRef: React.RefObject<HTMLDivElement>;
   messageInputStore: UseBoundStore<StoreApi<InputStoreType>>;
   channelId: string;
-  type: ChatMessageType
 }
 
-const MessageInput = ({ containerRef, messageInputStore, channelId, type }: MessageInputProps) => {
+const MessageInput = ({ containerRef, messageInputStore, channelId }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { value, action } = messageInputStore((state) => state);
-  const sender = useUserInfoStore(state => state.nickName);
-  const id = useUserInfoStore(state => state.id);
+  const sender = useUserInfoStore((state) => state.nickName);
+  const id = useUserInfoStore((state) => state.id);
+  const type = useUserInfoStore((state) => state.role);
 
   // 스크롤이 바닥에 있었으면 계속 유지하도록함
   const scrollToBottom = useCallback(
@@ -27,7 +26,6 @@ const MessageInput = ({ containerRef, messageInputStore, channelId, type }: Mess
         return;
       }
       const bubbleContainer = containerRef.current;
-      console.log(bubbleContainer.scrollTop, bubbleContainer.clientHeight, bubbleContainer.scrollHeight);
       if (!checkingBottom) {
         bubbleContainer.scrollTop = bubbleContainer.scrollHeight;
         return;
@@ -55,6 +53,10 @@ const MessageInput = ({ containerRef, messageInputStore, channelId, type }: Mess
     scrollToBottom(true);
   }, [scrollToBottom, value]);
 
+  useEffect(() => {
+    scrollToBottom(false);
+  }, [scrollToBottom]);
+
   // 컨트롤 엔터 + 알트 엔터 => 줄바꿈
   // 일반 엔터 => 메세지 전송
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -72,13 +74,12 @@ const MessageInput = ({ containerRef, messageInputStore, channelId, type }: Mess
   // Todo: 메세지 전송 api 생성필요
   const handleSendMessage = () => {
     if (value.trim()) {
-      const messageBody: SendChatMessage = {
+      sendMessageWebSocket(channelId, {
         id,
         sender,
         type,
         message: value,
-      }
-      webSocket.sendMessage(channelId, messageBody);
+      });
       action.resetValue();
       scrollToBottom(false);
     }

@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { combine, persist, subscribeWithSelector } from "zustand/middleware";
+import { combine, createJSONStorage, persist, subscribeWithSelector } from "zustand/middleware";
 import { DebateRole, DebateStatus, UserInfo } from "../../../shared/type";
-import { useDescriptionStore } from "../../../widgets/debateHome/model/store";
+import { useDescriptionStore } from "../../../features/changeDescription/model/store";
 
 const initalUserInfoState: UserInfo = {
   id: "",
@@ -16,12 +16,11 @@ export const useUserInfoStore = create(
   persist(
     combine(initalUserInfoState, (set) => ({
       setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
-      changeTeam: (role: DebateRole, subChannelId: string) =>
-        set((state) => ({ ...state, role, subChannelId })),
       setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
+      changeTeam: (role: DebateRole, subChannelId: string) => set(() => ({ role, subChannelId })),
       reset: () => set(initalUserInfoState),
     })),
-    { name: "UserInfo" }
+    { name: "UserInfo", storage: createJSONStorage(() => sessionStorage)}
   )
 );
 
@@ -44,8 +43,11 @@ const initalDebateInfoState: DebateInfo = {
 export const useDebateInfoStore = create(
   subscribeWithSelector(
     combine(initalDebateInfoState, (set) => ({
-      setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
-      setId: (id: string) => set((state) => ({ ...state, id })),
+      actions: {
+        setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
+        setDescription: (newDescription: string) => set({ description: newDescription }),
+        setId: (id: string) => set((state) => ({ ...state, id })),
+      },
     }))
   )
 );
@@ -53,6 +55,6 @@ export const useDebateInfoStore = create(
 useDebateInfoStore.subscribe(
   (state) => state.description,
   (description) => {
-    useDescriptionStore.setState(() => ({ value: description }));
+    useDescriptionStore.setState(() => ({ value: description, resetvalue: description }));
   }
 );

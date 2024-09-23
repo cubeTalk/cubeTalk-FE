@@ -1,5 +1,5 @@
 import { messageColorMap } from "../../../shared/style/commonStyle";
-import { isChatMessage, Message, MessageWithType, Participant } from "../../../shared/type";
+import { isChatMessage, Message, MessageWithType } from "../../../shared/type";
 
 const isSameMinute = (timestamp1: string, timestamp2: string) => {
   const date1 = new Date(timestamp1);
@@ -8,26 +8,21 @@ const isSameMinute = (timestamp1: string, timestamp2: string) => {
   return date1.getHours() === date2.getHours() && date1.getMinutes() === date2.getMinutes();
 };
 
+// 같은 유저가 보냈는지, 같은 유저인데 같은 시간대인지, 첫 메세지는 닉네임 존재, 마지막 메세지는 시간존재
 export const handleMessages = (
   newMessage: MessageWithType,
   messages: Message[],
-  nickName: string,
-  participants?: Participant[]
+  nickName: string
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color;
-  if (participants) {
-    const user = participants.find((user) => user.nickName === newMessage.sender);
-    color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
-  } else {
-    color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
-  }
+  const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
   const lastMessage = messages[messages.length - 1];
   const isTime = true;
-  const isName = true;
   if (
+    lastMessage &&
     isChatMessage(lastMessage) &&
-    isSameMinute(lastMessage.serverTimestamp, newMessage.serverTimestamp)
+    lastMessage.sender === newMessage.sender &&
+    isSameMinute(lastMessage.serverTimeStamp, newMessage.serverTimeStamp)
   ) {
     return [
       ...messages.slice(0, -1),
@@ -35,40 +30,39 @@ export const handleMessages = (
       { ...newMessage, isLeft, color, isName: false, isTime },
     ];
   }
-  return [...messages, { ...newMessage, isLeft, color, isName, isTime }];
+  return [...messages, { ...newMessage, isLeft, color, isName: isLeft, isTime }];
 };
 
+// 시간은 다음 메세지가 같은 유저인데 같은 시간대인지, 닉네임은 이전 메세지가 같은 유저인지, 
 export const handleMessage = (
   newMessage: MessageWithType,
-  nextSeverTimeStamp: string,
+  nextMessage: Message | null,
   nickName: string,
-  participants: Participant[],
-  isName = true
+  beforeSame: boolean,
 ) => {
   const isLeft = newMessage.sender !== nickName;
-  let color = WatchingBubbleColor;
-  if (isChatMessage(newMessage)) {
-    const user = participants.find((user) => user.nickName === newMessage.sender);
-    color = messageColorMap.get(user?.role || "관전") || WatchingBubbleColor;
-  }
-  const isTime = true;
-  if (nextSeverTimeStamp && isSameMinute(nextSeverTimeStamp, newMessage.severTimeStamp)) {
+  const color = messageColorMap.get(newMessage.type) || WatchingBubbleColor;
+
+  if (
+    nextMessage &&
+    isChatMessage(nextMessage) &&
+    nextMessage.sender === newMessage.sender &&
+    isSameMinute(nextMessage.serverTimeStamp, newMessage.serverTimeStamp)
+  ) {
     return {
       ...newMessage,
-      serverTimestamp: newMessage.severTimeStamp,
       isLeft,
       color,
-      isName,
+      isName: isLeft && !beforeSame,
       isTime: false,
     };
   }
   return {
     ...newMessage,
-    serverTimestamp: newMessage.severTimeStamp,
     isLeft,
     color,
-    isName,
-    isTime,
+    isName: isLeft && !beforeSame,
+    isTime: true,
   };
 };
 

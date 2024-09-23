@@ -1,47 +1,24 @@
 import styled from "styled-components";
 import { mediaQuery } from "../../../shared/style/commonStyle";
+import { EnterMessage } from "../../../shared/type";
 
-interface EnterBubbleProps {
-  userName: string;
-  isEnter: boolean;
-}
-
-type TeamType = "찬성팀" | "반대팀" | "관전";
-
-interface ChangeTeamBubbleProps {
-  userName: string;
-  team: TeamType;
-}
-
-export const EnterBubble = ({ userName, isEnter }: EnterBubbleProps) => {
-  if (isEnter) {
-    return (
-      <div className="flex justify-center">
-        <RoomBubble>
-          <strong>{userName}</strong>님이 입장하였습니다.
-        </RoomBubble>
-      </div>
-    );
-  }
-
+export const EnterBubble = ({ message }: { message: EnterMessage }) => {
   return (
     <div className="flex justify-center">
-      <RoomBubble>
-        <strong>{userName}</strong>님이 퇴장하였습니다.
-      </RoomBubble>
+      <RoomBubble>{message.message}</RoomBubble>
     </div>
   );
 };
 
-export const ChangeTeamBubble = ({ userName, team }: ChangeTeamBubbleProps) => {
-  return (
-    <div className="flex justify-center">
-      <RoomBubble>
-        <strong>{userName}</strong>님이 <strong>{team}</strong>으로 변경하였습니다.
-      </RoomBubble>
-    </div>
-  );
-};
+// export const ChangeTeamBubble = ({ userName, team }) => {
+//   return (
+//     <div className="flex justify-center">
+//       <RoomBubble>
+//         <strong>{userName}</strong>님이 <strong>{team}</strong>으로 변경하였습니다.
+//       </RoomBubble>
+//     </div>
+//   );
+// };
 
 const RoomBubble = styled.h4`
   text-align: center;
@@ -53,7 +30,7 @@ const RoomBubble = styled.h4`
   border-radius: 5px;
   word-wrap: break-word;
   max-width: 60%;
-  margin-top: 5px;
+  margin: 4px 0px;
 
   @media ${mediaQuery.mobile} {
     max-width: 80%;

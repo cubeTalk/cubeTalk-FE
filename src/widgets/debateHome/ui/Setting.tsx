@@ -7,7 +7,7 @@ const SettingHeader = () => {
   const isOwner = useisOwnerStore((state) => state.isOwner);
   return (
     <div className="flex flex-row justify-between mb-1">
-      <h3>토론방 설정</h3>
+      <h3 className="text-xl">토론방 설정</h3>
       {isOwner && <SettingButton />}
     </div>
   );
@@ -67,7 +67,7 @@ const SettingBody = () => {
 
 export const Setting = () => {
   return (
-    <div>
+    <div className="mb-2">
       <SettingHeader />
       <SettingBody />
     </div>

@@ -67,35 +67,35 @@ interface Statement {
 
 const statements: Map<TimerMessage["type"], Statement> = new Map([
   [
-    "부정질의",
+    "negativeQuestioning",
     {
       message: ["찬성팀의 입장이 종료되었습니다.", "반대팀의 질의가 진행됩니다."],
       color: "bg-sky",
     },
   ],
   [
-    "부정입장",
+    "negativeEntry",
     {
       message: ["반대팀의 질의가 종료되었습니다.", "반대팀의 입론이 진행됩니다."],
       color: "bg-sky",
     },
   ],
   [
-    "긍정질의",
+    "positiveQuestioning",
     {
       message: ["반대팀의 입장이 종료되었습니다.", "찬성팀의 질의가 진행됩니다."],
       color: "bg-yellow",
     },
   ],
   [
-    "긍정반박",
+    "positiveRebuttal",
     {
       message: ["찬성팀의 질의가 종료되었습니다.", "찬성팀의 반박이 진행됩니다."],
       color: "bg-yellow",
     },
   ],
   [
-    "부정반박",
+    "negativeRebuttal",
     {
       message: ["찬성팀의 반박이 종료되었습니다.", "반대팀의 반박이 진행됩니다."],
       color: "bg-sky",
@@ -132,7 +132,7 @@ const Moderator = styled.div`
   border-radius: 5px;
   padding: 10px 40px;
   max-width: 60%;
-  margin-top: 5px;
+  margin: 4px 0px;
   @media ${mediaQuery.mobile} {
     max-width: 80%;
     padding: 10px 20px;

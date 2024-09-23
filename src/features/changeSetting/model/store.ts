@@ -4,6 +4,6 @@ import { createModalStore } from "../../../shared/components/modal/model/store";
 
 export const useSettingChangeModalStore = createModalStore(false);
 
-export const changeSettingStore = createRoomSettingStore();
+const changeSettingStore = createRoomSettingStore();
 
 export const useChangeSettingStore = create(changeSettingStore);

@@ -1,23 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "../../../shared/axiosApi";
-import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { DebateRoomType } from "../../../shared/type";
-import { useParams } from "react-router-dom";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
 export type GetDebateRoomResponse = DebateRoomType;
 
-export const getDebateInfo = (
-  id: string | undefined
-): Promise<ServerResponse<GetDebateRoomResponse>> => axios.get(`/chat/${id}`);
-
+export const getDebateInfo = async (id: string): Promise<GetDebateRoomResponse> => {
+  const response = await axios.get(`/chat/${id}`);
+  return response.data;
+};
 
 export const useGetDebateInfoQuery = () => {
-  const { debateRoomId } = useParams();
+  const debateRoomId = useUserInfoStore((state) => state.id);
   return useQuery({
     queryKey: ["getDebateInfo"],
-    queryFn: async () => getDebateInfo(debateRoomId),
+    queryFn: () => getDebateInfo(debateRoomId),
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 60000,
   });
-}
+};

@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { roomList, serverResponse } from ".";
-import { ChangeDescriptionRequest } from "../../../widgets/debateHome/api/query";
+import { ChangeDescriptionRequest } from "../../../features/changeDescription/api/query";
 
 type ChangeDescriptionParams = {
   id: string

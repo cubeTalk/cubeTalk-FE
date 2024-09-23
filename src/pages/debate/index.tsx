@@ -2,12 +2,17 @@ import styled from "styled-components";
 import { colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
 import MenuTab from "./ui/MenuTab";
 import ScreenContainer from "./ui/ScreenContainer";
-import { useFetchandUpdateData } from "./hook/useUpdateInfo";
+import { useFetchandUpdateData, useUpdateMessageList } from "./hook/useUpdateInfo";
+import { useWebSocketConnection } from "./hook";
+import { PageLoadingSpinner } from "../../shared/components/spinner";
 
 const DebatePage = () => {
-  useFetchandUpdateData();
+  const isfetchingLoading = useFetchandUpdateData();
+  const isMessageLoading = useUpdateMessageList();
+  useWebSocketConnection();
   return (
     <PageLayout>
+      {(isMessageLoading || isfetchingLoading) && <PageLoadingSpinner />}
       <MenuTab />
       <ScreenContainer />
     </PageLayout>
