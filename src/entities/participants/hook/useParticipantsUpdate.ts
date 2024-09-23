@@ -11,7 +11,7 @@ export const useParticipantsUpdate = () => {
   const memberId = useUserInfoStore((state) => state.memberId);
   const { alert } = useContext(AlertContext);
   if (isError) {
-    alert("참가자 목록을 불러오는데 실패했습니다. 다시 열어주세요", "확인");
+    alert("참가자 목록을 불러오는데 실패했습니다.", "확인");
   }
   useEffect(() => {
     if (data) {

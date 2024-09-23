@@ -80,7 +80,7 @@ export const TeamButtons = () => {
           setTeam={setTeam}
           bgColor={"bg-yellow"}
           isPending={isPending}
-          isdisable={isStarted || data.maxCapacityCount / 2 === data.supportCount}
+          isdisable={isStarted || originTeam === "찬성" || data.maxCapacityCount / 2 === data.supportCount}
         />
         <TeamButton
           label="반대"
@@ -91,13 +91,13 @@ export const TeamButtons = () => {
           setTeam={setTeam}
           bgColor={"bg-sky"}
           isPending={isPending}
-          isdisable={isStarted || data.maxCapacityCount / 2 === data.oppositeCount}
+          isdisable={isStarted || originTeam === "반대" || data.maxCapacityCount / 2 === data.oppositeCount}
         />
       </div>
       <button
         className={`w-full mt-1 min-h-11 flex flex-row justify-center gap-3 rounded-md py-3 bg-gray ${chooseBorder(team, "관전")}`}
         onClick={() => setTeam("관전")}
-        disabled={data.spectatorCount === 4}
+        disabled={data.spectatorCount === 4 || originTeam === "관전"}
       >
         {isPending ? (
           <Spinner />

@@ -3,7 +3,6 @@ import { mediaQuery } from "../../../shared/style/commonStyle";
 import { EnterMessage } from "../../../shared/type";
 
 export const EnterBubble = ({ message }: { message: EnterMessage }) => {
-  console.log(message);
   return (
     <div className="flex justify-center">
       <RoomBubble>{message.message}</RoomBubble>

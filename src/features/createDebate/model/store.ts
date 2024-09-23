@@ -27,5 +27,6 @@ export const useisOwnerStore = create(
       setIsOwner: () => set({ isOwner: true }),
       setIsNotOwner: () => set({ isOwner: false }),
     },
+    reset: () => set({ isOwner: false }),
   }))
 );

@@ -4,9 +4,9 @@ import { useUserInfoStore } from "../../../entities/debateInfo";
 import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 import { useEffect } from "react";
-import webSocket from "../../../shared/webSocket";
 import { useQueryClient } from "@tanstack/react-query";
 import { GetParticipantsKey } from "../../../entities/participants/api/query";
+import { connectWebSocket, disconnectWebSocket } from "../../../app/worker";
 
 interface WebSocketCallback {
   mainChatCallback: (message: IMessage) => void;
@@ -54,35 +54,15 @@ export const useWebSocketMessageCallback = (): WebSocketCallback => {
 
 export const useWebSocketConnection = () => {
   const { id, channelId, subChannelId, nickName } = useUserInfoStore((state) => state);
-  const {
-    mainChatCallback,
-    subChatCallback,
-    progressCallback,
-    participantsCallback,
-    errorCallback,
-  } = useWebSocketMessageCallback();
 
   useEffect(() => {
-    webSocket.connect({
-      id,
+    connectWebSocket({
+      chatRoomId: id,
       channelId,
       subChannelId,
       nickName,
-      mainChatCallback,
-      subChatCallback,
-      progressCallback,
-      participantsCallback,
-      errorCallback,
     });
-  }, [
-    channelId,
-    errorCallback,
-    id,
-    mainChatCallback,
-    nickName,
-    participantsCallback,
-    progressCallback,
-    subChannelId,
-    subChatCallback,
-  ]);
+    //return () => disconnectWebSocket();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 };

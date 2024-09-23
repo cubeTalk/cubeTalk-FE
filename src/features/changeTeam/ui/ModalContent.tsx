@@ -14,7 +14,7 @@ const ChangeTeam = () => {
 
 export const ModalContent = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center gap-1">
       <h1>팀 변경</h1>
       <TeamButtons />
       <ChangeTeam />
