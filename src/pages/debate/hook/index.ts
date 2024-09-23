@@ -6,7 +6,7 @@ import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { GetParticipantsKey } from "../../../entities/participants/api/query";
-import { connectWebSocket, disconnectWebSocket } from "../../../app/worker";
+import { connectWebSocket } from "../../../app/worker";
 
 interface WebSocketCallback {
   mainChatCallback: (message: IMessage) => void;

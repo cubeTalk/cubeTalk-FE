@@ -1,3 +1,4 @@
+import { ProgressMessageType } from "../../../shared/type";
 import { formatTime, getTypeInfo, interpolateColor, WARNING_TIME } from "../lib";
 import { useDebateTimerStore } from "../model/store";
 
@@ -28,7 +29,7 @@ export const GaugeBar = ({ timeLeft, totalTime }: { timeLeft: number; totalTime:
         className="rounded-lg h-full transition-all duration-100 ease-linear"
         style={{
           width: `${100 - (timeLeft / totalTime) * 100}%`,
-          backgroundColor: interpolateColor(timeLeft / totalTime, type),
+          backgroundColor: interpolateColor(timeLeft / totalTime, type as ProgressMessageType),
         }}
       />
     </div>
