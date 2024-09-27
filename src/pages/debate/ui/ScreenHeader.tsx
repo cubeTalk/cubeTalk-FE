@@ -67,6 +67,7 @@ const ChatTitle = styled.h2<{ $isexpanded: boolean }>`
 
 const ButtonContainer = styled.div`
   ${colflex}
+  position: relative;
   gap: 0px;
   margin-left: auto;
 `;

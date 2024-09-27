@@ -71,8 +71,8 @@ const Layout = styled.div`
   width: 277px;
   padding: 10px;
   border-radius: 8px;
-  top: 60px;
-  right: 25px;
+  top: 40px;
+  right: 0px;
   z-index: 30;
   h2 {
     color: var(--white);
@@ -86,7 +86,9 @@ const UserNickName = styled.h4<{ $role: string }>`
       ? "var(--color-pro)"
       : $role === "반대"
         ? "var(--color-con)"
-        : "var(--color-light)"};
+        : $role === "자유"
+          ? "var(--color-free)"
+          : "var(--color-light)"};
 `;
 
 const ParticipantsConatiner = styled.div`

@@ -8,6 +8,7 @@ export default {
         yellow: "#FFF068",
         red: "#FF9D9D",
         green: "#338600",
+        emerald: "#a7f3d0",
         error: "#FD3E3E",
         darkgray: "#2A2A2A",
         midgray: "#676767",

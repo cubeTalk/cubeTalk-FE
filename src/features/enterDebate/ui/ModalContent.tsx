@@ -8,7 +8,7 @@ import { useEnterDebateQuery } from "../api/query";
 import { TeamButtons } from "../../../entities/TeamButtons";
 import { useTeamChoseStore } from "../../../entities/TeamButtons/model/store";
 import { DebateRole } from "../../../shared/type";
-import { useisOwnerStore } from "../../createDebate/model/store";
+import { useisOwnerStore, useRoomStore } from "../../createDebate/model/store";
 import { useUserInfoStore } from "../../../entities/debateInfo";
 
 const NickName = () => {
@@ -50,25 +50,26 @@ const Submit = () => {
   const onClickHandler = () => mutate({ nickName, role, ownerId: isOwner ? memberId : undefined });
 
   return (
-    <SubmitButton
-      onClickHandler={onClickHandler}
-      disabled={isDisabled}
-      isPending={isPending}
-      text="참가"
-    />
+    <div className="flex justify-center">
+      <SubmitButton
+        onClickHandler={onClickHandler}
+        disabled={isDisabled}
+        isPending={isPending}
+        text="참가"
+      />
+    </div>
   );
 };
 
 export const ModalContent = () => {
+  const chatMode = useRoomStore((state) => state.chatMode);
   return (
     <Layout>
-      <h1>팀 선택</h1>
+      <h1>토론 입장</h1>
       <NickName />
       <Label>팀선택</Label>
-      <TeamButtons />
-      <div className="flex justify-center">
-        <Submit />
-      </div>
+      <TeamButtons chatMode={chatMode} />
+      <Submit />
     </Layout>
   );
 };

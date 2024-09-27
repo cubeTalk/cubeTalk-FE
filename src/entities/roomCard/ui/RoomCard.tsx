@@ -4,6 +4,7 @@ import { RoomCardType } from "../../../shared/type";
 import { useEnterModalStore } from "../../../features/enterDebate/model/store";
 import { useDebateInfoStore } from "../../debateInfo";
 import { calculateRemainingTime } from "../lib";
+import { useRoomStore } from "../../../features/createDebate/model/store";
 
 const RoomCard = ({
   title,
@@ -18,9 +19,14 @@ const RoomCard = ({
 }: Partial<RoomCardType> & { started: boolean }) => {
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const setId = useDebateInfoStore((state) => state.actions.setId);
+  const setChatMode = useRoomStore((state) => state.actions.setChatMode);
+
   const onClickHandler = () => {
     if (id) {
       setId(id);
+      if (chatMode === "찬반" || chatMode === "자유") {
+        setChatMode(chatMode);
+      }
       openEnterDebateModal(started);
     }
   };
@@ -33,7 +39,11 @@ const RoomCard = ({
         <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
           <Title>{title}</Title>
           <div className="flex items-center gap-4">
-            <h3 className={`${chatMode === "찬반" ? "bg-amber-200": "bg-lime-200"} py-1 px-2 rounded-md shrink-0`}>{chatMode}</h3>
+            <h3
+              className={`${chatMode === "찬반" ? "bg-amber-200" : "bg-lime-200"} py-1 px-2 rounded-md shrink-0`}
+            >
+              {chatMode}
+            </h3>
             {chatDuration &&
               createdAt &&
               (!started ? (
