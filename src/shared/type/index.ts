@@ -12,7 +12,7 @@ export type RoomCardType = {
 };
 
 export type DebateMode = "찬반" | "자유";
-export type DebateStatus = "CREATED" | "STARTED";
+export type DebateStatus = "CREATED" | "STARTED" | "TERMINATED";
 
 export type BaseDebate = {
   title: string; // 제목
@@ -84,7 +84,7 @@ export type DebateRoomAddition = {
 
 export type DebateRoomType = DebateRoomBaseType & DebateRoomAddition;
 
-export type DebateRole = "찬성" | "반대" | "관전" | "";
+export type DebateRole = "찬성" | "반대" | "관전" | "자유" | "";
 
 export interface Participant {
   nickName: string;

@@ -37,7 +37,7 @@ export const StatusButton = () => {
   const isOwner = useisOwnerStore((state) => state.isOwner);
   const role = useUserInfoStore((state) => state.role);
   return (
-    <>{chatStatus === "STARTED" || role === "관전" ? <></> : isOwner ? <Start /> : <Ready />}</>
+    <>{chatStatus !== "CREATED" || role === "관전" ? <></> : isOwner ? <Start /> : <Ready />}</>
   );
 };
 

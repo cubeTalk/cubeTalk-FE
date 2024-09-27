@@ -64,5 +64,12 @@ export const useFetchandUpdateData = () => {
       resetParticipants(debateInfo.participants);
     }
   }, [data, memberId, resetParticipants, resetSettings, updateDebateInfo]);
+
+  useEffect(() => {
+    if (data?.chatStatus === "TERMINATED") {
+      alert("토론이 종료되었습니다. 메인화면으로 이동합니다.", "이동", "", () => navigate("/"));
+    }
+  }, [alert, data?.chatStatus, navigate])
+
   return isPending;
 };

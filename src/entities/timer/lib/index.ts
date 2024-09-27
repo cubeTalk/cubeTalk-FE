@@ -19,7 +19,7 @@ export const getTypeInfo = (type: string) => {
   if (typeInfo) {
     return typeInfo;
   }
-  return { text: "알수없음", color: "white" };
+  return { text: "토론종료", color: "red" };
 };
 
 // 서버 시간을 파싱하는함수
