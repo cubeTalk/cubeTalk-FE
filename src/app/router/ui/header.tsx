@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { center, rowCenter, rowflex } from "../../../shared/style/commonStyle";
 import { NonMobile } from "../../../shared/style/Responsive";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AlertContext } from "../../../entities/alertDialog/model/context";
 
 const Logo = () => {
   return (
@@ -15,8 +17,13 @@ const Logo = () => {
 };
 
 const Login = () => {
+  const { alert } = useContext(AlertContext);
+  const onClickHandler = () => {
+    alert("로그인은 현재 구현중입니다. 익명으로 사용해 주세요!", "확인");
+  };
+
   return (
-    <LoginContainer>
+    <LoginContainer onClick={onClickHandler}>
       <NonMobile>
         <LoginTitle>로그인</LoginTitle>
       </NonMobile>
@@ -54,7 +61,7 @@ const HeaderContainer = styled.div`
   padding: 25px;
 `;
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.button`
   ${rowflex}
 `;
 
