@@ -1,7 +1,7 @@
 import { useUserInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useDebateTimerStore } from "../../entities/timer/model/store";
-import { useChangeStatusErrorStore } from "../../features/changeStatus/model/store";
+import { useParticipantsErrorStore } from "../../pages/debate/model/store";
 import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
   ReadyMessage,
@@ -62,6 +62,10 @@ worker.onmessage = (event) => {
       const message: TimerMessage | TimerEndMessage = data.message;
       return progressupdate(message);
     }
+    case "error": {
+      const message: {title: string; message:string} = data.message;
+      return errorMessage(message.message);
+    }
     default:
       console.log("Worker send Worng Message");
       return;
@@ -81,7 +85,7 @@ const participationUpdate = (response: ServerResponse<Participant[]>) => {
     });
     updateActions.resetParticipants(excludedParticipants);
   } else {
-    useChangeStatusErrorStore.getState().setError(response.message);
+    useParticipantsErrorStore.getState().setError(response.message);
   }
 };
 
@@ -91,4 +95,8 @@ const progressupdate = (message: TimerMessage | TimerEndMessage) => {
   }
   useDebateTimerStore.getState().actions.setTimer(message.remainingTime);
   useDebateTimerStore.getState().actions.setType(message.type);
+};
+
+const errorMessage = (message: string) => {
+  useParticipantsErrorStore.getState().setError(message);
 };

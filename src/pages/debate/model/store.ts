@@ -14,3 +14,14 @@ export const useMenuStore = create(
     },
   }))
 );
+
+export const useParticipantsErrorStore = create(
+  combine(
+    {
+      error: "",
+    },
+    (set) => ({
+      setError: (error: string) => set({ error }),
+    })
+  )
+);

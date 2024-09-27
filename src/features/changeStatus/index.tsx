@@ -3,9 +3,6 @@ import { useisOwnerStore } from "../createDebate/model/store";
 import { commonButton, spinner } from "../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useReadyMutate, useStartMutate } from "./api/query";
-import { useChangeStatusErrorStore } from "./model/store";
-import { useContext, useEffect } from "react";
-import { AlertContext } from "../../entities/alertDialog/model/context";
 import { useUserInfoStore } from "../../entities/debateInfo";
 
 const Start = () => {
@@ -26,25 +23,11 @@ const Start = () => {
 
 const Ready = () => {
   const myStatus = useParticipantsStore((state) => state.myStatus);
-  const { mutate, isPending, setIsPending } = useReadyMutate();
-  const error = useChangeStatusErrorStore((state) => state.error);
-  const { alert } = useContext(AlertContext);
-  useEffect(() => {
-    if (error) {
-      alert(`${error}`, "확인");
-    }
-    if (myStatus) {
-      setIsPending(false);
-    }
-  }, [alert, error, myStatus, setIsPending]);
+  const mutate = useReadyMutate();
 
   return (
-    <ReadyButton
-      disabled={isPending}
-      $ready={myStatus === "READY"}
-      onClick={() => mutate(myStatus)}
-    >
-      {isPending ? <Spinner /> : <h3>{myStatus === "READY" ? "대기하기" : "준비하기"}</h3>}
+    <ReadyButton $ready={myStatus === "READY"} onClick={() => mutate(myStatus)}>
+      <h3>{myStatus === "READY" ? "대기하기" : "준비하기"}</h3>
     </ReadyButton>
   );
 };

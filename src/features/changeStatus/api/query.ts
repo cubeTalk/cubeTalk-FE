@@ -29,21 +29,15 @@ export const useStartMutate = () => {
 export const useReadyMutate = () => {
   const memberId = useUserInfoStore((state) => state.memberId);
   const chatMode = useDebateInfoStore((state) => state.chatMode);
-  const [isPending, setIsPending] = useState(false);
   const mutate = (myStatus: string) => {
-    setIsPending(true);
     readyMessage({
       type: chatMode === "찬반" ? "찬반" : "자유",
       memberId,
-      status: myStatus === "PENDING" ? "READY": "PENDING",
+      status: myStatus === "PENDING" ? "READY" : "PENDING",
     });
   };
 
-  return {
-    mutate,
-    isPending,
-    setIsPending,
-  };
+  return mutate;
 };
 
 // export const useReadyMutate = () => {

@@ -21,12 +21,14 @@ type PostMessageFunction = (
     | { type: string; data: { message: ChatMessage; nickName: string } }
     | { type: string; data: { participants: Participant[] } }
     | { type: string; data: { message: TimerMessage | TimerEndMessage } }
+    | { type: string; data: { message: { title: string; message: string } } }
 ) => void;
 type Args = ConnectArgs & {
   mainChatPostMessage: DummyFunc;
   subChatPostMessage: DummyFunc;
   participantsPostMessage: DummyFunc;
   progressPostMessage: DummyFunc;
+  errorPostMessage: DummyFunc;
 };
 
 export class WebSocketManager {
@@ -40,6 +42,7 @@ export class WebSocketManager {
     subChatPostMessage: dummyFunc,
     participantsPostMessage: dummyFunc,
     progressPostMessage: dummyFunc,
+    errorPostMessage: dummyFunc,
   };
 
   connect = ({
@@ -80,6 +83,13 @@ export class WebSocketManager {
         postMessage({
           type: "progress",
           data: { message: timerMessage },
+        });
+      },
+      errorPostMessage: (message: StompJs.IMessage) => {
+        const errorMessage: { title: string; message: string } = JSON.parse(message.body);
+        postMessage({
+          type: "error",
+          data: { message: errorMessage },
         });
       },
     };
@@ -147,16 +157,9 @@ export class WebSocketManager {
           id: `participants${this.args.chatRoomId}`,
         }
       );
-      this.client.subscribe(
-        `/topic/error`,
-        (message: StompJs.IMessage) => {
-          const errorMessage: { tittle: string; message: string } = JSON.parse(message.body);
-          console.error(`[${errorMessage.tittle} Error]: ${errorMessage.message}`);
-        },
-        {
-          id: `error${this.args.chatRoomId}`,
-        }
-      );
+      this.client.subscribe(`/topic/error`, this.args.errorPostMessage, {
+        id: `error${this.args.chatRoomId}`,
+      });
       console.log("Connected");
     }
   };

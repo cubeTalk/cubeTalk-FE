@@ -3,10 +3,12 @@ import { ChatMessage, Participant } from "../../../shared/type";
 import { useUserInfoStore } from "../../../entities/debateInfo";
 import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { GetParticipantsKey } from "../../../entities/participants/api/query";
-import { connectWebSocket } from "../../../app/worker";
+import { connectWebSocket, disconnectWebSocket } from "../../../app/worker";
+import { useParticipantsErrorStore } from "../model/store";
+import { AlertContext } from "../../../entities/alertDialog/model/context";
 
 interface WebSocketCallback {
   mainChatCallback: (message: IMessage) => void;
@@ -54,7 +56,8 @@ export const useWebSocketMessageCallback = (): WebSocketCallback => {
 
 export const useWebSocketConnection = () => {
   const { id, channelId, subChannelId, nickName } = useUserInfoStore((state) => state);
-
+  const errorMessage = useParticipantsErrorStore((state) => state.error);
+  const { alert } = useContext(AlertContext);
   useEffect(() => {
     connectWebSocket({
       chatRoomId: id,
@@ -62,7 +65,12 @@ export const useWebSocketConnection = () => {
       subChannelId,
       nickName,
     });
-    //return () => disconnectWebSocket();
+
+    if (errorMessage) {
+      console.log(errorMessage);
+      alert(errorMessage, "확인");
+    }
+    return () => disconnectWebSocket();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [errorMessage]);
 };
