@@ -4,7 +4,6 @@ import { useParticipantsModalStore, useParticipantsStore } from "./model/store";
 import { ModalImage } from "./ui/ModalImage";
 import { useRoomSettingStore } from "../debateSetting/model/store";
 import { useUserInfoStore } from "../debateInfo";
-import { useParticipantsUpdate } from "./hook/useParticipantsUpdate";
 
 export const ParticipantsButton = () => {
   const clickModal = useParticipantsModalStore((state) => state.clickModal);
@@ -13,7 +12,6 @@ export const ParticipantsButton = () => {
   const participants = useParticipantsStore((state) => state.participants);
   const currentNumber = participants.filter((item) => item.role !== "관전").length;
   const currentNumberWithMe = role !== "관전" ? currentNumber + 1 : currentNumber;
-  useParticipantsUpdate();
   return (
     <ShowParticipants onClick={clickModal}>
       <h3>{`${currentNumberWithMe}/${maxParitipants}`}</h3>

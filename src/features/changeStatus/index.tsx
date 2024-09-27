@@ -3,7 +3,7 @@ import { useisOwnerStore } from "../createDebate/model/store";
 import { commonButton, spinner } from "../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useReadyMutate, useStartMutate } from "./api/query";
-import { useUserInfoStore } from "../../entities/debateInfo";
+import { useDebateInfoStore, useUserInfoStore } from "../../entities/debateInfo";
 
 const Start = () => {
   const participants = useParticipantsStore((state) => state.participants);
@@ -33,9 +33,12 @@ const Ready = () => {
 };
 
 export const StatusButton = () => {
+  const chatStatus = useDebateInfoStore((state) => state.chatStatus);
   const isOwner = useisOwnerStore((state) => state.isOwner);
   const role = useUserInfoStore((state) => state.role);
-  return <>{isOwner ? <Start /> : role !== "관전" ? <Ready /> : <></>}</>;
+  return (
+    <>{chatStatus === "STARTED" || role === "관전" ? <></> : isOwner ? <Start /> : <Ready />}</>
+  );
 };
 
 const StartButton = styled.button<{ $ready: boolean }>`

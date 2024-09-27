@@ -15,7 +15,7 @@ export const useMenuStore = create(
   }))
 );
 
-export const useParticipantsErrorStore = create(
+export const useWebSocketErrorStore = create(
   combine(
     {
       error: "",

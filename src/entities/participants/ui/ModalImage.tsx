@@ -73,7 +73,7 @@ const Layout = styled.div`
   border-radius: 8px;
   top: 60px;
   right: 25px;
-  z-index: 30px;
+  z-index: 30;
   h2 {
     color: var(--white);
   }

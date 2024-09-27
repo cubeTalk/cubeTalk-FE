@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { readyMessage } from "../../../app/worker";
 import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 import { AlertContext } from "../../../entities/alertDialog/model/context";

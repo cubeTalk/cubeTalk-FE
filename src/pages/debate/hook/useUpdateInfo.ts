@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useGetMessagesQuery } from "../../../widgets/mainChat/api/query";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
-import { useQueryClient } from "@tanstack/react-query";
-import { GetParticipantsKey } from "../../../entities/participants/api/query";
+import { useParticipantsStore } from "../../../entities/participants/model/store";
 
 export const useUpdateMessageList = () => {
   const { data, isError, isPending } = useGetMessagesQuery();
@@ -34,9 +33,9 @@ export const useFetchandUpdateData = () => {
   const updateDebateInfo = useDebateInfoStore((state) => state.actions.setInfo);
   const resetSettings = useRoomSettingStore((state) => state.actions.resetSettings);
   const memberId = useUserInfoStore((state) => state.memberId);
-  const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetDebateInfoQuery();
-
+  const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
+ 
   const navigate = useNavigate();
   const { alert } = useContext(AlertContext);
   useEffect(() => {
@@ -49,6 +48,7 @@ export const useFetchandUpdateData = () => {
   useEffect(() => {
     if (data) {
       const debateInfo = data;
+      console.log(data);
       updateDebateInfo({
         id: debateInfo.id,
         chatMode: debateInfo.chatMode,
@@ -61,8 +61,8 @@ export const useFetchandUpdateData = () => {
         chatDuration: hasFreeSetting(debateInfo),
         debateSettings: hasProsConsSetting(debateInfo),
       });
-      queryClient.setQueryData([GetParticipantsKey], () => debateInfo.participants);
+      resetParticipants(debateInfo.participants);
     }
-  }, [data, memberId, queryClient, resetSettings, updateDebateInfo]);
+  }, [data, memberId, resetParticipants, resetSettings, updateDebateInfo]);
   return isPending;
 };

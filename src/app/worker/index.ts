@@ -1,7 +1,7 @@
-import { useUserInfoStore } from "../../entities/debateInfo";
+import { useDebateInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useDebateTimerStore } from "../../entities/timer/model/store";
-import { useParticipantsErrorStore } from "../../pages/debate/model/store";
+import { useWebSocketErrorStore } from "../../pages/debate/model/store";
 import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
   ReadyMessage,
@@ -63,8 +63,8 @@ worker.onmessage = (event) => {
       return progressupdate(message);
     }
     case "error": {
-      const message: {title: string; message:string} = data.message;
-      return errorMessage(message.message);
+      const message: string = data.message;
+      return errorMessage(message);
     }
     default:
       console.log("Worker send Worng Message");
@@ -74,22 +74,17 @@ worker.onmessage = (event) => {
 
 const participationUpdate = (response: ServerResponse<Participant[]>) => {
   if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
-    const nickName = useUserInfoStore.getState().nickName;
-    const updateActions = useParticipantsStore.getState().actions;
-    const excludedParticipants = response.data.filter((participant) => {
-      if (participant.nickName === nickName) {
-        updateActions.updateMyStatus(participant.status);
-        return false;
-      }
-      return true;
-    });
-    updateActions.resetParticipants(excludedParticipants);
+    useParticipantsStore.getState().actions.resetParticipants(response.data);
   } else {
-    useParticipantsErrorStore.getState().setError(response.message);
+    useWebSocketErrorStore.getState().setError(response.message);
   }
 };
 
 const progressupdate = (message: TimerMessage | TimerEndMessage) => {
+  if (useDebateInfoStore.getState().chatStatus === "CREATED") {
+    useDebateInfoStore.getState().actions.setInfo({ chatStatus: "STARTED" });
+  }
+
   if (useDebateTimerStore.getState().type !== message.type) {
     useMainMessageStore.getState().actions.messageAdd(message, "");
   }
@@ -98,5 +93,5 @@ const progressupdate = (message: TimerMessage | TimerEndMessage) => {
 };
 
 const errorMessage = (message: string) => {
-  useParticipantsErrorStore.getState().setError(message);
+  useWebSocketErrorStore.getState().setError(message);
 };

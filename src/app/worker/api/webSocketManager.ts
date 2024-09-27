@@ -21,14 +21,14 @@ type PostMessageFunction = (
     | { type: string; data: { message: ChatMessage; nickName: string } }
     | { type: string; data: { participants: Participant[] } }
     | { type: string; data: { message: TimerMessage | TimerEndMessage } }
-    | { type: string; data: { message: { title: string; message: string } } }
+    | { type: string; data: { message: string } }
 ) => void;
 type Args = ConnectArgs & {
   mainChatPostMessage: DummyFunc;
   subChatPostMessage: DummyFunc;
   participantsPostMessage: DummyFunc;
   progressPostMessage: DummyFunc;
-  errorPostMessage: DummyFunc;
+  errorPostMessage: (error: string) => void;
 };
 
 export class WebSocketManager {
@@ -42,7 +42,7 @@ export class WebSocketManager {
     subChatPostMessage: dummyFunc,
     participantsPostMessage: dummyFunc,
     progressPostMessage: dummyFunc,
-    errorPostMessage: dummyFunc,
+    errorPostMessage: () => {},
   };
 
   connect = ({
@@ -85,13 +85,11 @@ export class WebSocketManager {
           data: { message: timerMessage },
         });
       },
-      errorPostMessage: (message: StompJs.IMessage) => {
-        const errorMessage: { title: string; message: string } = JSON.parse(message.body);
+      errorPostMessage: (error: string) =>
         postMessage({
           type: "error",
-          data: { message: errorMessage },
-        });
-      },
+          data: { message: error },
+        }),
     };
     this.client = new StompJs.Client({
       brokerURL: `${import.meta.env.VITE_SOCKET}ws`,
@@ -116,11 +114,12 @@ export class WebSocketManager {
       },
       onWebSocketError: (frame) => {
         console.error("websocket Error: " + frame);
+        this.args.errorPostMessage("서버와의 연결이 끊어졌습니다.");
       },
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
         console.error("Additional details: " + frame.body);
-        //alert("STOMP 프로토콜 오류가 발생했습니다.");
+        this.args.errorPostMessage("서버로부터 오류가 발생했습니다.");
       },
       onDisconnect: () => {
         console.log("Disconnected");
@@ -157,9 +156,16 @@ export class WebSocketManager {
           id: `participants${this.args.chatRoomId}`,
         }
       );
-      this.client.subscribe(`/topic/error`, this.args.errorPostMessage, {
-        id: `error${this.args.chatRoomId}`,
-      });
+      this.client.subscribe(
+        `/topic/error`,
+        (message: StompJs.IMessage) => {
+          const errorMessage: { tittle: string; message: string } = JSON.parse(message.body);
+          this.args.errorPostMessage(errorMessage.message);
+        },
+        {
+          id: `error${this.args.chatRoomId}`,
+        }
+      );
       console.log("Connected");
     }
   };
