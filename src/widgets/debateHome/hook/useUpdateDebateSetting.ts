@@ -19,8 +19,12 @@ export const useUpdateDebateSetting = () => {
         chatMode === "찬반"
           ? ({
               debateSettings: data.debateSettings,
+              maxParticipants: data.maxParticipants,
             } as ProsConsSetting)
-          : ({} as FreeSetting);
+          : ({
+              chatDuration: data.chatDuration,
+              maxParticipants: data.maxParticipants,
+            } as FreeSetting);
       resetSettings(resetData);
     }
   }, [chatMode, data, resetSettings, setDescription]);
