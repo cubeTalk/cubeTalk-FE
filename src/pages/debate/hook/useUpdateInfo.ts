@@ -8,6 +8,7 @@ import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useGetMessagesQuery } from "../../../widgets/mainChat/api/query";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
 import { useParticipantsStore } from "../../../entities/participants/model/store";
+import { useisOwnerStore } from "../../../features/createDebate/model/store";
 
 export const useUpdateMessageList = () => {
   const { data, isError, isPending } = useGetMessagesQuery();
@@ -35,7 +36,7 @@ export const useFetchandUpdateData = () => {
   const memberId = useUserInfoStore((state) => state.memberId);
   const { data, isPending, isError } = useGetDebateInfoQuery();
   const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
- 
+  const actions = useisOwnerStore((state) => state.actions);
   const navigate = useNavigate();
   const { alert } = useContext(AlertContext);
   useEffect(() => {
@@ -62,14 +63,19 @@ export const useFetchandUpdateData = () => {
         debateSettings: hasProsConsSetting(debateInfo),
       });
       resetParticipants(debateInfo.participants);
+      if (memberId === data.ownerId) {
+        actions.setIsOwner();
+      } else {
+        actions.setIsNotOwner();
+      }
     }
-  }, [data, memberId, resetParticipants, resetSettings, updateDebateInfo]);
+  }, [actions, data, memberId, resetParticipants, resetSettings, updateDebateInfo]);
 
   useEffect(() => {
     if (data?.chatStatus === "ENDED") {
       alert("토론이 종료되었습니다. 메인화면으로 이동합니다.", "이동", "", () => navigate("/"));
     }
-  }, [alert, data?.chatStatus, navigate])
+  }, [alert, data?.chatStatus, navigate]);
 
   return isPending;
 };

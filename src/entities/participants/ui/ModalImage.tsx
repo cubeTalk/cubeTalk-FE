@@ -3,7 +3,8 @@ import { CloseButton } from "../../../shared/components/button";
 import { colflex, scrollBar } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../model/store";
 import { ParticipantStatus } from "../../../shared/type";
-import { useUserInfoStore } from "../../debateInfo";
+import { useDebateInfoStore, useUserInfoStore } from "../../debateInfo";
+import { useisOwnerStore } from "../../../features/createDebate/model/store";
 
 interface ModalImageProps {
   closeModal: () => void;
@@ -13,31 +14,43 @@ const StatusE2K = new Map([
   ["PENDING", "대기"],
   ["READY", "준비"],
   ["OWNER", "방장"],
+  ["DISCONNECTED", "탈주"],
 ]);
 
 const MyProfile = () => {
   const { memberId, role, nickName } = useUserInfoStore((state) => state);
+  const isOwner = useisOwnerStore((state) => state.isOwner);
   const myStatus = useParticipantsStore((state) => state.myStatus);
+  const chatStatus = useDebateInfoStore((state) => state.chatStatus);
+
   return (
     <div key={memberId} className="flex flex-row justify-between">
       <div className="flex flex-row">
         <UserNickName $role={role}>{nickName}</UserNickName>
         <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">나</h5>
       </div>
-      {role !== "관전" && <h5 className={statusStyle(myStatus)}>{StatusE2K.get(myStatus)}</h5>}
+      {chatStatus === "CREATED" &&
+        (isOwner ? (
+          <h5 className={statusStyle("OWNER")}>방장</h5>
+        ) : role !== "관전" ? (
+          <h5 className={statusStyle(myStatus)}>{myStatus === "DISCONNECTED" ? "대기" : StatusE2K.get(myStatus)}</h5>
+        ) : (
+          <></>
+        ))}
     </div>
   );
 };
 
 const OtherProfiles = () => {
   const participants = useParticipantsStore((state) => state.participants);
+  const chatStatus = useDebateInfoStore((state) => state.chatStatus);
   return (
     <>
       {participants.map((user) => {
         return (
           <div key={user.nickName} className="flex flex-row justify-between flex-wrap">
             <UserNickName $role={user.role}>{user.nickName}</UserNickName>
-            {user.role !== "관전" && (
+            {chatStatus === "CREATED" && (user.status === "OWNER" || user.role !== "관전") && (
               <h5 className={statusStyle(user.status)}>{StatusE2K.get(user.status)}</h5>
             )}
           </div>
@@ -62,7 +75,7 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
 
 const statusStyle = (status: ParticipantStatus) =>
   `px-1 self-center rounded-xl font-semibold flex-shrink-0 ${
-    status === "READY" ? "bg-green" : status === "PENDING" ? "bg-lightgray" : "bg-red"
+    status === "READY" ? "bg-green" : status === "OWNER" ? "bg-red" : "bg-lightgray" 
   } ${status === "READY" && "text-white"}`;
 
 const Layout = styled.div`

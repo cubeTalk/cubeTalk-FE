@@ -91,7 +91,7 @@ export interface Participant {
   role: DebateRole;
   status: ParticipantStatus;
 }
-export type ParticipantStatus = "OWNER" | "READY" | "PENDING";
+export type ParticipantStatus = "OWNER" | "READY" | "PENDING" | "DISCONNECTED";
 
 export type UserInfo = {
   id: string; // 토론방 ID

@@ -42,8 +42,6 @@ useParticipantsStore.subscribe(
     const actions = useisOwnerStore.getState().actions;
     if (myStatus === "OWNER") {
       actions.setIsOwner();
-    } else {
-      actions.setIsNotOwner();
     }
   }
 );
