@@ -3,7 +3,7 @@ import { SendChatMessage, ReadyMessage, VoteMessage } from "../../../shared/type
 export interface ConnectArgs {
   chatRoomId: string;
   channelId: string;
-  subChannelId: string;
+  subChannelId?: string;
   nickName: string;
 }
 

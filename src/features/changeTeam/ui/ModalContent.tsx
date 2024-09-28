@@ -1,4 +1,4 @@
-import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 import { TeamButtons } from "../../../entities/TeamButtons";
 import { useTeamChoseStore } from "../../../entities/TeamButtons/model/store";
 import { SubmitButton } from "../../../shared/components/button";
@@ -13,11 +13,10 @@ const ChangeTeam = () => {
 };
 
 export const ModalContent = () => {
-  const chatMode = useDebateInfoStore((state) => state.chatMode);
   return (
     <div className="flex flex-col justify-center items-center gap-1">
       <h1>팀 변경</h1>
-      <TeamButtons chatMode={chatMode} />
+      <TeamButtons />
       <ChangeTeam />
     </div>
   );

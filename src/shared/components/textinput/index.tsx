@@ -27,6 +27,7 @@ export const InlineTextInput = ({
         onFocus={() => setIsFocused(true)}
         onChange={onChange}
         $hasWarning={isFocused && !!warning}
+        autoComplete="off"
         {...rest}
       />
       {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}

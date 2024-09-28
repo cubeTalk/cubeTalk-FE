@@ -66,7 +66,7 @@ export const useFetchandUpdateData = () => {
   }, [data, memberId, resetParticipants, resetSettings, updateDebateInfo]);
 
   useEffect(() => {
-    if (data?.chatStatus === "TERMINATED") {
+    if (data?.chatStatus === "ENDED") {
       alert("토론이 종료되었습니다. 메인화면으로 이동합니다.", "이동", "", () => navigate("/"));
     }
   }, [alert, data?.chatStatus, navigate])

@@ -1,7 +1,7 @@
 import { useDebateParticipantsQuery } from "./api/query";
 import { ProsConsFreeTeam, SpectatorTeam } from "./ui/TeamButtons";
 
-export const TeamButtons = ({ chatMode }: { chatMode: string }) => {
+export const TeamButtons = ({ chatMode = "찬반" }: { chatMode?: string }) => {
   const { data, isPending, isError } = useDebateParticipantsQuery();
 
   if (isError || !data) {
@@ -14,10 +14,8 @@ export const TeamButtons = ({ chatMode }: { chatMode: string }) => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-1 flex-grow w-full">
-        <ProsConsFreeTeam data={data} chatMode={chatMode} isPending={isPending} />
-      </div>
-      <SpectatorTeam count={data.spectatorCount} isPending={isPending} />
+      <ProsConsFreeTeam data={data} chatMode={chatMode} isPending={isPending} />
+      {chatMode === "찬반" && <SpectatorTeam count={data.spectatorCount} isPending={isPending} />}
     </>
   );
 };

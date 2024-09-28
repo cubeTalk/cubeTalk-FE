@@ -26,7 +26,7 @@ const SettingBody = () => {
         <div className={`${BaseStyle}  bg-midgray text-white`}>
           <span>진행 시간</span>
           <span>
-            {chatMode === "찬반"
+            {chatMode === "찬반" && debateSettings
               ? Object.values(debateSettings).reduce((acc, value) => acc + value, 0)
               : chatDuration}
             분

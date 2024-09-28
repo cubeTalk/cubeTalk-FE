@@ -40,7 +40,7 @@ const RoomCard = ({
           <Title>{title}</Title>
           <div className="flex items-center gap-4">
             <h3
-              className={`${chatMode === "찬반" ? "bg-amber-200" : "bg-lime-200"} py-1 px-2 rounded-md shrink-0`}
+              className={`${chatMode === "찬반" ? "bg-amber-200" : "bg-emerald"} py-1 px-2 rounded-md shrink-0`}
             >
               {chatMode}
             </h3>
@@ -57,13 +57,13 @@ const RoomCard = ({
               ))}
 
             {!started ? (
-              <div className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
+              <div className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
                 <h3>
                   {currentParticipantsCount}명/{maxParticipants}명
                 </h3>
               </div>
             ) : (
-              <h3 className="flex items-center gap-1 bg-emerald-100 py-1 px-2 rounded-md">
+              <h3 className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
                 {currentParticipantsCount}명 참가
               </h3>
             )}

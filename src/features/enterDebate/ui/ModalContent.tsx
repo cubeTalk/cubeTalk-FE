@@ -45,12 +45,12 @@ const Submit = () => {
   const isDebateRole = (team: string): team is DebateRole => {
     return team === "찬성" || team === "반대" || team === "관전";
   };
-  const role: DebateRole = isDebateRole(team) ? team : "관전";
+  const role: DebateRole = isDebateRole(team) ? team : "자유";
   const isDisabled = nickName.length === 0 || nickName === checkName || team === "";
   const onClickHandler = () => mutate({ nickName, role, ownerId: isOwner ? memberId : undefined });
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-2">
       <SubmitButton
         onClickHandler={onClickHandler}
         disabled={isDisabled}

@@ -3,6 +3,7 @@ import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/comm
 import { HTMLAttributes } from "react";
 import { MenuType, useMenuStore } from "../model/store";
 import { useNavigate } from "react-router-dom";
+import { useDebateInfoStore } from "../../../entities/debateInfo";
 
 type TabMenuProps = {
   link: string;
@@ -48,11 +49,13 @@ const tabMenuItems: MenuItem[] = [
 ];
 
 const MenuTab = () => {
+  const chatMode = useDebateInfoStore((state) => state.chatMode);
   return (
     <TabContainer className="bg-darkgray">
-      {tabMenuItems.map((item) => (
-        <TabMenuButton key={item.link} link={item.link} alt={item.alt} />
-      ))}
+      {tabMenuItems.map((item) => {
+        if (chatMode !== "찬반" && item.alt === "TeamChat") return;
+        return <TabMenuButton key={item.link} link={item.link} alt={item.alt} />;
+      })}
       <OutMenu />
     </TabContainer>
   );

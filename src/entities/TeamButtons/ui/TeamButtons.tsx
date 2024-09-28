@@ -24,7 +24,7 @@ export const ProsConsFreeTeam = ({
   }, [setTeam]);
 
   return (
-    <>
+    <div className="flex flex-wrap gap-1 flex-grow w-full">
       {chatMode === "찬반" ? (
         <>
           <ProsConsButton
@@ -52,7 +52,7 @@ export const ProsConsFreeTeam = ({
             isdisable={
               isStarted || originTeam === "반대" || data.maxCapacityCount / 2 === data.oppositeCount
             }
-          />{" "}
+          />
         </>
       ) : (
         <ProsConsButton
@@ -65,11 +65,13 @@ export const ProsConsFreeTeam = ({
           bgColor={"bg-emerald"}
           isPending={isPending}
           isdisable={
-            isStarted || originTeam === "자유" || data.supportCount + data.oppositeCount === data.maxCapacityCount
+            isStarted ||
+            originTeam === "자유" ||
+            data.supportCount + data.oppositeCount === data.maxCapacityCount
           }
         />
       )}
-    </>
+    </div>
   );
 };
 

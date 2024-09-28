@@ -12,7 +12,7 @@ export type RoomCardType = {
 };
 
 export type DebateMode = "찬반" | "자유";
-export type DebateStatus = "CREATED" | "STARTED" | "TERMINATED";
+export type DebateStatus = "CREATED" | "STARTED" | "ENDED";
 
 export type BaseDebate = {
   title: string; // 제목
