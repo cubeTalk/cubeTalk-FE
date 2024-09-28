@@ -17,7 +17,12 @@ export const useUpdateMessageList = () => {
   const { alert } = useContext(AlertContext);
   useEffect(() => {
     if (isError) {
-      alert("메세지를 불러오기를 실패하였습니다. F5를 눌러 새로고침 해주세요", "확인");
+      const alertMessage = async () =>
+        await alert(
+          "서버로 부터 메인 채팅방 메세지 불러오기를 실패하였습니다. 다시 참가해 주세요",
+          "확인"
+        );
+      alertMessage();
     }
   }, [alert, isError]);
 
@@ -41,8 +46,11 @@ export const useFetchandUpdateData = () => {
   const { alert } = useContext(AlertContext);
   useEffect(() => {
     if (isError) {
-      alert("토론방 정보를 가져오는데 실패하였습니다. 다시 참가해 주세요", "확인");
-      navigate("/");
+      const alertMessage = async () =>
+        alert("토론방 정보를 가져오는데 실패하였습니다. 다시 참가해 주세요", "확인", "", () =>
+          navigate("/")
+        );
+      alertMessage();
     }
   }, [isError, alert, navigate]);
 
@@ -73,7 +81,9 @@ export const useFetchandUpdateData = () => {
 
   useEffect(() => {
     if (data?.chatStatus === "ENDED") {
-      alert("토론이 종료되었습니다. 메인화면으로 이동합니다.", "이동", "", () => navigate("/"));
+      const alertMessage = async () =>
+        alert("토론이 종료되었습니다. 메인화면으로 이동합니다.", "이동", "", () => navigate("/"));
+      alertMessage();
     }
   }, [alert, data?.chatStatus, navigate]);
 

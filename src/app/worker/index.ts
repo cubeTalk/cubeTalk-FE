@@ -63,8 +63,8 @@ worker.onmessage = (event) => {
       return progressupdate(message);
     }
     case "error": {
-      const message: string = data.message;
-      return errorMessage(message);
+      const error: string = data.title ? `[${data.title}] ${data.message}` : data.message;
+      return errorMessage(error);
     }
     default:
       console.log("Worker send Worng Message");
@@ -74,6 +74,7 @@ worker.onmessage = (event) => {
 
 const participationUpdate = (response: ServerResponse<Participant[]>) => {
   if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
+    console.log(response.data);
     useParticipantsStore.getState().actions.resetParticipants(response.data);
   } else {
     useWebSocketErrorStore.getState().setError(response.message);

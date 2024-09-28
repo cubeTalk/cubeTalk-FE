@@ -8,9 +8,10 @@ import { useUserInfoStore } from "../../entities/debateInfo";
 import { ChangeTeamButton, ChangeTeamModal } from "../../features/changeTeam";
 
 const TeamChatHeader = () => {
+  const role = useUserInfoStore((state) => state.role);
   return (
     <div className="flex flex-row justify-between">
-      <h2>팀 채팅</h2>
+      <h2>{role} 채팅</h2>
       <ChangeTeamButton />
       <ChangeTeamModal />
     </div>

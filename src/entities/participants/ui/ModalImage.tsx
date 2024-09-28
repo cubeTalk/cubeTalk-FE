@@ -33,7 +33,9 @@ const MyProfile = () => {
         (isOwner ? (
           <h5 className={statusStyle("OWNER")}>방장</h5>
         ) : role !== "관전" ? (
-          <h5 className={statusStyle(myStatus)}>{myStatus === "DISCONNECTED" ? "대기" : StatusE2K.get(myStatus)}</h5>
+          <h5 className={statusStyle(myStatus)}>
+            {myStatus === "DISCONNECTED" ? "대기" : StatusE2K.get(myStatus)}
+          </h5>
         ) : (
           <></>
         ))}
@@ -75,7 +77,7 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
 
 const statusStyle = (status: ParticipantStatus) =>
   `px-1 self-center rounded-xl font-semibold flex-shrink-0 ${
-    status === "READY" ? "bg-green" : status === "OWNER" ? "bg-red" : "bg-lightgray" 
+    status === "READY" ? "bg-green" : status === "OWNER" ? "bg-red" : "bg-lightgray"
   } ${status === "READY" && "text-white"}`;
 
 const Layout = styled.div`

@@ -20,8 +20,8 @@ export const useStartMutate = () => {
   return useMutation({
     mutationKey: ["startDebate"],
     mutationFn: () => startDebate(id, memberId),
-    onError: (error: AxiosError<ServerResponse>) => {
-      alert(`${error.response?.data.message}`, "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      await alert(`${error.response?.data.message}`, "확인");
     },
   });
 };
@@ -33,7 +33,7 @@ export const useReadyMutate = () => {
     readyMessage({
       type: chatMode === "찬반" ? "찬반" : "자유",
       memberId,
-      status: myStatus === "PENDING" ? "READY" : "PENDING",
+      status: myStatus !== "READY" ? "READY" : "PENDING",
     });
   };
 
