@@ -17,8 +17,7 @@ export const useWebSocketConnection = () => {
     });
 
     if (error) {
-      setError("");
-      alert(error, "확인");
+      alert(error, "확인", "", () => setError(""));
     }
     return () => disconnectWebSocket();
     // eslint-disable-next-line react-hooks/exhaustive-deps
