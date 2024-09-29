@@ -1,7 +1,7 @@
 import { useDebateInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useDebateTimerStore } from "../../entities/timer/model/store";
-import { useWebSocketErrorStore } from "../../pages/debate/model/store";
+import { useWebSocketErrorStore, useWebSocketTimeOutStore } from "../../pages/debate/model/store";
 import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
   ReadyMessage,
@@ -66,6 +66,9 @@ worker.onmessage = (event) => {
       const error: string = data.title ? `[${data.title}] ${data.message}` : data.message;
       return errorMessage(error);
     }
+    case "timeout": {
+      return timeoutMessage();
+    }
     default:
       console.log("Worker send Worng Message");
       return;
@@ -96,3 +99,7 @@ const progressupdate = (message: TimerMessage | TimerEndMessage) => {
 const errorMessage = (message: string) => {
   useWebSocketErrorStore.getState().setError(message);
 };
+
+const timeoutMessage = () => {
+  useWebSocketTimeOutStore.getState().setError("타임아웃");
+}

@@ -29,6 +29,7 @@ type Args = ConnectArgs & {
   participantsPostMessage: DummyFunc;
   progressPostMessage: DummyFunc;
   errorPostMessage: (error: string) => void;
+  timeOutMessage: (error: string) => void;
 };
 
 export class WebSocketManager {
@@ -43,6 +44,7 @@ export class WebSocketManager {
     participantsPostMessage: dummyFunc,
     progressPostMessage: dummyFunc,
     errorPostMessage: () => {},
+    timeOutMessage: () => {},
   };
 
   connect = ({
@@ -90,6 +92,11 @@ export class WebSocketManager {
           type: "error",
           data: { message: error },
         }),
+      timeOutMessage: (error: string) =>
+        postMessage({
+          type: "timeout",
+          data: { message: error },
+        }),
     };
     this.client = new StompJs.Client({
       brokerURL: `${import.meta.env.VITE_SOCKET}ws`,
@@ -103,18 +110,18 @@ export class WebSocketManager {
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
-      connectionTimeout: 30000,
       onConnect: () => {
         this.onConnect();
       },
       webSocketFactory: () => new SockJS(`${import.meta.env.VITE_HTTP}ws`),
       onWebSocketClose: (close: CloseEvent) => {
-        console.log(close, `연결끊김: ${getCloseEventCodeReason(close)} clean : ${close.wasClean}`);
-        // timeout (30s)
+        console.log(close, `연결끊김: ${getCloseEventCodeReason(close)} clean : ${close.wasClean} active: ${this.client?.active}`);
+        // this.args.timeOutMessage("타임아웃");
       },
       onWebSocketError: (frame) => {
-        console.error("websocket Error: " + frame);
-        this.args.errorPostMessage("서버와의 연결이 끊어졌습니다.");
+        console.error("websocket Error");
+        console.error(frame);
+        this.args.timeOutMessage("웹소켓 에러");
       },
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
@@ -140,8 +147,11 @@ export class WebSocketManager {
 
   onConnect = () => {
     if (this.client) {
+      console.log(this.args);
       this.chatSubscribe(this.args.channelId, this.args.mainChatPostMessage);
-      this.chatSubscribe(this.args.subChannelId, this.args.subChatPostMessage);
+      if (this.args.subChannelId) {
+        this.chatSubscribe(this.args.subChannelId, this.args.subChatPostMessage);
+      }
       this.client.subscribe(
         `/topic/progress.${this.args.chatRoomId}`,
         this.args.progressPostMessage,
@@ -170,21 +180,6 @@ export class WebSocketManager {
     }
   };
 
-  reconnect = async () => {
-    if (this.isConnected()) {
-      return true;
-    }
-    if (this.client) {
-      console.log("Try to reconnect");
-      this.client.deactivate();
-      this.client.activate();
-      return true;
-    } else {
-      console.log("Can't connect");
-      return false;
-    }
-  };
-
   disconnect = () => {
     if (this.client) {
       this.client.disconnectHeaders = {};
@@ -193,8 +188,15 @@ export class WebSocketManager {
     }
   };
 
+  reconnect = () => {
+    if (this.client && !this.isConnected()) {
+      this.client.deactivate();
+      this.client.activate();
+    }
+  };
+
   changeTeam = (newSubChannelId: string) => {
-    while (this.client && this.reconnect()) {
+    if (this.client && this.args.subChannelId) {
       this.client.unsubscribe(this.args.subChannelId, {
         chatRoomId: this.args.chatRoomId,
       });
@@ -210,7 +212,8 @@ export class WebSocketManager {
   };
 
   sendMessage = (channelId: string, chatMessage: SendChatMessage) => {
-    while (this.client && this.reconnect()) {
+    this.reconnect();
+    if (this.client) {
       this.client.publish({
         destination: `/pub/message/${channelId}`,
         body: JSON.stringify(chatMessage),
@@ -222,7 +225,7 @@ export class WebSocketManager {
   };
 
   voteMessage = (voteMessage: VoteMessage) => {
-    while (this.client && this.reconnect()) {
+    if (this.client) {
       this.client.publish({
         destination: `/pub/${this.args.chatRoomId}/vote`,
         body: JSON.stringify(voteMessage),
@@ -234,7 +237,7 @@ export class WebSocketManager {
   };
 
   ReadyMessage = (voteMessage: ReadyMessage) => {
-    while (this.client && this.reconnect()) {
+    if (this.client) {
       this.client.publish({
         destination: `/pub/${this.args.chatRoomId}/ready`,
         body: JSON.stringify(voteMessage),

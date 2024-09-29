@@ -25,3 +25,14 @@ export const useWebSocketErrorStore = create(
     })
   )
 );
+
+export const useWebSocketTimeOutStore = create(
+  combine(
+    {
+      error: "",
+    },
+    (set) => ({
+      setError: (error: string) => set({ error }),
+    })
+  )
+);
