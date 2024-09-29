@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import { blackSpinner } from "../../shared/style/commonStyle";
 import { RoomCardType } from "../../shared/type";
-import { CreateDebateButton } from "../../features/createDebate";
 import RoomCard from "./ui/RoomCard";
 
 const NoDebateRooms = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-60 gap-4">
       <h2 className="text-2xl">참가가능한 토론이 존재하지 않습니다.</h2>
-      <CreateDebateButton />
     </div>
   );
 };

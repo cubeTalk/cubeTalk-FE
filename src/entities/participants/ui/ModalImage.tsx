@@ -33,7 +33,7 @@ const MyProfile = () => {
         (isOwner ? (
           <h5 className={statusStyle("OWNER")}>방장</h5>
         ) : role !== "관전" ? (
-          <h5 className={statusStyle(myStatus)}>
+          <h5 className={statusStyle(myStatus === "DISCONNECTED" ? "PENDING": myStatus)}>
             {myStatus === "DISCONNECTED" ? "대기" : StatusE2K.get(myStatus)}
           </h5>
         ) : (
@@ -94,7 +94,7 @@ const Layout = styled.div`
   border-radius: 8px;
   top: 40px;
   right: 0px;
-  z-index: 30;
+  z-index: 2;
   h2 {
     color: var(--white);
   }

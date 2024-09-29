@@ -3,7 +3,7 @@ import type { ProsConsSetting, FreeSetting } from "../../shared/type";
 import { DebateSettingState } from "./model/store";
 import { StoreApi, UseBoundStore } from "zustand";
 
-const maxParticipantNumbers = [2, 4, 6];
+const maxParticipantNumbers = [2, 4, 6, 8, 10];
 
 export type SettingEntry<T> = {
   label: string;

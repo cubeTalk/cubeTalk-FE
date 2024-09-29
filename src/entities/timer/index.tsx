@@ -22,7 +22,7 @@ export const DebateTimer = () => {
     } else if (type === "votingTime" || type === "result") {
       setTimeLeft(30);
       setTotalTime(30);
-    } else {
+    } else if (debateSetting) {
       const startTotalTime = debateSetting[type as keyof typeof debateSetting] ?? 0;
       setTimeLeft(60 * startTotalTime);
       setTotalTime(60 * startTotalTime);
