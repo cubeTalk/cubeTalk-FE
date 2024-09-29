@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { mediaQuery } from "../../../shared/style/commonStyle";
-import { EnterMessage } from "../../../shared/type";
+import { EventMessage } from "../../../shared/type";
 
-export const EnterBubble = ({ message }: { message: EnterMessage }) => {
+export const EventBubble = ({ message }: { message: EventMessage }) => {
   return (
     <div className="flex justify-center">
       <RoomBubble>{message.message}</RoomBubble>

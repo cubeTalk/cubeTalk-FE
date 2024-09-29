@@ -66,7 +66,9 @@ const Submit = () => {
   return (
     <>
       {isSend ? (
-        <CheckMark>투표완료 ✔</CheckMark>
+        <div className="flex items-center justify-center">
+          <CheckMark>투표완료 ✔</CheckMark>
+        </div>
       ) : (
         <SubmitButton onClick={onClickHandler}>투표하기</SubmitButton>
       )}

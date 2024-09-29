@@ -3,7 +3,7 @@ import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateIn
 import { useRoomSettingStore } from "../../../entities/debateSetting/model/store";
 import { hasFreeSetting, hasProsConsSetting } from "../../../shared/type";
 import { useGetDebateInfoQuery } from "../api/query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useGetMessagesQuery } from "../../../widgets/mainChat/api/query";
 import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
@@ -36,11 +36,12 @@ export const useUpdateMessageList = () => {
 };
 
 export const useFetchandUpdateData = () => {
+  const { debateRoomId = "" } = useParams();
+  const { data, isPending, isError } = useGetDebateInfoQuery(debateRoomId);
+  const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
   const updateDebateInfo = useDebateInfoStore((state) => state.actions.setInfo);
   const resetSettings = useRoomSettingStore((state) => state.actions.resetSettings);
   const memberId = useUserInfoStore((state) => state.memberId);
-  const { data, isPending, isError } = useGetDebateInfoQuery();
-  const resetParticipants = useParticipantsStore((state) => state.actions.resetParticipants);
   const actions = useisOwnerStore((state) => state.actions);
   const navigate = useNavigate();
   const { alert } = useContext(AlertContext);
@@ -57,18 +58,25 @@ export const useFetchandUpdateData = () => {
   useEffect(() => {
     if (data) {
       const debateInfo = data;
+      const debateSetting =
+        debateInfo.chatMode === "자유"
+          ? {
+              maxParticipants: debateInfo.maxParticipants,
+              chatDuration: hasFreeSetting(debateInfo),
+            }
+          : {
+              maxParticipants: debateInfo.maxParticipants,
+              debateSettings: hasProsConsSetting(debateInfo),
+            };
+
       console.log(data);
+      resetSettings(debateSetting);
       updateDebateInfo({
         id: debateInfo.id,
         chatMode: debateInfo.chatMode,
         chatStatus: debateInfo.chatStatus,
         description: debateInfo.description,
         title: debateInfo.title,
-      });
-      resetSettings({
-        maxParticipants: debateInfo.maxParticipants,
-        chatDuration: hasFreeSetting(debateInfo),
-        debateSettings: hasProsConsSetting(debateInfo),
       });
       resetParticipants(debateInfo.participants);
       if (memberId === data.ownerId) {

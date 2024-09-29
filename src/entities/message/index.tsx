@@ -1,6 +1,6 @@
 import {
   isChatMessage,
-  isEnterMessage,
+  isEventMessage,
   isTimerEndMessage,
   isTimerMessage,
   isVoteMessage,
@@ -13,7 +13,7 @@ import {
   DebateStartBubble,
   VoteBubble,
 } from "./ui/ModeratorBubble";
-import { EnterBubble } from "./ui/RoomBubbles";
+import { EventBubble } from "./ui/RoomBubbles";
 
 interface MessageRenderProps {
   message: Message;
@@ -21,9 +21,9 @@ interface MessageRenderProps {
 
 const MessageRender = ({ message }: MessageRenderProps) => {
   switch (message.type) {
-    case "ENTER":
-      if (isEnterMessage(message)) {
-        return <EnterBubble message={message} /> 
+    case "EVENT":
+      if (isEventMessage(message)) {
+        return <EventBubble message={message} /> 
       }
       break;
     case "positiveEntry":
@@ -52,6 +52,7 @@ const MessageRender = ({ message }: MessageRenderProps) => {
     case "찬성": 
     case "반대": 
     case "관전":
+    case "자유":
     default:
       if (isChatMessage(message)) {
         return <Bubble message={message} />;

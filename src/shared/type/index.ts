@@ -108,7 +108,7 @@ export type MessageType =
   | "찬반"
   | "자유"
   | ProgressMessageType
-  | "ENTER";
+  | "EVENT";
 export type ChatMessageType = DebateRole;
 
 export type ProgressMessageType =
@@ -154,7 +154,7 @@ export interface TimerEndMessage extends TimerMessage {
     support: number;
     opposite: number;
   };
-  MVP: string;
+  mvp: string;
 }
 
 export interface VoteMessage extends BaseMessage {
@@ -169,8 +169,8 @@ export interface ReadyMessage extends BaseMessage {
   status: "READY" | "PENDING";
 }
 
-export interface EnterMessage extends BaseMessage {
-  type: "ENTER";
+export interface EventMessage extends BaseMessage {
+  type: "EVENT";
   message: string;
 }
 
@@ -181,7 +181,7 @@ export type Message =
   | TimerEndMessage
   | ChatMessage
   | MessageWithType
-  | EnterMessage;
+  | EventMessage;
 
 export type MessageWithType = ChatMessage & {
   isLeft?: boolean;
@@ -192,7 +192,7 @@ export type MessageWithType = ChatMessage & {
 
 // type gurads
 export const isChatMessage = (message: Message): message is MessageWithType =>
-  message.type === "찬성" || message.type === "반대" || message.type === "관전";
+  message.type === "찬성" || message.type === "반대" || message.type === "관전" || message.type === "자유";
 export const isVoteMessage = (message: Message): message is VoteMessage => message.type === "votingTime";
 export const isTimerMessage = (message: Message): message is TimerMessage =>
   isProgressiveType(message.type);
@@ -208,5 +208,5 @@ export const isProgressiveType = (type: string): type is ProgressMessageType =>
   type === "result";
 export const isTimerEndMessage = (message: Message): message is TimerEndMessage =>
   message.type === "result";
-export const isEnterMessage = (message: Message): message is EnterMessage =>
-  message.type === "ENTER";
+export const isEventMessage = (message: Message): message is EventMessage =>
+  message.type === "EVENT";
