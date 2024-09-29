@@ -14,7 +14,7 @@ const StatusE2K = new Map([
   ["PENDING", "대기"],
   ["READY", "준비"],
   ["OWNER", "방장"],
-  ["DISCONNECTED", "탈주"],
+  ["DISCONNECTED", "이탈"],
 ]);
 
 const MyProfile = () => {
@@ -24,7 +24,7 @@ const MyProfile = () => {
   const chatStatus = useDebateInfoStore((state) => state.chatStatus);
 
   return (
-    <div key={memberId} className="flex flex-row justify-between">
+    <div key={memberId} className={`${profileStyle}`}>
       <div className="flex flex-row">
         <UserNickName $role={role}>{nickName}</UserNickName>
         <h5 className=" bg-white text-black mx-2 px-1 self-center rounded-xl font-bold">나</h5>
@@ -50,7 +50,7 @@ const OtherProfiles = () => {
     <>
       {participants.map((user) => {
         return (
-          <div key={user.nickName} className="flex flex-row justify-between flex-wrap">
+          <div key={user.nickName} className={disconnectedStyle(user.status)}>
             <UserNickName $role={user.role}>{user.nickName}</UserNickName>
             {chatStatus === "CREATED" && (user.status === "OWNER" || user.role !== "관전") && (
               <h5 className={statusStyle(user.status)}>{StatusE2K.get(user.status)}</h5>
@@ -77,8 +77,14 @@ export const ModalImage = ({ closeModal }: ModalImageProps) => {
 
 const statusStyle = (status: ParticipantStatus) =>
   `px-1 self-center rounded-xl font-semibold flex-shrink-0 ${
-    status === "READY" ? "bg-green" : status === "OWNER" ? "bg-red" : "bg-lightgray"
+    status === "READY" ? "bg-green" : status === "OWNER" ? "bg-emerald" : status === "PENDING" ? "bg-lightgray" : "bg-red"
   } ${status === "READY" && "text-white"}`;
+
+const profileStyle = "flex flex-row justify-between flex-wrap p-1"
+
+const disconnectedStyle = (status: ParticipantStatus) =>
+  `${profileStyle} ${status === "DISCONNECTED" && "bg-darkgray"}`;
+  
 
 const Layout = styled.div`
   position: absolute;
@@ -109,10 +115,8 @@ const UserNickName = styled.h4<{ $role: string }>`
 const ParticipantsConatiner = styled.div`
   ${colflex}
   ${scrollBar}
-  gap: 0.75rem;
   background-color: var(--color-mid);
   border-radius: 8px;
-  padding: 10px;
   max-height: 190px;
   overflow-y: auto;
 `;

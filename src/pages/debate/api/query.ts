@@ -10,10 +10,12 @@ export const getDebateInfo = async (id: string): Promise<GetDebateRoomResponse> 
   return response.data;
 };
 
+export const GetDebateInfoKey = "getDebateInfo";
+
 export const useGetDebateInfoQuery = () => {
   const debateRoomId = useUserInfoStore((state) => state.id);
   return useQuery({
-    queryKey: ["getDebateInfo"],
+    queryKey: [GetDebateInfoKey],
     queryFn: () => getDebateInfo(debateRoomId),
     refetchOnMount: true,
     refetchOnWindowFocus: false,

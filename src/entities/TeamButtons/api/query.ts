@@ -9,6 +9,7 @@ export type GetDebateParticipantsResponse = {
   supportCount: number;
   oppositeCount: number;
   spectatorCount: number;
+  totalCount: number;
 };
 
 export const getDebateParticipants = async (

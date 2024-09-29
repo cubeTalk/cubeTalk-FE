@@ -12,7 +12,7 @@ const Start = () => {
   const { mutate, isPending } = useStartMutate();
   return (
     <StartButton
-      disabled={isPending}
+      disabled={isPending || currentMaxReady !== currentReady}
       $ready={currentMaxReady === currentReady}
       onClick={() => mutate()}
     >
