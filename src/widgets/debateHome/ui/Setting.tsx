@@ -33,7 +33,7 @@ const SettingBody = () => {
           </span>
         </div>
       </div>
-      {chatMode === "찬반" && (
+      {debateSettings && chatMode === "찬반" && (
         <div className="flex flex-row gap-2 flex-wrap">
           <div className={`${ProsTimeStyle}`}>
             <span>찬성발언</span>
