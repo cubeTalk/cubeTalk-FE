@@ -9,7 +9,7 @@ export const getDebateRooms = async (
   status: string
 ): Promise<GetDebateRoomsResponse> =>  {
   const response = await axios.get(`/chat/chatrooms`, {
-    params: {sort: "participants", order: "desc", status, page:"0", size: "5" } as QueryString
+    params: {sort: "createdAt", order: "desc", status, page:"0", size: "5" } as QueryString
   });
   return response.data 
 } 

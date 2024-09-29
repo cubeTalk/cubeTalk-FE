@@ -11,6 +11,12 @@ export const useUpdateDebateSetting = () => {
   const resetSettings = useRoomSettingStore((state) => state.actions.resetSettings);
   const chatMode = useDebateInfoStore((state) => state.chatMode);
   const { alert } = useContext(AlertContext);
+
+  if (isError) {
+    const alertMessage = async () =>
+      alert("토론 설정을 가져오는데 실패하였습니다, 다시 홈버튼을 다시 눌러주세요,", "확인");
+    alertMessage();
+  }
   // Todo api 변경시 resetdata 수정필요
   useEffect(() => {
     if (data) {
@@ -19,15 +25,15 @@ export const useUpdateDebateSetting = () => {
         chatMode === "찬반"
           ? ({
               debateSettings: data.debateSettings,
+              maxParticipants: data.maxParticipants,
             } as ProsConsSetting)
-          : ({} as FreeSetting);
+          : ({
+              chatDuration: data.chatDuration,
+              maxParticipants: data.maxParticipants,
+            } as FreeSetting);
       resetSettings(resetData);
     }
   }, [chatMode, data, resetSettings, setDescription]);
-
-  if (isError) {
-    alert("토론 설정을 가져오는데 실패하였습니다, 다시 홈버튼을 다시 눌러주세요,", "확인");
-  }
 
   return isPending;
 };

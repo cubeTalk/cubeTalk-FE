@@ -9,6 +9,10 @@ interface InitalTeamState {
 
 export const useTeamChoseStore = create<InitalTeamState>(
   combine({ team: "" } as { team: DebateRole }, (set) => ({
-    setTeam: (newTeam: DebateRole) => set(() => ({ team: newTeam })),
+    setTeam: (newTeam: DebateRole) =>
+      set((state) => {
+        if (state.team === newTeam) return { team: "" };
+        return { team: newTeam };
+      }),
   }))
 );

@@ -16,8 +16,7 @@ const Header = () => {
       chatDuration: initvalue.chatDuration,
       debateSettings: initvalue.debateSettings,
       maxParticipants: initvalue.maxParticipants,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), []);
+    }), [initvalue.chatDuration, initvalue.debateSettings, initvalue.maxParticipants, resetSettings]);
 
   useEffect(resetSetiingToinitValue);
   return (

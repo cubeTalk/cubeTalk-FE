@@ -91,7 +91,7 @@ export const createRoomSettingStore = (initState = initialRoomSettingState) =>
           debateSettings: { ...hasProsConsSetting(get()), negativeRebuttal: newNegativeRebuttal },
         })),
 
-      resetSettings: (data: DebateSetting) => set(() => ({ ...data })),
+      resetSettings: (data: DebateSetting) => set((state) => ({ ...state, ...data })),
       getState: () => get(),
       reset: () => set(() => initState),
     },

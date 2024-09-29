@@ -26,14 +26,14 @@ const SettingBody = () => {
         <div className={`${BaseStyle}  bg-midgray text-white`}>
           <span>진행 시간</span>
           <span>
-            {chatMode === "찬반"
+            {chatMode === "찬반" && debateSettings
               ? Object.values(debateSettings).reduce((acc, value) => acc + value, 0)
               : chatDuration}
             분
           </span>
         </div>
       </div>
-      {chatMode === "찬반" && (
+      {debateSettings && chatMode === "찬반" && (
         <div className="flex flex-row gap-2 flex-wrap">
           <div className={`${ProsTimeStyle}`}>
             <span>찬성발언</span>

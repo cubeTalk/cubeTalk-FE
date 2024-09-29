@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { SubmitButton } from "../../../shared/components/button";
+import styled, { keyframes } from "styled-components";
 import { center, colflex } from "../../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../participants/model/store";
 import { Participant } from "../../../shared/type";
 import { useVoteDebateStore } from "../model/store";
 import { voteMessageWebSocket } from "../../../app/worker";
+import { useState } from "react";
 
 const TeamButtons = () => {
   const team = useVoteDebateStore((state) => state.team);
@@ -50,6 +50,7 @@ const User = ({ user }: { user: Participant }) => {
 };
 
 const Submit = () => {
+  const [isSend, setIsSend] = useState(false);
   const MVP = useVoteDebateStore((state) => state.MVP);
   const team = useVoteDebateStore((state) => state.team);
   const onClickHandler = () => {
@@ -59,9 +60,20 @@ const Submit = () => {
         team,
         mvp: MVP,
       });
+      setIsSend(true);
     }
   };
-  return <SubmitButton text="투표하기" onClickHandler={onClickHandler} />;
+  return (
+    <>
+      {isSend ? (
+        <div className="flex items-center justify-center">
+          <CheckMark>투표완료 ✔</CheckMark>
+        </div>
+      ) : (
+        <SubmitButton onClick={onClickHandler}>투표하기</SubmitButton>
+      )}
+    </>
+  );
 };
 
 const VoteContent = () => {
@@ -130,4 +142,50 @@ const CustomCheckbox = styled.span<{ $isselected: boolean }>`
     font-weight: 700;
     opacity: ${({ $isselected }) => ($isselected ? 1 : 0)};
   }
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: var(--color-green);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: 700px;
+  width: fit-content;
+
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #255e28;
+  }
+  &.fade-out {
+    animation: ${fadeOut} 0.5s forwards;
+  }
+`;
+
+const CheckMark = styled.div`
+  background-color: var(--color-green);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font-weight: 700px;
+  width: fit-content;
+  color: white;
+  animation: ${fadeIn} 0.5s forwards;
 `;

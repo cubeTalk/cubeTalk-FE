@@ -3,13 +3,14 @@ import { colflex, rowflex } from "../../shared/style/commonStyle";
 import Divider from "../../shared/components/divider";
 import Dropdown from "../../shared/components/dropdown";
 import { CreateDebateButton } from "../../features/createDebate";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDebateDropdownStore, useDebateSearchParamsStore } from "./model/store";
 import { useRefreshGetDebateRooms } from "./hook";
 
 interface RoomHeaderProps {
   text: string;
   imgSrc: string;
+  status?: string;
   isHome?: boolean;
 }
 
@@ -45,16 +46,21 @@ const SortDropdowns = () => {
   );
 };
 
-const RoomHeader = ({ text, imgSrc, isHome = false }: RoomHeaderProps) => {
+const RoomHeader = ({ text, imgSrc, status = "모두", isHome = false }: RoomHeaderProps) => {
+  const navigate = useNavigate();
+  const setStatus = useDebateSearchParamsStore((state) => state.setStatus);
   return (
     <HeaderContainer>
       {isHome ? (
-        <Link to="/room">
-          <Title>
-            <img src={imgSrc} alt="titleIcon" />
-            <h2>{text}</h2>
-          </Title>
-        </Link>
+        <Title
+          onClick={() => {
+            setStatus(status);
+            navigate("/room");
+          }}
+        >
+          <img src={imgSrc} alt="titleIcon" />
+          <h2>{text}</h2>
+        </Title>
       ) : (
         <Title>
           <img src={imgSrc} alt="titleIcon" />
@@ -83,7 +89,7 @@ const HeaderContainer = styled.div`
   width: 100%;
 `;
 
-const Title = styled.div`
+const Title = styled.button`
   ${rowflex}
   padding-left: 15px;
   margin-bottom: 5px;
