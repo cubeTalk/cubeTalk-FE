@@ -80,7 +80,7 @@ const RoomHeader = ({
               <SortDropdowns />
             </DropdownContainer>
           )}
-          {!isHome && isCreateRoom && <CreateDebateButton className="break-keep" />}
+          {!isHome && isCreateRoom && <CreateDebateButton className="break-keep ml-auto" />}
         </HeaderBottomRow>
       )}
       <Divider />
@@ -104,11 +104,11 @@ const HeaderTopRow = styled.div`
 
 const HeaderBottomRow = styled.div`
   ${rowflex}
-  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 0 15px;
+  padding: 0 10px;
   margin-bottom: 5px;
+  gap: 10px;
 `;
 
 const Title = styled.div<{ $isButton: boolean }>`

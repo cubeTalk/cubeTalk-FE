@@ -27,9 +27,9 @@ const RoomCard = ({ room }: { room: RoomCardType }) => {
         onClick={onClickHandler}
         className="hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer"
       >
-        <div className="flex flex-row items-center flex-wrap justify-between mb-1">
+        <div className="flex flex-row items-center flex-wrap mb-1">
           <Title>{room.title}</Title>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 ml-auto">
             <h3
               className={`${room.chatMode === "찬반" ? "bg-amber-200" : "bg-emerald"} py-1 px-2 rounded-md shrink-0`}
             >
