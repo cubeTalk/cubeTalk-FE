@@ -27,7 +27,7 @@ const RoomCard = ({ room }: { room: RoomCardType }) => {
         onClick={onClickHandler}
         className="hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer"
       >
-        <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
+        <div className="flex flex-row items-center flex-wrap justify-between mb-1">
           <Title>{room.title}</Title>
           <div className="flex items-center gap-4">
             <h3
