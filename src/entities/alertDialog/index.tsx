@@ -25,7 +25,8 @@ const AlertDialog = ({ children }: AlertDialogProps) => {
     message?: string,
     ok?: string,
     cancel?: string,
-    onClickOK?: () => void
+    onClickOK?: () => void,
+    onClickCancel?: () => void
   ): Promise<boolean> => {
     return new Promise((resolve) => {
       setState({
@@ -34,17 +35,24 @@ const AlertDialog = ({ children }: AlertDialogProps) => {
         cancel: cancel ?? "",
         onClickOK: onClickOK
           ? () => {
-            onClickOK()
-            setState(undefined);
-          }
+              onClickOK();
+              setState(undefined);
+              resolve(false);
+            }
           : () => {
               setState(undefined);
-              resolve(true);
+              resolve(false);
             },
-        onClickCancel: () => {
-          setState(undefined);
-          resolve(false);
-        },
+        onClickCancel: onClickCancel
+          ? () => {
+              onClickCancel();
+              setState(undefined);
+              resolve(false);
+            }
+          : () => {
+              setState(undefined);
+              resolve(false);
+            },
       });
     });
   };
