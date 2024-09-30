@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export const PagedCardListIndex = ({
@@ -9,10 +10,17 @@ export const PagedCardListIndex = ({
   currentPage: number;
   setCurrentPage: (page: number) => void;
 }) => {
+  const navigate = useNavigate();
   const changePage = (newPage: number) => {
     setCurrentPage(newPage);
   };
-  const nextPage = () => changePage((currentPage + 1) % pageCount);
+  const nextPage = () => {
+    if (currentPage + 1 === pageCount) {
+      navigate("/room");
+      return;
+    }
+    changePage((currentPage + 1) % pageCount);
+  };
   const prevPage = () => changePage((currentPage - 1 + pageCount) % pageCount);
 
   return (

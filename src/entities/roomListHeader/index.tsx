@@ -71,7 +71,7 @@ const RoomHeader = ({
           <img src={imgSrc} alt="titleIcon" />
           <h2>{text}</h2>
         </Title>
-        {isHome && isCreateRoom && <CreateDebateButton className="break-keep" />}
+        {isHome && isCreateRoom && <CreateDebateButton className="break-keep ml-auto" />}
       </HeaderTopRow>
       {(!isHome || isCreateRoom) && (
         <HeaderBottomRow>
@@ -80,7 +80,7 @@ const RoomHeader = ({
               <SortDropdowns />
             </DropdownContainer>
           )}
-          {!isHome && isCreateRoom && <CreateDebateButton className="break-keep ml-auto" />}
+          {!isHome && isCreateRoom && <CreateDebateButton className="break-keep" />}
         </HeaderBottomRow>
       )}
       <Divider />

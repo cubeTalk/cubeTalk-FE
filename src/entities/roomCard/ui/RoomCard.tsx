@@ -17,7 +17,7 @@ const RoomCard = ({ room }: { room: RoomCardType }) => {
       if (room.chatMode === "찬반" || room.chatMode === "자유") {
         setChatMode(room.chatMode);
       }
-      openEnterDebateModal(room.chatStatus === "CREATED" ? true : false);
+      openEnterDebateModal(room.chatStatus === "CREATED" ? false : true);
     }
   };
 
