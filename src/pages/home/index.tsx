@@ -6,7 +6,7 @@ import { CreatedRoomsCardList, StartedRoomsCardList } from "./ui/CardList";
 const StartedRooms = () => {
   return (
     <RoomSection>
-      <RoomHeader text="진행중인 토론목록" imgSrc="/Icon/playing.png" isHome={true} status="진행중" />
+      <RoomHeader text="진행중인 토론목록" imgSrc="/Icon/playing.png" isCreateRoom={false} status="진행중" />
       <StartedRoomsCardList />
     </RoomSection>
   );
@@ -15,7 +15,7 @@ const StartedRooms = () => {
 const CreatedRooms = () => {
   return (
     <RoomSection>
-      <RoomHeader text="참가 가능 토론목록" imgSrc="/Icon/playing.png" isHome={true} status="시작전"/>
+      <RoomHeader text="참가 가능 토론목록" imgSrc="/Icon/playing.png" isCreateRoom={true} status="시작전"/>
       <CreatedRoomsCardList />
     </RoomSection>
   );

@@ -31,10 +31,9 @@ interface RoomCardListProp {
   cardList: RoomCardType[] | undefined;
   isError: boolean;
   isPending: boolean;
-  started: boolean;
 }
 
-export const RoomCardList = ({ cardList, isError, isPending, started }: RoomCardListProp) => {
+export const RoomCardList = ({ cardList, isError, isPending }: RoomCardListProp) => {
   if (isPending) {
     return <Spinning />;
   }
@@ -48,20 +47,8 @@ export const RoomCardList = ({ cardList, isError, isPending, started }: RoomCard
       {cardList.length === 0 ? (
         <NoDebateRooms />
       ) : (
-        cardList.map((room: RoomCardType) => (
-          <RoomCard
-            key={room.id}
-            title={room.title}
-            description={room.description}
-            id={room.id}
-            chatDuration={room.chatDuration}
-            chatMode={room.chatMode}
-            createdAt={room.createdAt}
-            maxParticipants={room.maxParticipants}
-            currentParticipantsCount={room.currentParticipantsCount}
-            started={started}
-          />
-        )))}
+        cardList.map((room: RoomCardType) => <RoomCard room={room} />)
+      )}
     </div>
   );
 };

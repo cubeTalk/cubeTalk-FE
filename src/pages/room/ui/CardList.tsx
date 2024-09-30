@@ -30,7 +30,6 @@ export const CardList = () => {
         cardList={rooms}
         isError={isError}
         isPending={isPending}
-        started={mode === "시작전"}
       />
       {isFetchingNextPage ? <Spinning /> : <div ref={ref} />}
     </>

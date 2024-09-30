@@ -6,30 +6,21 @@ import { useDebateInfoStore } from "../../debateInfo";
 import { calculateRemainingTime } from "../lib";
 import { useRoomStore } from "../../../features/createDebate/model/store";
 
-const RoomCard = ({
-  title,
-  description,
-  id,
-  chatDuration,
-  chatMode,
-  createdAt,
-  maxParticipants,
-  currentParticipantsCount,
-  started,
-}: Partial<RoomCardType> & { started: boolean }) => {
+const RoomCard = ({ room }: { room: RoomCardType }) => {
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const setId = useDebateInfoStore((state) => state.actions.setId);
   const setChatMode = useRoomStore((state) => state.actions.setChatMode);
 
   const onClickHandler = () => {
-    if (id) {
-      setId(id);
-      if (chatMode === "찬반" || chatMode === "자유") {
-        setChatMode(chatMode);
+    if (room.id) {
+      setId(room.id);
+      if (room.chatMode === "찬반" || room.chatMode === "자유") {
+        setChatMode(room.chatMode);
       }
-      openEnterDebateModal(started);
+      openEnterDebateModal(room.chatStatus === "CREATED" ? true : false);
     }
   };
+
   return (
     <>
       <CardContainer
@@ -37,39 +28,37 @@ const RoomCard = ({
         className="hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer"
       >
         <div className="flex flex-row gap-4 items-center flex-wrap justify-between mb-1">
-          <Title>{title}</Title>
+          <Title>{room.title}</Title>
           <div className="flex items-center gap-4">
             <h3
-              className={`${chatMode === "찬반" ? "bg-amber-200" : "bg-emerald"} py-1 px-2 rounded-md shrink-0`}
+              className={`${room.chatMode === "찬반" ? "bg-amber-200" : "bg-emerald"} py-1 px-2 rounded-md shrink-0`}
             >
-              {chatMode}
+              {room.chatMode}
             </h3>
-            {chatDuration &&
-              createdAt &&
-              (!started ? (
+            {room.chatStatus === "CREATED" ? (
+              <>
                 <h3 className="text-gray-700 text-sm bg-cyan-200 py-1 px-2 rounded-md">
-                  {chatDuration}분
+                  {room.chatDuration}분
                 </h3>
-              ) : (
-                <h3 className="text-gray-700 text-sm bg-rose-200 py-1 px-2 rounded-md">
-                  {calculateRemainingTime(chatDuration, createdAt)}
-                </h3>
-              ))}
-
-            {!started ? (
-              <div className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
-                <h3>
-                  {currentParticipantsCount}명/{maxParticipants}명
-                </h3>
-              </div>
+                <div className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
+                  <h3>
+                    {room.currentParticipantsCount}명/{room.maxParticipants}명
+                  </h3>
+                </div>
+              </>
             ) : (
-              <h3 className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
-                {currentParticipantsCount}명 참가
-              </h3>
+              <>
+                <h3 className="text-gray-700 text-sm bg-rose-200 py-1 px-2 rounded-md">
+                  {calculateRemainingTime(room.chatDuration, room.createdAt)}
+                </h3>
+                <h3 className="flex items-center gap-1 bg-lime-200 py-1 px-2 rounded-md">
+                  {room.currentParticipantsCount}명 참가
+                </h3>
+              </>
             )}
           </div>
         </div>
-        <DescriptionText>{description}</DescriptionText>
+        <DescriptionText>{room.description}</DescriptionText>
       </CardContainer>
       <Divider color="#e0e0e0" margin={15} />
     </>

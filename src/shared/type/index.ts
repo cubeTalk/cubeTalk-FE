@@ -3,12 +3,13 @@ export type RoomCardType = {
   chatMode: string;
   title: string;
   description: string;
-  chatDuration: string;
+  chatDuration: number;
   ownerNickName: string;
   maxParticipants: number;
   currentParticipantsCount: number;
   createdAt: string;
   updatedAt: string;
+  chatStatus: DebateStatus;
 };
 
 export type DebateMode = "찬반" | "자유";
