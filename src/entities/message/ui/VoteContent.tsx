@@ -5,6 +5,7 @@ import { Participant } from "../../../shared/type";
 import { useVoteDebateStore } from "../model/store";
 import { voteMessageWebSocket } from "../../../app/worker";
 import { useState } from "react";
+import { useDebateInfoStore } from "../../debateInfo";
 
 const TeamButtons = () => {
   const team = useVoteDebateStore((state) => state.team);
@@ -53,8 +54,9 @@ const Submit = () => {
   const [isSend, setIsSend] = useState(false);
   const MVP = useVoteDebateStore((state) => state.MVP);
   const team = useVoteDebateStore((state) => state.team);
+
   const onClickHandler = () => {
-    if (team === "SUPPORT" || team === "OPPOSITE") {
+    if (team === "SUPPORT" || team === "OPPOSITE" || team === undefined) {
       voteMessageWebSocket({
         type: "VOTE",
         team,
@@ -77,10 +79,11 @@ const Submit = () => {
 };
 
 const VoteContent = () => {
+  const chatMode = useDebateInfoStore((state) => state.chatMode);
   const users = useParticipantsStore((state) => state.participants);
   return (
     <>
-      <TeamButtons />
+      {chatMode === "찬반" && <TeamButtons />}
       <UserContainer>
         {users.map((user) => (
           <User user={user} key={user.nickName} />

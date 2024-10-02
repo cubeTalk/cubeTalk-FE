@@ -160,7 +160,7 @@ export interface TimerEndMessage extends TimerMessage {
 
 export interface VoteMessage extends BaseMessage {
   type: "VOTE";
-  team: "OPPOSITE" | "SUPPORT";
+  team?: "OPPOSITE" | "SUPPORT";
   mvp: string;
 }
 

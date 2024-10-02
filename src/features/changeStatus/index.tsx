@@ -9,11 +9,12 @@ const Start = () => {
   const participants = useParticipantsStore((state) => state.participants);
   const currentMaxReady = participants.filter((user) => user.role !== "관전").length;
   const currentReady = participants.filter((user) => user.status === "READY").length;
+  const currentOut = participants.filter((user) => user.status === "DISCONNECTED").length;
   const { mutate, isPending } = useStartMutate();
   return (
     <StartButton
-      disabled={isPending || currentMaxReady !== currentReady}
-      $ready={currentMaxReady === currentReady}
+      disabled={isPending || currentMaxReady !== currentReady + currentOut}
+      $ready={currentMaxReady === currentReady + currentOut}
       onClick={() => mutate()}
     >
       {isPending ? <Spinner /> : <h3>시작하기</h3>}

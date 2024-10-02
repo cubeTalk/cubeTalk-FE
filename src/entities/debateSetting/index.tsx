@@ -90,7 +90,7 @@ const ProsConsSetting = ({
   );
 };
 
-const TotalTimeList = Array.from({ length: 21 }, (_, i) => i + 10);
+const TotalTimeList = Array.from({ length: 30 }, (_, i) => i + 1);
 const FreeSetting = ({ useStore }: { useStore: UseBoundStore<StoreApi<DebateSettingState>> }) => {
   const FreeSettingEntries: SettingEntry<number>[] = [
     {
