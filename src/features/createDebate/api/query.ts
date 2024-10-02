@@ -24,8 +24,7 @@ export const useCreateDebateQuery = () => {
   const { alert } = useContext(AlertContext);
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
   const closeCreateDebateModal = useCreateDebateModalStore((state) => state.closeModal);
-  const setId = useDebateInfoStore((state) => state.actions.setId);
-  const setMemberId = useUserInfoStore((state) => state.setMemberId);
+  const setInfo = useUserInfoStore((state) => state.setInfo);
   const setIsOwner = useisOwnerStore((state) => state.actions.setIsOwner);
 
   return useMutation({
@@ -34,17 +33,17 @@ export const useCreateDebateQuery = () => {
     onSuccess: (data: ServerResponse<CreateDebateRoomResponse>) => {
       const response = data.data;
       if (!response) return;
-      setId(response.id);
-      setMemberId(response.memberId);
+      setInfo({ id: response.id, memberId: response.memberId });
       setIsOwner();
       closeCreateDebateModal();
       openEnterDebateModal(false);
     },
     onError: async (error: AxiosError<ServerResponse>) => {
       if (error.response?.status === 500) {
-        await alert("서버가 아파요! 잠시후 다시 시도해주세요!", "확인");  
+        await alert("서버가 아파요! 잠시후 다시 시도해주세요!", "확인");
       } else {
         await alert(`${error.response?.data.message}`, "확인");
-      }    },
+      }
+    },
   });
 };

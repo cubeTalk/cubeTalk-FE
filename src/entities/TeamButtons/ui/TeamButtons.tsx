@@ -57,9 +57,7 @@ export const ProsConsFreeTeam = ({
           chosenTeam={team}
           setTeam={setTeam}
           bgColor={"bg-emerald"}
-          isdisable={
-            originTeam === "자유" || data.totalCount === data.maxCapacityCount
-          }
+          isdisable={originTeam === "자유" || data.totalCount === data.maxCapacityCount}
         />
       )}
     </div>

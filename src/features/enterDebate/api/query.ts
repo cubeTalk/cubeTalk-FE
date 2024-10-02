@@ -7,12 +7,13 @@ import { AlertContext } from "../../../entities/alertDialog/model/context";
 import { useEnterDebateStore, useEnterModalStore } from "../model/store";
 import { useNavigate } from "react-router-dom";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
-import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 
 export type EnterDebateRequest = {
   nickName: string; // 토론 참가자 닉네임
   role: DebateRole; // 토론 역할
   ownerId?: string; // 토론 방장 ID
+  memberId?: string; // 재접속인경우
 };
 export type EnterDebateResponse = UserInfo;
 
@@ -25,9 +26,9 @@ const postEnterDebate = async (
   const response = await axios.post(`/chat/${id}/participants`, data);
   return response.data;
 };
-export const useEnterDebateQuery = () => {
-  const id = useDebateInfoStore((state) => state.id);
 
+export const useEnterDebateMutaion = () => {
+  const id = useUserInfoStore((state) => state.id);
   const setInfo = useUserInfoStore((state) => state.setInfo);
   const setCheckName = useEnterDebateStore((state) => state.actions.setCheckName);
   const navigate = useNavigate();

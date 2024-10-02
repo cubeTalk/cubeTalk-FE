@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/commonStyle";
+import { center, colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
 import { HTMLAttributes } from "react";
-import { MenuType, useMenuStore } from "../model/store";
-import { useNavigate } from "react-router-dom";
-import { useDebateInfoStore } from "../../../entities/debateInfo";
+import { MenuType, useMenuStore } from "../../pages/debate/model/store";
+import { useDebateInfoStore } from "../debateInfo";
+import { useDebateOutMutate } from "./api";
 
 type TabMenuProps = {
   link: string;
@@ -33,9 +33,9 @@ type MenuItem = {
 };
 
 const OutMenu = () => {
-  const navigate = useNavigate();
+  const { mutate } = useDebateOutMutate();
   return (
-    <TabMenuWrapper className="mt-auto" onClick={() => navigate("/")}>
+    <TabMenuWrapper className="mt-auto" onClick={() => mutate()}>
       <img src={"/chatIcon/chatout.png"} alt={"ChatOut"} />
     </TabMenuWrapper>
   );
