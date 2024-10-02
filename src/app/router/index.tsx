@@ -5,11 +5,12 @@ import { GlobalStyle } from "./ui/globalstyle";
 import Header from "./ui/header";
 import Footer from "./ui/footer";
 import EnterDebateModal from "../../features/enterDebate";
-import { useResetDebateInfo } from "../../pages/home/hook/useResetDebateInfo";
 import { CreateDebateModal } from "../../features/createDebate";
+import { useRejoinDebate, useResetDebateInfo } from "./hook";
 
 export const Root = () => {
   useResetDebateInfo();
+  useRejoinDebate();
   return (
     <>
       <GlobalStyle />

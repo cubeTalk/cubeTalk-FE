@@ -17,7 +17,6 @@ export const useEnterModalStore = create(
 const enterDebateState = {
   nickName: "",
   role: "",
-  ownerId: "",
   checkName: "",
 };
 
@@ -26,7 +25,6 @@ export const useEnterDebateStore = create(
     actions: {
       setNickName: (newNickName: string) => set(() => ({ nickName: newNickName })),
       setRole: (newRole: string) => set(() => ({ role: newRole })),
-      setOwnerId: (newOwnerId: string) => set(() => ({ ownerId: newOwnerId })),
       setCheckName: (newCheckName: string) => set(() => ({ checkName: newCheckName })),
     },
   }))

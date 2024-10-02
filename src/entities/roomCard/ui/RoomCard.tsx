@@ -2,18 +2,18 @@ import styled from "styled-components";
 import Divider from "../../../shared/components/divider";
 import { RoomCardType } from "../../../shared/type";
 import { useEnterModalStore } from "../../../features/enterDebate/model/store";
-import { useDebateInfoStore } from "../../debateInfo";
+import { useUserInfoStore } from "../../debateInfo";
 import { calculateRemainingTime } from "../lib";
 import { useRoomStore } from "../../../features/createDebate/model/store";
 
 const RoomCard = ({ room }: { room: RoomCardType }) => {
   const openEnterDebateModal = useEnterModalStore((state) => state.openModal);
-  const setId = useDebateInfoStore((state) => state.actions.setId);
+  const setInfo = useUserInfoStore((state) => state.setInfo);
   const setChatMode = useRoomStore((state) => state.actions.setChatMode);
 
   const onClickHandler = () => {
     if (room.id) {
-      setId(room.id);
+      setInfo({ id: room.id });
       if (room.chatMode === "찬반" || room.chatMode === "자유") {
         setChatMode(room.chatMode);
       }

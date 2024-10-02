@@ -15,12 +15,11 @@ const initalUserInfoState: UserInfo = {
 export const useUserInfoStore = create(
   persist(
     combine(initalUserInfoState, (set) => ({
-      setInfo: (data: UserInfo) => set((state) => ({ ...state, ...data })),
-      setMemberId: (memberId: string) => set((state) => ({ ...state, memberId })),
+      setInfo: (data: Partial<UserInfo>) => set((state) => ({ ...state, ...data })),
       changeTeam: (role: DebateRole, subChannelId: string) => set(() => ({ role, subChannelId })),
       reset: () => set(initalUserInfoState),
     })),
-    { name: "UserInfo", storage: createJSONStorage(() => sessionStorage)}
+    { name: "UserInfo", storage: createJSONStorage(() => sessionStorage) }
   )
 );
 
@@ -46,7 +45,6 @@ export const useDebateInfoStore = create(
       actions: {
         setInfo: (data: Partial<DebateInfo>) => set((state) => ({ ...state, ...data })),
         setDescription: (newDescription: string) => set({ description: newDescription }),
-        setId: (id: string) => set((state) => ({ ...state, id })),
       },
     }))
   )

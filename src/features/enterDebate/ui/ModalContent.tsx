@@ -4,7 +4,7 @@ import { InlineTextInput } from "../../../shared/components/textinput";
 import { useEnterDebateStore } from "../model/store";
 import useInputChangeHandler from "../../../shared/hook/useChangeHandler";
 import { SubmitButton } from "../../../shared/components/button";
-import { useEnterDebateQuery } from "../api/query";
+import { useEnterDebateMutaion } from "../api/query";
 import { TeamButtons } from "../../../entities/TeamButtons";
 import { useTeamChoseStore } from "../../../entities/TeamButtons/model/store";
 import { DebateRole } from "../../../shared/type";
@@ -35,7 +35,7 @@ const NickName = () => {
 };
 
 const Submit = () => {
-  const { mutate, isPending } = useEnterDebateQuery();
+  const { mutate, isPending } = useEnterDebateMutaion();
   const nickName = useEnterDebateStore((state) => state.nickName);
   const team = useTeamChoseStore((state) => state.team);
   const isOwner = useisOwnerStore((state) => state.isOwner);

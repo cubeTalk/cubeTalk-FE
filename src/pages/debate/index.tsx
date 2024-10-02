@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
-import MenuTab from "./ui/MenuTab";
+import MenuTab from "../../entities/menuTab";
 import ScreenContainer from "./ui/ScreenContainer";
 import { useFetchandUpdateData, useUpdateMessageList } from "./hook/useUpdateInfo";
 import { useWebScoketTimeout, useWebSocketConnection, useWebSocketError } from "./hook";

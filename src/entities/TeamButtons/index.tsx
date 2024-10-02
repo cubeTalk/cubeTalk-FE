@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useDebateParticipantsQuery } from "./api/query";
 import { ProsConsFreeTeam, SpectatorTeam } from "./ui/TeamButtons";
-import { spinner } from "../../shared/style/commonStyle";
+import { blackSpinner } from "../../shared/style/commonStyle";
 
 export const TeamButtons = ({ chatMode = "찬반" }: { chatMode?: string }) => {
   const { data, isError } = useDebateParticipantsQuery();
@@ -15,9 +15,12 @@ export const TeamButtons = ({ chatMode = "찬반" }: { chatMode?: string }) => {
   }
 
   if (!data) {
-    return <Spinner />;
+    return (
+      <div className="flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
   }
-
   return (
     <>
       <ProsConsFreeTeam data={data} chatMode={chatMode} />
@@ -27,7 +30,7 @@ export const TeamButtons = ({ chatMode = "찬반" }: { chatMode?: string }) => {
 };
 
 const Spinner = styled.div`
-  ${spinner}
-  width: 40px;
-  height: 40px;
+  ${blackSpinner}
+  width: 60px;
+  height: 60px;
 `;
