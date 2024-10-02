@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { center, colflex, mediaQuery, rowflex } from "../../../shared/style/commonStyle";
-import { HTMLAttributes } from "react";
-import { MenuType, useMenuStore } from "../model/store";
-import { useNavigate } from "react-router-dom";
-import { useDebateInfoStore } from "../../../entities/debateInfo";
+import { center, colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
+import { HTMLAttributes, useContext } from "react";
+import { MenuType, useMenuStore } from "../../pages/debate/model/store";
+import { useDebateInfoStore } from "../debateInfo";
+import { useDebateOutMutate } from "./api";
+import { AlertContext } from "../alertDialog/model/context";
 
 type TabMenuProps = {
   link: string;
@@ -33,9 +34,21 @@ type MenuItem = {
 };
 
 const OutMenu = () => {
-  const navigate = useNavigate();
+  const { mutate } = useDebateOutMutate();
+  const { alert } = useContext(AlertContext);
+  const chatStatus = useDebateInfoStore((state) => state.chatStatus);
+  const chatMode = useDebateInfoStore((state) => state.chatMode);
+
+  const confirmOutMessage = () => {
+    const isStarted = chatStatus === "STARTED";
+    if (isStarted && chatMode === "찬반") {
+      alert("정말로 나가시겠습니까? 다시 들어올 수 없습니다.", "확인", "아니요", () => mutate());
+    } else {
+      alert("정말로 나가시겠습니까?", "확인", "아니요", () => mutate());
+    }
+  };
   return (
-    <TabMenuWrapper className="mt-auto" onClick={() => navigate("/")}>
+    <TabMenuWrapper className="mt-auto" onClick={confirmOutMessage}>
       <img src={"/chatIcon/chatout.png"} alt={"ChatOut"} />
     </TabMenuWrapper>
   );
