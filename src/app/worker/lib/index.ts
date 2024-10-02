@@ -36,3 +36,7 @@ export const getCloseEventCodeReason = (event: CloseEvent) => {
 
   return reasonMap.get(event.code) || "알 수 없는 이유";
 };
+
+export const sleep = async (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

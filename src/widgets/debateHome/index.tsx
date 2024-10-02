@@ -29,4 +29,5 @@ const Layout = styled.div`
   padding: 10px;
   background-color: var(--white);
   border-radius: 8px;
+  overflow: auto;
 `;

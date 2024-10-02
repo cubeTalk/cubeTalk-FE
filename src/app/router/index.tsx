@@ -14,7 +14,7 @@ export const Root = () => {
     <>
       <GlobalStyle />
       <Header />
-      <BodyLayout>
+      <BodyLayout className="min-h-[100dvh]">
         <BodyContainer>
           <Outlet />
         </BodyContainer>

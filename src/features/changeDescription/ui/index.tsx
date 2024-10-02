@@ -53,7 +53,13 @@ export const DescriptionHeader = ({ isOwner }: { isOwner: boolean }) => {
 export const DescriptionBody = ({ isOwner }: { isOwner: boolean }) => {
   const { value, action } = useDescriptionStore((state) => state);
   return (
-    <>{isOwner ? <Multiline onChange={action.onChangeValue} value={value} /> : <h3>{value}</h3>}</>
+    <>
+      {isOwner ? (
+        <Multiline onChange={action.onChangeValue} value={value} />
+      ) : (
+        <MultiLineText>{value}</MultiLineText>
+      )}
+    </>
   );
 };
 
@@ -63,7 +69,12 @@ const Multiline = styled.textarea`
   width: 100%;
   resize: none;
   white-space: pre-wrap;
-  outline: none;
+`;
+
+const MultiLineText = styled.h3`
+  ${scrollBar}
+  height: 100%;
+  width: 100%;
 `;
 
 const Reset = styled.button`

@@ -3,12 +3,13 @@ export type RoomCardType = {
   chatMode: string;
   title: string;
   description: string;
-  chatDuration: string;
+  chatDuration: number;
   ownerNickName: string;
   maxParticipants: number;
   currentParticipantsCount: number;
   createdAt: string;
   updatedAt: string;
+  chatStatus: DebateStatus;
 };
 
 export type DebateMode = "찬반" | "자유";
@@ -159,7 +160,7 @@ export interface TimerEndMessage extends TimerMessage {
 
 export interface VoteMessage extends BaseMessage {
   type: "VOTE";
-  team: "OPPOSITE" | "SUPPORT";
+  team?: "OPPOSITE" | "SUPPORT";
   mvp: string;
 }
 

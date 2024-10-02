@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colflex, rowflex } from "../../shared/style/commonStyle";
+import { rowflex } from "../../shared/style/commonStyle";
 import Divider from "../../shared/components/divider";
 import Dropdown from "../../shared/components/dropdown";
 import { CreateDebateButton } from "../../features/createDebate";
@@ -12,6 +12,7 @@ interface RoomHeaderProps {
   imgSrc: string;
   status?: string;
   isHome?: boolean;
+  isCreateRoom: boolean;
 }
 
 const SortDropdowns = () => {
@@ -46,36 +47,41 @@ const SortDropdowns = () => {
   );
 };
 
-const RoomHeader = ({ text, imgSrc, status = "모두", isHome = false }: RoomHeaderProps) => {
+const RoomHeader = ({
+  text,
+  imgSrc,
+  status = "모두",
+  isHome = true,
+  isCreateRoom = false,
+}: RoomHeaderProps) => {
   const navigate = useNavigate();
   const setStatus = useDebateSearchParamsStore((state) => state.setStatus);
   return (
     <HeaderContainer>
-      {isHome ? (
+      <HeaderTopRow>
         <Title
           onClick={() => {
-            setStatus(status);
-            navigate("/room");
+            if (isHome) {
+              setStatus(status);
+              navigate("/room");
+            }
           }}
+          $isButton={isHome}
         >
           <img src={imgSrc} alt="titleIcon" />
           <h2>{text}</h2>
         </Title>
-      ) : (
-        <Title>
-          <img src={imgSrc} alt="titleIcon" />
-          <h2>{text}</h2>
-        </Title>
-      )}
-      {!isHome && (
-        <div className="flex flex-row justify-between flex-wrap mb-1 mx-1">
-          <DorpdownContainer>
-            <SortDropdowns />
-          </DorpdownContainer>
-          <div className="flex flex-1 justify-end">
-            <CreateDebateButton className="break-keep" />
-          </div>
-        </div>
+        {isHome && isCreateRoom && <CreateDebateButton className="break-keep ml-auto" />}
+      </HeaderTopRow>
+      {(!isHome || isCreateRoom) && (
+        <HeaderBottomRow>
+          {!isHome && (
+            <DropdownContainer>
+              <SortDropdowns />
+            </DropdownContainer>
+          )}
+          {!isHome && isCreateRoom && <CreateDebateButton className="break-keep" />}
+        </HeaderBottomRow>
       )}
       <Divider />
     </HeaderContainer>
@@ -85,20 +91,35 @@ const RoomHeader = ({ text, imgSrc, status = "모두", isHome = false }: RoomHea
 export default RoomHeader;
 
 const HeaderContainer = styled.div`
-  ${colflex}
   width: 100%;
 `;
 
-const Title = styled.button`
+const HeaderTopRow = styled.div`
   ${rowflex}
-  padding-left: 15px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
   margin-bottom: 5px;
+`;
+
+const HeaderBottomRow = styled.div`
+  ${rowflex}
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  margin-bottom: 5px;
+  gap: 10px;
+`;
+
+const Title = styled.div<{ $isButton: boolean }>`
+  ${rowflex}
+  cursor: ${(props) => (props.$isButton ? "pointer" : "default")};
   img {
     margin-right: 8px;
   }
 `;
 
-const DorpdownContainer = styled.div`
+const DropdownContainer = styled.div`
   ${rowflex}
   flex-wrap: wrap;
   gap: 10px;

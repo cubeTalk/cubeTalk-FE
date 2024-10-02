@@ -4,7 +4,6 @@ import { blackSpinner } from "../../../shared/style/commonStyle";
 import styled from "styled-components";
 import { useGetDebateRoomsQuery } from "../api/query";
 import { RoomCardList } from "../../../entities/roomCard";
-import { useDebateSearchParamsStore } from "../../../entities/roomListHeader/model/store";
 
 const Spinning = () => {
   return (
@@ -16,7 +15,6 @@ const Spinning = () => {
 
 export const CardList = () => {
   const { rooms, isPending, isError, isFetchingNextPage, fetchNextPage } = useGetDebateRoomsQuery();
-  const mode = useDebateSearchParamsStore((state) => state.mode);
   const { ref, inView } = useInView();
   useEffect(() => {
     if (inView) {
@@ -30,7 +28,6 @@ export const CardList = () => {
         cardList={rooms}
         isError={isError}
         isPending={isPending}
-        started={mode === "시작전"}
       />
       {isFetchingNextPage ? <Spinning /> : <div ref={ref} />}
     </>

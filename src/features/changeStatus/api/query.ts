@@ -21,7 +21,11 @@ export const useStartMutate = () => {
     mutationKey: ["startDebate"],
     mutationFn: () => startDebate(id, memberId),
     onError: async (error: AxiosError<ServerResponse>) => {
-      await alert(`${error.response?.data.message}`, "확인");
+      if (error.response?.status === 500) {
+        await alert("서버가 아파요! 잠시후 다시 시도해주세요!", "확인");  
+      } else {
+        await alert(`${error.response?.data.message}`, "확인");
+      }
     },
   });
 };
