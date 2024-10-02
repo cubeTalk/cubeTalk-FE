@@ -27,6 +27,7 @@ export const InlineTextInput = ({
         onFocus={() => setIsFocused(true)}
         onChange={onChange}
         $hasWarning={isFocused && !!warning}
+        autoComplete="off"
         {...rest}
       />
       {isFocused && warning && <WarningMessage>{warning}</WarningMessage>}
@@ -73,7 +74,6 @@ const Multiline = styled.textarea<{ $hasWarning: boolean }>`
   width: 100%;
   height: 100%;
   padding: 10px;
-  resize: none;
   white-space: pre-wrap;
   outline: none;
   box-shadow: ${({ $hasWarning }) =>

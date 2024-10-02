@@ -3,18 +3,33 @@ import { colflex, mediaQuery, rowflex } from "../../shared/style/commonStyle";
 import MenuTab from "./ui/MenuTab";
 import ScreenContainer from "./ui/ScreenContainer";
 import { useFetchandUpdateData, useUpdateMessageList } from "./hook/useUpdateInfo";
-import { useWebSocketConnection } from "./hook";
+import { useWebScoketTimeout, useWebSocketConnection, useWebSocketError } from "./hook";
 import { PageLoadingSpinner } from "../../shared/components/spinner";
+import { ScreenContainerSkeleton } from "./ui/ScreenConatiner.skeleton";
+import { usePreventLeave } from "../../entities/alertDialog/hook/usePreventLeave";
 
 const DebatePage = () => {
   const isfetchingLoading = useFetchandUpdateData();
   const isMessageLoading = useUpdateMessageList();
   useWebSocketConnection();
+  useWebSocketError();
+  useWebScoketTimeout();
+  usePreventLeave(true, "정말 나가시겠습니까?");
+
   return (
     <PageLayout>
-      {(isMessageLoading || isfetchingLoading) && <PageLoadingSpinner />}
-      <MenuTab />
-      <ScreenContainer />
+      {isMessageLoading || isfetchingLoading ? (
+        <>
+          <PageLoadingSpinner />
+          <MenuTab />
+          <ScreenContainerSkeleton />
+        </>
+      ) : (
+        <>
+          <MenuTab />
+          <ScreenContainer />
+        </>
+      )}
     </PageLayout>
   );
 };

@@ -40,6 +40,7 @@ export const mockingGetParticipantsListHandler = http.get<
     supportCount,  // 찬성 참가자 수
     oppositeCount,  // 반대 참가자 수
     spectatorCount,  // 관전자 수
+    totalCount: 0,
   };
 
   return HttpResponse.json(serverResponse(participantsData), { status: 200 });

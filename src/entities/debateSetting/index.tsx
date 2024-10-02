@@ -3,7 +3,7 @@ import type { ProsConsSetting, FreeSetting } from "../../shared/type";
 import { DebateSettingState } from "./model/store";
 import { StoreApi, UseBoundStore } from "zustand";
 
-const maxParticipantNumbers = [2, 4, 6];
+const maxParticipantNumbers = [2, 4, 6, 8, 10];
 
 export type SettingEntry<T> = {
   label: string;
@@ -90,7 +90,7 @@ const ProsConsSetting = ({
   );
 };
 
-const TotalTimeList = Array.from({ length: 21 }, (_, i) => i + 10);
+const TotalTimeList = Array.from({ length: 30 }, (_, i) => i + 1);
 const FreeSetting = ({ useStore }: { useStore: UseBoundStore<StoreApi<DebateSettingState>> }) => {
   const FreeSettingEntries: SettingEntry<number>[] = [
     {

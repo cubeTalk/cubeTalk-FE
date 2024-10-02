@@ -9,7 +9,7 @@ const ChangeTeam = () => {
   const team = useTeamChoseStore((state) => state.team);
   const subChannelId = useUserInfoStore((state) => state.subChannelId);
   const onClickHandler = () => mutate({ role: team, subChannelId });
-  return <SubmitButton text="팀변경" onClickHandler={onClickHandler} isPending={isPending} />;
+  return <SubmitButton text="팀변경" onClickHandler={onClickHandler} isPending={isPending} disabled={team === ""}/>;
 };
 
 export const ModalContent = () => {

@@ -3,20 +3,18 @@ import { useisOwnerStore } from "../createDebate/model/store";
 import { commonButton, spinner } from "../../shared/style/commonStyle";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useReadyMutate, useStartMutate } from "./api/query";
-import { useChangeStatusErrorStore } from "./model/store";
-import { useContext, useEffect } from "react";
-import { AlertContext } from "../../entities/alertDialog/model/context";
-import { useUserInfoStore } from "../../entities/debateInfo";
+import { useDebateInfoStore, useUserInfoStore } from "../../entities/debateInfo";
 
 const Start = () => {
   const participants = useParticipantsStore((state) => state.participants);
   const currentMaxReady = participants.filter((user) => user.role !== "관전").length;
   const currentReady = participants.filter((user) => user.status === "READY").length;
+  const currentOut = participants.filter((user) => user.status === "DISCONNECTED").length;
   const { mutate, isPending } = useStartMutate();
   return (
     <StartButton
-      disabled={isPending}
-      $ready={currentMaxReady === currentReady}
+      disabled={isPending || currentMaxReady !== currentReady + currentOut}
+      $ready={currentMaxReady === currentReady + currentOut}
       onClick={() => mutate()}
     >
       {isPending ? <Spinner /> : <h3>시작하기</h3>}
@@ -26,33 +24,22 @@ const Start = () => {
 
 const Ready = () => {
   const myStatus = useParticipantsStore((state) => state.myStatus);
-  const { mutate, isPending, setIsPending } = useReadyMutate();
-  const error = useChangeStatusErrorStore((state) => state.error);
-  const { alert } = useContext(AlertContext);
-  useEffect(() => {
-    if (error) {
-      alert(`${error}`, "확인");
-    }
-    if (myStatus) {
-      setIsPending(false);
-    }
-  }, [alert, error, myStatus, setIsPending]);
+  const mutate = useReadyMutate();
 
   return (
-    <ReadyButton
-      disabled={isPending}
-      $ready={myStatus === "READY"}
-      onClick={() => mutate(myStatus)}
-    >
-      {isPending ? <Spinner /> : <h3>{myStatus === "READY" ? "대기하기" : "준비하기"}</h3>}
+    <ReadyButton $ready={myStatus === "READY"} onClick={() => mutate(myStatus)}>
+      <h3>{myStatus === "READY" ? "대기하기" : "준비하기"}</h3>
     </ReadyButton>
   );
 };
 
 export const StatusButton = () => {
+  const chatStatus = useDebateInfoStore((state) => state.chatStatus);
   const isOwner = useisOwnerStore((state) => state.isOwner);
   const role = useUserInfoStore((state) => state.role);
-  return <>{isOwner ? <Start /> : role !== "관전" ? <Ready /> : <></>}</>;
+  return (
+    <>{chatStatus !== "CREATED" || role === "관전" ? <></> : isOwner ? <Start /> : <Ready />}</>
+  );
 };
 
 const StartButton = styled.button<{ $ready: boolean }>`

@@ -1,60 +1,12 @@
-import { IMessage } from "@stomp/stompjs";
-import { ChatMessage, Participant } from "../../../shared/type";
 import { useUserInfoStore } from "../../../entities/debateInfo";
-import { useSubMessageStore } from "../../../widgets/teamChat/model/store";
-import { useMainMessageStore } from "../../../widgets/mainChat/model/store";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { GetParticipantsKey } from "../../../entities/participants/api/query";
-import { connectWebSocket } from "../../../app/worker";
-
-interface WebSocketCallback {
-  mainChatCallback: (message: IMessage) => void;
-  subChatCallback: (message: IMessage) => void;
-  progressCallback: (message: IMessage) => void;
-  participantsCallback: (message: IMessage) => void;
-  errorCallback: (message: IMessage) => void;
-}
-
-export const useWebSocketMessageCallback = (): WebSocketCallback => {
-  const nickName = useUserInfoStore((state) => state.nickName);
-  const mainMessageAdd = useMainMessageStore((state) => state.actions.messageAdd);
-  const subMessageAdd = useSubMessageStore((state) => state.messageAdd);
-  const queryClient = useQueryClient();
-
-  const mainChatCallback = (message: IMessage) => {
-    const chatMessage: ChatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName);
-  };
-  const subChatCallback = (message: IMessage) => {
-    const chatMessage: ChatMessage = JSON.parse(message.body);
-    subMessageAdd(chatMessage, nickName);
-  };
-  const progressCallback = (message: IMessage) => {
-    const chatMessage = JSON.parse(message.body);
-    mainMessageAdd(chatMessage, nickName);
-  };
-  const participantsCallback = (message: IMessage) => {
-    const participants: Participant[] = JSON.parse(message.body);
-    queryClient.setQueryData<Participant[]>([GetParticipantsKey], participants);
-  };
-  const errorCallback = (message: IMessage) => {
-    const errorMessage: { tittle: string; message: string } = JSON.parse(message.body);
-    console.error(`[${errorMessage.tittle} Error]: ${errorMessage.message}`);
-  };
-
-  return {
-    mainChatCallback,
-    subChatCallback,
-    progressCallback,
-    participantsCallback,
-    errorCallback,
-  };
-};
+import { useContext, useEffect } from "react";
+import { connectWebSocket, disconnectWebSocket, TimeOutMessage } from "../../../app/worker";
+import { useWebSocketErrorStore, useWebSocketTimeOutStore } from "../model/store";
+import { AlertContext } from "../../../entities/alertDialog/model/context";
+import { useNavigate } from "react-router-dom";
 
 export const useWebSocketConnection = () => {
   const { id, channelId, subChannelId, nickName } = useUserInfoStore((state) => state);
-
   useEffect(() => {
     connectWebSocket({
       chatRoomId: id,
@@ -62,7 +14,50 @@ export const useWebSocketConnection = () => {
       subChannelId,
       nickName,
     });
-    //return () => disconnectWebSocket();
+    return () => disconnectWebSocket();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+};
+
+export const useWebSocketError = () => {
+  const { error, setError } = useWebSocketErrorStore((state) => state);
+  const { alert } = useContext(AlertContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (error) {
+      const alertMessage = async () => {
+        if (
+          error === "해당 채팅방에 없는 멤버입니다." ||
+          error === "서버로 부터 메인 채팅방 메세지 불러오기를 실패하였습니다. 다시 참가해주세요"
+        ) {
+          await alert(error, "나가기", "", () => navigate("/"));
+        } else {
+          setError("");
+          await alert(error, "확인");
+        }
+      };
+      alertMessage();
+    }
+  }, [alert, error, navigate, setError]);
+};
+
+export const useWebScoketTimeout = () => {
+  const { error, setError } = useWebSocketTimeOutStore((state) => state);
+  const { alert } = useContext(AlertContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (error) {
+      const alertMessage = async () => {
+        setError("");
+        await alert(
+          "서버와 연결이 불안정합니다. 재접속 해주세요",
+          "확인",
+          "대기",
+          () => navigate("/"),
+          () => TimeOutMessage()
+        );
+      };
+      alertMessage();
+    }
+  }, [alert, navigate, error, setError]);
 };

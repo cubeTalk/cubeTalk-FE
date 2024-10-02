@@ -61,7 +61,7 @@ const ChatMode = () => {
 };
 
 const Participants = () => {
-  return <MaxParticipants useStore={useRoomSettingStore}/>;
+  return <MaxParticipants useStore={useRoomSettingStore} />;
 };
 
 const Setting = () => {
@@ -72,33 +72,38 @@ const Setting = () => {
 const Submit = () => {
   const { title, description, chatMode } = useRoomStore((state) => state);
   const { mutate, isPending } = useCreateDebateQuery();
-  const maxParticipants = useRoomSettingStore(state => state.maxParticipants);
-  const chatDuration = useRoomSettingStore(state => state.chatDuration);
-  const debateSettings = useRoomSettingStore(state => state.debateSettings);
+  const maxParticipants = useRoomSettingStore((state) => state.maxParticipants);
+  const chatDuration = useRoomSettingStore((state) => state.chatDuration);
+  const debateSettings = useRoomSettingStore((state) => state.debateSettings);
   const onClickHandler = () => {
-    const submitData = chatMode === "자유" ? {
-      title,
-      description,
-      chatMode: chatMode as DebateMode,
-      maxParticipants,
-      chatDuration,
-    } as FreeDebate : {
-      title,
-      description,
-      chatMode: chatMode as DebateMode,
-      maxParticipants,
-      debateSettings,
-    } as ProsConsDebate
+    const submitData =
+      chatMode === "자유"
+        ? ({
+            title,
+            description,
+            chatMode: chatMode as DebateMode,
+            maxParticipants,
+            chatDuration,
+          } as FreeDebate)
+        : ({
+            title,
+            description,
+            chatMode: chatMode as DebateMode,
+            maxParticipants,
+            debateSettings,
+          } as ProsConsDebate);
     mutate(submitData);
-  }
+  };
 
   return (
-    <SubmitButton
-      text="생성"
-      isPending={isPending}
-      disabled={validTitle(title) || description.length === 0}
-      onClickHandler={onClickHandler}
-    />
+    <div className="flex justify-center">
+      <SubmitButton
+        text="생성"
+        isPending={isPending}
+        disabled={validTitle(title) || description.length === 0}
+        onClickHandler={onClickHandler}
+      />
+    </div>
   );
 };
 
@@ -113,9 +118,7 @@ const ModalContent = () => {
         <Participants />
       </div>
       <Setting />
-      <div className="flex justify-center">
-        <Submit />
-      </div>
+      <Submit />
     </Layout>
   );
 };

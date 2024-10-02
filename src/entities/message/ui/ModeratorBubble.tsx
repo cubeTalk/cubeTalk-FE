@@ -39,7 +39,7 @@ export const DebateOutComeBubble = ({ message }: { message: TimerEndMessage }) =
       <Moderator className="bg-white">
         <h3>투표 결과를 공개하겠습니다!</h3>
         <h3>
-          오늘의 <Strong>MVP는 ... {message.MVP}</Strong>님 축하드립니다🎉
+          오늘의 <Strong>MVP는 ... {message.mvp}</Strong>님 축하드립니다🎉
         </h3>
         <h3>
           최종 찬성팀 <Strong>{support}표</Strong> 반대팀 <Strong>{opposite}표</Strong>로{" "}
@@ -55,6 +55,7 @@ export const DebateOutComeBubble = ({ message }: { message: TimerEndMessage }) =
             "무승부입니다."
           )}
         </h3>
+        <h3>토론이 종료되었습니다.</h3>
       </Moderator>
     </div>
   );

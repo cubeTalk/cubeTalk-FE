@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { readyMessage } from "../../../app/worker";
 import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
 import { AlertContext } from "../../../entities/alertDialog/model/context";
@@ -20,8 +20,12 @@ export const useStartMutate = () => {
   return useMutation({
     mutationKey: ["startDebate"],
     mutationFn: () => startDebate(id, memberId),
-    onError: (error: AxiosError<ServerResponse>) => {
-      alert(`${error.response?.data.message}`, "확인");
+    onError: async (error: AxiosError<ServerResponse>) => {
+      if (error.response?.status === 500) {
+        await alert("서버가 아파요! 잠시후 다시 시도해주세요!", "확인");  
+      } else {
+        await alert(`${error.response?.data.message}`, "확인");
+      }
     },
   });
 };
@@ -29,21 +33,15 @@ export const useStartMutate = () => {
 export const useReadyMutate = () => {
   const memberId = useUserInfoStore((state) => state.memberId);
   const chatMode = useDebateInfoStore((state) => state.chatMode);
-  const [isPending, setIsPending] = useState(false);
   const mutate = (myStatus: string) => {
-    setIsPending(true);
     readyMessage({
       type: chatMode === "찬반" ? "찬반" : "자유",
       memberId,
-      status: myStatus === "PENDING" ? "READY": "PENDING",
+      status: myStatus !== "READY" ? "READY" : "PENDING",
     });
   };
 
-  return {
-    mutate,
-    isPending,
-    setIsPending,
-  };
+  return mutate;
 };
 
 // export const useReadyMutate = () => {

@@ -1,8 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import {
-  DebateRole,
-  UserInfo,
-} from "../../../shared/type";
+import { DebateRole, UserInfo } from "../../../shared/type";
 import { AxiosError } from "axios";
 import { axios } from "../../../shared/axiosApi";
 import { useContext } from "react";
@@ -21,11 +18,15 @@ export type EnterDebateResponse = UserInfo;
 
 export const EnterDebateKey = "/enterDebate";
 
+const postEnterDebate = async (
+  data: EnterDebateRequest,
+  id: string
+): Promise<EnterDebateResponse> => {
+  const response = await axios.post(`/chat/${id}/participants`, data);
+  return response.data;
+};
 export const useEnterDebateQuery = () => {
   const id = useDebateInfoStore((state) => state.id);
-  const postEnterDebate = (
-    data: EnterDebateRequest
-  ): Promise<ServerResponse<EnterDebateResponse>> => axios.post(`/chat/${id}/participants`, data);
 
   const setInfo = useUserInfoStore((state) => state.setInfo);
   const setCheckName = useEnterDebateStore((state) => state.actions.setCheckName);
@@ -35,20 +36,24 @@ export const useEnterDebateQuery = () => {
 
   return useMutation({
     mutationKey: [EnterDebateKey],
-    mutationFn: (data: EnterDebateRequest) => postEnterDebate(data),
-    onSuccess: (data: ServerResponse<EnterDebateResponse>, variables) => {
-      if (data && data.data) {
-        const response = data.data;
-        setInfo({ ...data.data, role: variables.role });
+    mutationFn: (data: EnterDebateRequest) => postEnterDebate(data, id),
+    onSuccess: (data: EnterDebateResponse, variables) => {
+      if (data) {
+        console.log(data);
+        setInfo({ ...data, role: variables.role });
         closeEnterDebateModal();
-        navigate(`/debate/${response.id}`);
+        setTimeout(() => navigate(`/debate/${data.id}`), 0);
       }
     },
     onError: async (error: AxiosError<ServerResponse>, variables) => {
       if (error.response?.data?.message === "이미 사용중인 닉네임 입니다.") {
         setCheckName(variables.nickName);
-      } 
-      await alert(`${error.response?.data.message}`, "확인");
+      }
+      if (error.response?.status === 500) {
+        await alert("서버가 아파요! 잠시후 다시 시도해주세요!", "확인");
+      } else {
+        await alert(`${error.response?.data.message}`, "확인");
+      }
     },
   });
 };

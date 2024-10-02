@@ -14,3 +14,25 @@ export const useMenuStore = create(
     },
   }))
 );
+
+export const useWebSocketErrorStore = create(
+  combine(
+    {
+      error: "",
+    },
+    (set) => ({
+      setError: (error: string) => set({ error }),
+    })
+  )
+);
+
+export const useWebSocketTimeOutStore = create(
+  combine(
+    {
+      error: "",
+    },
+    (set) => ({
+      setError: (error: string) => set({ error }),
+    })
+  )
+);

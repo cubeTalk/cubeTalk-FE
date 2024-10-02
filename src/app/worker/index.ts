@@ -1,7 +1,7 @@
-import { useUserInfoStore } from "../../entities/debateInfo";
+import { useDebateInfoStore } from "../../entities/debateInfo";
 import { useParticipantsStore } from "../../entities/participants/model/store";
 import { useDebateTimerStore } from "../../entities/timer/model/store";
-import { useChangeStatusErrorStore } from "../../features/changeStatus/model/store";
+import { useWebSocketErrorStore, useWebSocketTimeOutStore } from "../../pages/debate/model/store";
 import { ServerResponse } from "../../shared/axiosApi/model/axiosInstance";
 import {
   ReadyMessage,
@@ -44,6 +44,11 @@ export const readyMessage = (readyMessage: ReadyMessage) => {
   worker.postMessage({ type: "ReadyMessage", message: { readyMessage } });
 };
 
+export const TimeOutMessage = () => {
+  worker.postMessage({ type: "TimeOutMessage", message: null });
+};
+
+
 // Worker로부터 메시지 수신 처리
 worker.onmessage = (event) => {
   const { type, data } = event.data;
@@ -62,6 +67,13 @@ worker.onmessage = (event) => {
       const message: TimerMessage | TimerEndMessage = data.message;
       return progressupdate(message);
     }
+    case "error": {
+      const error: string = data.title ? `[${data.title}] ${data.message}` : data.message;
+      return errorMessage(error);
+    }
+    case "timeout": {
+      return timeoutMessage();
+    }
     default:
       console.log("Worker send Worng Message");
       return;
@@ -70,25 +82,29 @@ worker.onmessage = (event) => {
 
 const participationUpdate = (response: ServerResponse<Participant[]>) => {
   if (Number(response.status) >= 200 && Number(response.status) <= 300 && response.data) {
-    const nickName = useUserInfoStore.getState().nickName;
-    const updateActions = useParticipantsStore.getState().actions;
-    const excludedParticipants = response.data.filter((participant) => {
-      if (participant.nickName === nickName) {
-        updateActions.updateMyStatus(participant.status);
-        return false;
-      }
-      return true;
-    });
-    updateActions.resetParticipants(excludedParticipants);
+    console.log(response.data);
+    useParticipantsStore.getState().actions.resetParticipants(response.data);
   } else {
-    useChangeStatusErrorStore.getState().setError(response.message);
+    useWebSocketErrorStore.getState().setError(response.message);
   }
 };
 
 const progressupdate = (message: TimerMessage | TimerEndMessage) => {
+  if (useDebateInfoStore.getState().chatStatus === "CREATED") {
+    useDebateInfoStore.getState().actions.setInfo({ chatStatus: "STARTED" });
+  }
+
   if (useDebateTimerStore.getState().type !== message.type) {
     useMainMessageStore.getState().actions.messageAdd(message, "");
   }
   useDebateTimerStore.getState().actions.setTimer(message.remainingTime);
   useDebateTimerStore.getState().actions.setType(message.type);
 };
+
+const errorMessage = (message: string) => {
+  useWebSocketErrorStore.getState().setError(message);
+};
+
+const timeoutMessage = () => {
+  useWebSocketTimeOutStore.getState().setError("타임아웃");
+}

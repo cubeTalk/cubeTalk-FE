@@ -5,7 +5,8 @@ type AlertContextType = {
     message?: string,
     ok?: string,
     cancel?: string,
-    onClickOK?: () => void
+    onClickOK?: () => void,
+    onClickCancel?: () => void
   ) => Promise<boolean>;
 };
 
