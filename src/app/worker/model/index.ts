@@ -12,6 +12,7 @@ const webSocket = new WebSocketManager();
 type DetailedWorkerMessage =
   | { type: "connect"; message: ConnectArgs }
   | { type: "disconnect"; message: null }
+  | { type: "TimeOutMessage"; message: null }
   | { type: "changeTeam"; message: ChangeTeamMessage }
   | { type: "sendMessage"; message: SendMessageArgs }
   | { type: "voteMessage"; message: VoteMessageArgs }
@@ -38,6 +39,9 @@ ctx.onmessage = ({ data }: { data: DetailedWorkerMessage }) => {
       break;
     case "ReadyMessage":
       webSocket.ReadyMessage(data.message.readyMessage);
+      break;
+    case "TimeOutMessage":
+      webSocket.stopPause();
       break;
     default:
       console.log("Unknown message type", data);

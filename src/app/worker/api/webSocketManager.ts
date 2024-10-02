@@ -1,6 +1,6 @@
 import * as StompJs from "@stomp/stompjs";
 import SockJS, { CloseEvent } from "sockjs-client";
-import { getCloseEventCodeReason } from "../lib";
+import { getCloseEventCodeReason, sleep } from "../lib";
 import { ConnectArgs } from "../lib/webSocket.type";
 import {
   ChatMessage,
@@ -46,6 +46,9 @@ export class WebSocketManager {
     errorPostMessage: () => {},
     timeOutMessage: () => {},
   };
+  private lastConnection: number = Date.now();
+  private connectionRetry: number = 0;
+  private isPaused: boolean = false;
 
   connect = ({
     chatRoomId,
@@ -82,6 +85,7 @@ export class WebSocketManager {
       },
       progressPostMessage: (message: StompJs.IMessage) => {
         const timerMessage: TimerMessage | TimerEndMessage = JSON.parse(message.body);
+        console.log(timerMessage);
         postMessage({
           type: "progress",
           data: { message: timerMessage },
@@ -115,8 +119,10 @@ export class WebSocketManager {
       },
       webSocketFactory: () => new SockJS(`${import.meta.env.VITE_HTTP}ws`),
       onWebSocketClose: (close: CloseEvent) => {
-        console.log(close, `연결끊김: ${getCloseEventCodeReason(close)} clean : ${close.wasClean} active: ${this.client?.active}`);
-        // this.args.timeOutMessage("타임아웃");
+        console.log(
+          close,
+          `연결끊김: ${getCloseEventCodeReason(close)} clean : ${close.wasClean} active: ${this.client?.active}`
+        );
       },
       onWebSocketError: (frame) => {
         console.error("websocket Error");
@@ -131,8 +137,32 @@ export class WebSocketManager {
       onDisconnect: () => {
         console.log("Disconnected");
       },
+      // 타임아웃 체킹
+      beforeConnect: async () => {
+        const currentTime = Date.now();
+        if (this.lastConnection >= currentTime) {
+          this.connectionRetry += 1;
+        } else {
+          this.connectionRetry = 0;
+          this.isPaused = false;
+        }
+
+        if (this.connectionRetry === 2) {
+          this.isPaused = true;
+          this.connectionRetry = 0;
+          this.args.timeOutMessage("타임 아웃");
+        }
+        this.lastConnection = currentTime + 6 * 1000;
+        while (this.isPaused) {
+          await sleep(1000);
+        }
+      },
     });
     this.client.activate();
+  };
+
+  stopPause = () => {
+    this.isPaused = false;
   };
 
   chatSubscribe = (channelId: string, chatPostMessage: (message: StompJs.IMessage) => void) => {
@@ -147,7 +177,6 @@ export class WebSocketManager {
 
   onConnect = () => {
     if (this.client) {
-      console.log(this.args);
       this.chatSubscribe(this.args.channelId, this.args.mainChatPostMessage);
       if (this.args.subChannelId) {
         this.chatSubscribe(this.args.subChannelId, this.args.subChatPostMessage);

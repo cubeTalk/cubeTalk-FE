@@ -44,6 +44,11 @@ export const readyMessage = (readyMessage: ReadyMessage) => {
   worker.postMessage({ type: "ReadyMessage", message: { readyMessage } });
 };
 
+export const TimeOutMessage = () => {
+  worker.postMessage({ type: "TimeOutMessage", message: null });
+};
+
+
 // Worker로부터 메시지 수신 처리
 worker.onmessage = (event) => {
   const { type, data } = event.data;
