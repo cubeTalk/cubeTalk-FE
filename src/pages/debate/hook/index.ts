@@ -30,6 +30,7 @@ export const useWebSocketError = () => {
           error === "해당 채팅방에 없는 멤버입니다." ||
           error === "서버로 부터 메인 채팅방 메세지 불러오기를 실패하였습니다. 다시 참가해주세요"
         ) {
+          setError("");
           await alert(error, "나가기", "", () => navigate("/"));
         } else {
           setError("");
