@@ -6,7 +6,7 @@ import { useEnterModalStore } from "../../enterDebate/model/store";
 import { useCreateDebateModalStore, useisOwnerStore } from "../model/store";
 import { ServerResponse } from "../../../shared/axiosApi/model/axiosInstance";
 import { DebateRoomBaseType } from "../../../shared/type";
-import { useDebateInfoStore, useUserInfoStore } from "../../../entities/debateInfo";
+import { useUserInfoStore } from "../../../entities/debateInfo";
 import { AxiosError } from "axios";
 
 export type CreateDebateRoomRequest = DebateRoomBaseType;

@@ -40,8 +40,8 @@ export const useEnterDebateMutaion = () => {
     mutationFn: (data: EnterDebateRequest) => postEnterDebate(data, id),
     onSuccess: (data: EnterDebateResponse, variables) => {
       if (data) {
-        console.log(data);
         setInfo({ ...data, role: variables.role });
+        setCheckName("");
         closeEnterDebateModal();
         setTimeout(() => navigate(`/debate/${data.id}`), 0);
       }

@@ -14,6 +14,7 @@ const debateOut = async (id: string, memberId: string) => {
 export const useDebateOutMutate = () => {
   const id = useUserInfoStore((state) => state.id);
   const memberId = useUserInfoStore((state) => state.memberId);
+  const reset = useUserInfoStore((state) => state.reset);
   const { alert } = useContext(AlertContext);
   const navigate = useNavigate();
   return useMutation({
@@ -21,6 +22,7 @@ export const useDebateOutMutate = () => {
     mutationFn: () => debateOut(id, memberId),
     onSuccess: () => {
       navigate("/room");
+      reset();
     },
     onError: async (error: AxiosError<ServerResponse>) => {
       if (error.response?.status === 500) {
